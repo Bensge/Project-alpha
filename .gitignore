@@ -1,8 +1,4 @@
 /build/
-<<<<<<< HEAD
 *.classpath
-=======
 .classpath
-*.classpath
 *.classpath*
->>>>>>> origin/master

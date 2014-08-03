@@ -3,6 +3,13 @@
 	<name>Project Alpha-desktop</name>
 	<comment></comment>
 	<projects>
+		<project>Project Alpha-android</project>
+		<project>Project Alpha-core</project>
+		<project>Project Alpha-ios</project>
+		<project>Tile_jump-android</project>
+		<project>Tile_jump-core</project>
+		<project>Tile_jump-desktop</project>
+		<project>Tile_jump-ios</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

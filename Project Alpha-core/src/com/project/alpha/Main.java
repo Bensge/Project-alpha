@@ -2,9 +2,12 @@ package com.project.alpha;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
+import com.project.alpha.screens.AlphaGame;
+import com.project.alpha.screens.EndMenu;
+import com.project.alpha.screens.MainMenu;
 
 public class Main extends Game implements ScreenCallback {
-	
+
 	public static Main instance = null;
 	
 	public static Main sharedInstance()
@@ -54,6 +57,11 @@ public class Main extends Game implements ScreenCallback {
 		{
 			setScreen(new AlphaGame());
 		}
-		//else if () ///For more screens
+		else if (screen instanceof AlphaGame)
+		{
+			setScreen(new EndMenu());
+		}
+		
+		/// more screens...
 	}
 }

@@ -5,12 +5,19 @@ import com.badlogic.gdx.Screen;
 
 public class Main extends Game implements ScreenCallback {
 	
-	MainMenu mainMenu;
+	public static Main instance = null;
+	
+	public static Main sharedInstance()
+	{
+		return instance;
+	}
 	
 	@Override
 	public void create() {
 		
-		mainMenu = new MainMenu(this);
+		instance = this; //sharedInstance
+		
+		MainMenu mainMenu = new MainMenu();
 		
 		setScreen(mainMenu);
 		
@@ -24,7 +31,6 @@ public class Main extends Game implements ScreenCallback {
 	@Override
 	public void render() {
 		super.render();
-		
 	}
 	
 	@Override
@@ -46,7 +52,7 @@ public class Main extends Game implements ScreenCallback {
 	{
 		if (screen instanceof MainMenu)
 		{
-			setScreen(new AlphaGame(this));
+			setScreen(new AlphaGame());
 		}
 		//else if () ///For more screens
 	}

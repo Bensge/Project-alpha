@@ -6,10 +6,9 @@ import com.badlogic.gdx.graphics.GL20;
 
 public class MainMenu implements Screen {
 
-	Main main;
 	
-	public MainMenu(Main main){
-		this.main = main;
+	public MainMenu(){
+		
 	}
 	
 	@Override
@@ -18,7 +17,7 @@ public class MainMenu implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		if(Gdx.input.isTouched())
-			main.screenWantsDismissal(this);
+			Main.sharedInstance().screenWantsDismissal(this);
 		
 	}
 

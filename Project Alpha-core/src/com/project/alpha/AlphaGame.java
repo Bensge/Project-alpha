@@ -11,7 +11,6 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class AlphaGame implements Screen {
-	Main main;
 	
 	OrthogonalTiledMapRenderer renderer;
 	TiledMap map;
@@ -22,9 +21,7 @@ public class AlphaGame implements Screen {
 	private float mapWidth, mapHeight, tileWidth, tileHeight;
 	Player player;
 	
-	public AlphaGame(Main main){
-		this.main = main;
-
+	public AlphaGame(){
 	}
 	
 	@Override

@@ -26,3 +26,23 @@
 #####																                        ####
 ################################################################################################
 ################################################################################################
+
+PLAYER:
+	Justus:
+	- fix collision
+	- fix controls
+	- fix animation
+	
+MENUS:
+	Benno:
+	- create something or anything
+	
+DESIGN:
+
+ALEX BEEIL DICH!!!
+ALEX MACH MAL WAS!
+	
+	
+	
+	
+	

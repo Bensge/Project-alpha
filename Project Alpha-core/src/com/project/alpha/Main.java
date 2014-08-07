@@ -1,8 +1,9 @@
 package com.project.alpha;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Screen;
 
-public class Main extends Game {
+public class Main extends Game implements ScreenCallback {
 	
 	MainMenu mainMenu;
 	
@@ -39,5 +40,14 @@ public class Main extends Game {
 	@Override
 	public void resume() {
 		super.resume();
+	}
+	
+	public void screenWantsDismissal(Screen screen)
+	{
+		if (screen instanceof MainMenu)
+		{
+			setScreen(new AlphaGame(this));
+		}
+		//else if () ///For more screens
 	}
 }

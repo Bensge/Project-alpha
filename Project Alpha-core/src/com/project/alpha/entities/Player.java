@@ -1,4 +1,4 @@
-package com.project.alpha;
+package com.project.alpha.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -44,7 +44,6 @@ public class Player extends Sprite {
         currentFrame = walk.getKeyFrame(0);
         setSize(currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
         setSize(collision.getTileWidth(), collision.getTileHeight());
-        //setScale(0.5f, 0.38f);
         setX(x);
         setY(y);
         setRegion(currentFrame);

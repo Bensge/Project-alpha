@@ -19,6 +19,7 @@ public class MainMenu implements Screen {
 		
 		if(Gdx.input.isTouched())
 			main.setScreen(new AlphaGame(main));
+		
 	}
 
 	@Override

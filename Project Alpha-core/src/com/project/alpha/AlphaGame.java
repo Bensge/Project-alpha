@@ -11,7 +11,6 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class AlphaGame implements Screen {
-
 	Main main;
 	
 	OrthogonalTiledMapRenderer renderer;
@@ -21,10 +20,11 @@ public class AlphaGame implements Screen {
 	OrthographicCamera camera;
 	
 	private float mapWidth, mapHeight, tileWidth, tileHeight;
-	//Player player;
+	Player player;
 	
 	public AlphaGame(Main main){
 		this.main = main;
+
 	}
 	
 	@Override
@@ -32,7 +32,7 @@ public class AlphaGame implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		//camera.position.set(player.getX(), player.getY(), 0);
+		camera.position.set(player.getX(), player.getY(), 0);
 		
 		update(delta);
 		
@@ -41,13 +41,13 @@ public class AlphaGame implements Screen {
 		renderer.render();
 		
 		renderer.getSpriteBatch().begin();
-		//player.draw(renderer.getSpriteBatch());
+		player.draw(renderer.getSpriteBatch());
 		renderer.getSpriteBatch().end();	
 		System.out.println(map.getProperties().get("tileheight"));
 	}
 
 	private void update(float delta) {
-		
+		player.update(delta);
 		cameraBounds();
 	}
 
@@ -66,7 +66,7 @@ public class AlphaGame implements Screen {
 		layer = (TiledMapTileLayer) map.getLayers().get(0);
 		renderer = new OrthogonalTiledMapRenderer(map);
 		
-		//player = new Player(10, 160, layer);
+		player = new Player(10, 160, layer);
 		
 		properties = map.getProperties();
 		tileWidth = (Integer) properties.get("tilewidth");

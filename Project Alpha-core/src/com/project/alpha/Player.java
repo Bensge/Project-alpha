@@ -43,6 +43,7 @@ public class Player extends Sprite {
         stateTime = 0;
         currentFrame = walk.getKeyFrame(0);
         setSize(currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
+        setSize(collision.getTileWidth(), collision.getTileHeight());
         //setScale(0.5f, 0.38f);
         setX(x);
         setY(y);

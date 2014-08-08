@@ -30,10 +30,10 @@
 
 PLAYER:
 	Justus:
-	- fix collision
+	(done)- fix collision	
 	- fix controls
 	- add android & IOS control support
-	- fix animation
+	(done)- fix animation
 	
 MENUS:
 	Benno:

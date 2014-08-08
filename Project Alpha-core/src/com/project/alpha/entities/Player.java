@@ -11,7 +11,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 
 public class Player extends Sprite {
-	
 
 	private static final int    COL = 4;     
     private static final int    ROW = 4;     
@@ -24,6 +23,8 @@ public class Player extends Sprite {
     
     float stateTime, animTime;    
     float speed = 100, oldX, oldY;
+    
+    private String blockKey = "blocked";
     
 	public Player(int x, int y, TiledMapTileLayer collision){
 		this.collision = collision;
@@ -85,34 +86,41 @@ public class Player extends Sprite {
 	}
 
 	private void collision() {
-		//up down tile
-		try{
-		Cell cell = collision.getCell((int) ((getX() + getWidth() / 2) / collision.getTileWidth()), (int) (getY() / collision.getTileHeight()));
-		if(cell.getTile().getProperties().containsKey("blocked")){
+		//up
+		if(isBlocked(getX() , getY() + getHeight()) ||
+			isBlocked(getX() + getWidth() / 2, getY() + getHeight()) ||
+			isBlocked(getX() + getWidth(), getY() + getHeight()))
+		{
 			setY(oldY);
 		}
-		else{
-			cell = collision.getCell((int) (getX() / collision.getTileWidth()), (int) ((getY() + getHeight()) / collision.getTileHeight()));
-			if(cell.getTile().getProperties().containsKey("blocked")){
-				setY(oldY);
-			}
+		
+		/////bottom tiles
+		else if(isBlocked(getX(), getY()) ||
+				isBlocked(getX() + getWidth() / 2, getY()) ||
+				isBlocked(getX() + getWidth(), getY()))
+		{
+			setY(oldY);
 		}
 		
-		//left right tile
-		cell = collision.getCell((int) ((getX() + getWidth() / 2) / collision.getTileWidth()), (int) ((getY() + getHeight() / 2) / collision.getTileHeight()));
-		if(cell.getTile().getProperties().containsKey("blocked")){
-			setX(oldX);
-		}
-		else{
-			cell = collision.getCell((int) (getX() / collision.getTileWidth()), (int) ((getY() + getHeight() / 2)  / collision.getTileHeight()));
-			if(cell.getTile().getProperties().containsKey("blocked")){
+		/////left tiles
+		if(isBlocked(getX(), getY()) ||
+			isBlocked(getX(), getY() + getHeight() / 2) ||
+			isBlocked(getX(), getY() + getHeight()))
+		{
 				setX(oldX);
-			}
-			
 		}
-		}catch(NullPointerException e){
-				setX(oldX);
-				setY(oldY);
+		
+		/////right tiles
+		else if(isBlocked(getX() + getWidth(), getY()) ||
+				isBlocked(getX() + getWidth(), getY() + getHeight() / 2) ||
+				isBlocked(getX() + getWidth(), getY() + getHeight()))
+			{
+					setX(oldX);
 			}
-		}
+	}
+	
+	private boolean isBlocked(float x, float y){
+		Cell cell = collision.getCell((int) (x / collision.getTileWidth()), (int) (y / collision.getTileHeight()));
+		return cell != null && cell.getTile().getProperties().containsKey(blockKey);
+	}
 }

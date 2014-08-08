@@ -39,6 +39,7 @@ public class Player extends Sprite {
         }
         
         animTime = 0.25f;
+        // < == faster
         walk = new Animation(animTime, walkFrames);   
         stateTime = 0;
         currentFrame = walk.getKeyFrame(0);
@@ -54,7 +55,7 @@ public class Player extends Sprite {
 	}
 
 	public void update(float delta) {
-		stateTime += delta;
+		stateTime += delta / animTime;
 		if(stateTime > COL)
 			stateTime = 0;
 		
@@ -79,7 +80,7 @@ public class Player extends Sprite {
 			}
 		
 	    setRegion(currentFrame);
-	    
+	   // System.out.println(getWidth()+", "+ getHeight());
 	    collision();
 	}
 

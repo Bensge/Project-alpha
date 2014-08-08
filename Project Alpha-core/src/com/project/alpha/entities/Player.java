@@ -53,12 +53,15 @@ public class Player extends Sprite {
 	
 	public void render(SpriteBatch batch){
 		super.draw(batch);
+		
 	}
 
 	public void update(float delta) {
 		stateTime += delta / animTime;
 		if(stateTime > COL)
 			stateTime = 0;
+		
+		System.out.println(Gdx.graphics.getFramesPerSecond() + "jf");
 		
 		oldX = getX();
 		oldY = getY();
@@ -86,7 +89,7 @@ public class Player extends Sprite {
 	}
 
 	private void collision() {
-		//up
+		/////up tiles
 		if(isBlocked(getX() , getY() + getHeight()) ||
 			isBlocked(getX() + getWidth() / 2, getY() + getHeight()) ||
 			isBlocked(getX() + getWidth(), getY() + getHeight()))

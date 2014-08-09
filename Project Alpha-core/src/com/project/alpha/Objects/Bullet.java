@@ -20,7 +20,6 @@ public class Bullet extends Sprite{
 		setX(posX);
 		setY(posY);
 		setSize(5, 5);
-		System.out.println("New bullet(" + direction + ")");
 		switch(direction){
 		case Left:
 			velocity.x = -speed;

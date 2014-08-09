@@ -68,8 +68,6 @@ public class InputManager implements InputProcessor {
 	public boolean keyDown(int keycode) {
 		// TODO Auto-generated method stub
 		
-		System.out.println("Key: " + keycode + " New shoot direction: " + shootDirection);
-		
 		switch (keycode) {
 			case Keys.A:
 				isAPressed = true;
@@ -231,22 +229,18 @@ public class InputManager implements InputProcessor {
 			
 		if (up == true) {
 			if (left == true){
-				shootDirection = PlayerDirection.UpLeft;
 				return PlayerDirection.UpLeft;
 			}
 			if (right == true){
-				shootDirection = PlayerDirection.UpRight;
 				return PlayerDirection.UpRight;
 			}
 			return PlayerDirection.Up;
 		}
 		else if (down == true) {
 			if (left == true){
-				shootDirection = PlayerDirection.DownLeft;
 				return PlayerDirection.DownLeft;
 			}
 			if (right == true){
-				shootDirection = PlayerDirection.DownLeft;
 				return PlayerDirection.DownRight;
 			}
 			return PlayerDirection.Down;

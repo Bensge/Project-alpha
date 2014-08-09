@@ -1,5 +1,6 @@
 package com.project.alpha.entities;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
@@ -23,11 +24,15 @@ public class Player extends Sprite {
     
     float stateTime, animTime;    
     float speed = 100, oldX, oldY;
+    ApplicationType type;
     
     private String blockKey = "blocked";
     
 	public Player(int x, int y, TiledMapTileLayer collision){
 		this.collision = collision;
+		
+		type = Gdx.app.getType();
+		
 		//animation stuff
 		walkSheet = new Texture(Gdx.files.internal("img/player.png"));
 		TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth()/COL, walkSheet.getHeight()/ROW);              // #10
@@ -49,6 +54,7 @@ public class Player extends Sprite {
         setX(x);
         setY(y);
         setRegion(currentFrame);
+        
 	}
 	
 	public void render(SpriteBatch batch){
@@ -66,6 +72,39 @@ public class Player extends Sprite {
 		oldX = getX();
 		oldY = getY();
 		
+		handleControl();
+		
+		
+	    setRegion(currentFrame);
+	   // System.out.println(getWidth()+", "+ getHeight());
+	    collision();
+	}
+
+	private void handleControl() {
+		switch(type){
+		case Android:
+		case iOS:
+			mobileControl();
+			break;
+		
+		case Desktop:
+			desktopControl();
+			break;
+			
+		default: 
+			break;
+		}
+		
+	}
+
+	private void mobileControl() {
+		// android and iOS controls here
+		
+	}
+
+	private void desktopControl() {
+		float delta = Gdx.graphics.getDeltaTime();
+		
 		if(Gdx.input.isKeyPressed(Keys.W)){
 			setY(getY() + speed * delta);
 			currentFrame = walk.getKeyFrame((12 + stateTime) * animTime);
@@ -82,10 +121,6 @@ public class Player extends Sprite {
 			setX(getX() + speed * delta);
 			currentFrame = walk.getKeyFrame((8 + stateTime) * animTime);
 			}
-		
-	    setRegion(currentFrame);
-	   // System.out.println(getWidth()+", "+ getHeight());
-	    collision();
 	}
 
 	private void collision() {

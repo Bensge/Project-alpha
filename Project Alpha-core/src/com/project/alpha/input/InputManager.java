@@ -24,6 +24,7 @@ public class InputManager implements InputProcessor {
 	
 	boolean isMouseMode;
 	
+	long shootTime = 0;
 	
 	boolean isAPressed = false, isSPressed = false, isWPressed = false, isDPressed = false, isSpacePressed = false;
 	
@@ -231,8 +232,21 @@ public class InputManager implements InputProcessor {
 	}
 	
 	public boolean getShouldShoot() {
-		if (isMouseMode)
+		
+		final int shotsPerSecond = 2;
+		
+		if (isMouseMode){
+			if (isSpacePressed) {
+				if (System.currentTimeMillis() - shootTime > 1000/shotsPerSecond) {
+					shootTime = System.currentTimeMillis();
+					return true;
+				}
+				else
+					return false;
+			}
+				
 			return isSpacePressed;
+		}
 		else
 			return true;
 	}

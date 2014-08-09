@@ -4,6 +4,8 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Graphics.GraphicsType;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Input;
 
 public class InputManager implements InputProcessor {
 	
@@ -19,12 +21,17 @@ public class InputManager implements InputProcessor {
 		DownRight
 	}
 	
+	
 	boolean isMouseMode;
+	
+	
+	boolean isAPressed = false, isSPressed = false, isWPressed = false, isDPressed = false;
+	
 	
 	float[] joystickLastTouchPosition;
 	float[] joystickKnobDelta = new float[2];
 	final float joystickThreshold = 10.f;
-
+	
 	private static InputManager instance = null;
 	
 	public static InputManager sharedInstance() {
@@ -50,12 +57,44 @@ public class InputManager implements InputProcessor {
 	@Override
 	public boolean keyDown(int keycode) {
 		// TODO Auto-generated method stub
+		switch (keycode) {
+			case Keys.A:
+				isAPressed = true;
+				break;
+			case Keys.S:
+				isSPressed = true;
+				break;
+			case Keys.D:
+				isDPressed = true;
+				break;
+			case Keys.W:
+				isWPressed = true;
+				break;
+			default:
+				break;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
 		// TODO Auto-generated method stub
+		switch (keycode) {
+			case Keys.A:
+				isAPressed = false;
+				break;
+			case Keys.S:
+				isSPressed = false;
+				break;
+			case Keys.D:
+				isDPressed = false;
+				break;
+			case Keys.W:
+				isWPressed = false;
+				break;
+			default:
+				break;
+		}
 		return false;
 	}
 
@@ -121,15 +160,21 @@ public class InputManager implements InputProcessor {
 	
 	
 	public PlayerDirection getPlayDirection() {
+		
+		boolean right = false;
+		boolean left = false;
+		boolean up = false;
+		boolean down = false;
+		
 		if (isMouseMode) {
-			System.out.println("UNIMPLEMENTED!!!!!");
-			return PlayerDirection.None;
+			
+			right = isDPressed;
+			left = isAPressed;
+			up = isWPressed;
+			down = isSPressed;
+			
 		}
 		else {
-			boolean right = false;
-			boolean left = false;
-			boolean up = false;
-			boolean down = false;
 			
 			if (Math.abs(joystickKnobDelta[0]) > joystickThreshold) {
 				//Left or Right
@@ -149,27 +194,29 @@ public class InputManager implements InputProcessor {
 					//Down
 					down = true;
 			}
-			
-			if (up == true) {
-				if (left == true)
-					return PlayerDirection.UpLeft;
-				if (right == true)
-					return PlayerDirection.UpRight;
-				return PlayerDirection.Up;
-			}
-			else if (down == true) {
-				if (left == true)
-					return PlayerDirection.DownLeft;
-				if (right == true)
-					return PlayerDirection.DownRight;
-				return PlayerDirection.Down;
-			}
-			else if (left == true)
-				return PlayerDirection.Left;
-			else if (right == true)
-				return PlayerDirection.Right;
-			return PlayerDirection.None;
 		}
+		
+		//Identify Direction enum value and return
+			
+		if (up == true) {
+			if (left == true)
+				return PlayerDirection.UpLeft;
+			if (right == true)
+				return PlayerDirection.UpRight;
+			return PlayerDirection.Up;
+		}
+		else if (down == true) {
+			if (left == true)
+				return PlayerDirection.DownLeft;
+			if (right == true)
+				return PlayerDirection.DownRight;
+			return PlayerDirection.Down;
+		}
+		else if (left == true)
+			return PlayerDirection.Left;
+		else if (right == true)
+			return PlayerDirection.Right;
+		return PlayerDirection.None;
 		
 	}
 	

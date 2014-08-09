@@ -2,7 +2,6 @@ package com.project.alpha.screens;
 
 
 import com.badlogic.gdx.Graphics.GraphicsType;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
@@ -16,7 +15,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.project.alpha.Main;
 import com.project.alpha.entities.Player;
 
@@ -37,6 +35,7 @@ public class AlphaGame implements Screen {
 	
 	@Override
 	public void render(float delta) {
+		
 		if(Gdx.input.isKeyPressed(Keys.ESCAPE)){
 			System.out.println("escaped");
 			dispose();

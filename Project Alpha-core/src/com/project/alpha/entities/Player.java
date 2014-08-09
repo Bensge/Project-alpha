@@ -121,7 +121,7 @@ public class Player extends Sprite {
 		else if (direction == PlayerDirection.UpLeft) {
 			setY(getY() + speed * delta * diagonalFactor);
 			setX(getX() - speed * delta * diagonalFactor);
-			currentFrame = walk.getKeyFrame((8 + stateTime) * animTime);
+			currentFrame = walk.getKeyFrame((4 + stateTime) * animTime);
 		}
 		else if (direction == PlayerDirection.DownRight) {
 			setY(getY() - speed * delta * diagonalFactor);
@@ -131,7 +131,7 @@ public class Player extends Sprite {
 		else if (direction == PlayerDirection.DownLeft) {
 			setY(getY() - speed * delta * diagonalFactor);
 			setX(getX() - speed * delta * diagonalFactor);
-			currentFrame = walk.getKeyFrame((8 + stateTime) * animTime);
+			currentFrame = walk.getKeyFrame((4 + stateTime) * animTime);
 		}
 	}
 

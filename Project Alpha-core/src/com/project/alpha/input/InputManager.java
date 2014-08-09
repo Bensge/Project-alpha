@@ -3,9 +3,7 @@ package com.project.alpha.input;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Graphics.GraphicsType;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.Input;
 
 public class InputManager implements InputProcessor {
 	
@@ -32,7 +30,7 @@ public class InputManager implements InputProcessor {
 	
 	
 	float[] joystickLastTouchPosition;
-	float[] joystickKnobDelta = new float[2];
+	float[] joystickKnobDelta;
 	final float joystickThreshold = 20.f;
 	
 	private static InputManager instance = null;
@@ -47,6 +45,9 @@ public class InputManager implements InputProcessor {
 	
 	public InputManager() {
 		Gdx.input.setInputProcessor(this);
+		
+		joystickKnobDelta = new float[2];
+		joystickLastTouchPosition = new float[2];
 		
 		if (Gdx.app.getType() == ApplicationType.iOS || Gdx.app.getType() == ApplicationType.Android){
 			//Joystick
@@ -134,7 +135,6 @@ public class InputManager implements InputProcessor {
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		joystickKnobDelta[0] = 0;
 		joystickKnobDelta[1] = 0;
-		joystickLastTouchPosition = new float[2];
 		joystickLastTouchPosition[0] = screenX;
 		joystickLastTouchPosition[1] = screenY;
 		return false;
@@ -151,6 +151,9 @@ public class InputManager implements InputProcessor {
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		// TODO Auto-generated method stub
+		Gdx.app.log("tag", ""+screenX);
+		Gdx.app.log("tag", ""+joystickLastTouchPosition[0]);
+		//Gdx.app.log("tag", "fps: " + Gdx.graphics.getFramesPerSecond() + ", x: " + screenX);
 		joystickKnobDelta[0] = screenX - joystickLastTouchPosition[0];
 		if (joystickKnobDelta[0] > 30)
 			joystickKnobDelta[0] = 30;
@@ -163,7 +166,7 @@ public class InputManager implements InputProcessor {
 		else if (joystickKnobDelta[1] < -30)
 			joystickKnobDelta[1] = -30;
 		
-		return false;
+		return true;
 	}
 
 	@Override

@@ -16,10 +16,10 @@ public class Bullet extends Sprite{
 	public Bullet(float posX, float posY, PlayerDirection direction){
 		super(new Sprite(new Texture(Gdx.files.internal("img/rocket.png"))));
 		velocity = new Vector2();
-		speed = 100;
+		speed = 300;
 		setX(posX);
 		setY(posY);
-		setSize(20, 20);
+		setSize(5, 5);
 		switch(direction){
 		case Left:
 			velocity.x = -speed;

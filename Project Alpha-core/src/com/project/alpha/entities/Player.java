@@ -151,7 +151,7 @@ public class Player extends Sprite {
 		}
 		
 		if(InputManager.sharedInstance().getShouldShoot()){
-			bullets.add(new Bullet(getX(), getY(), direction));
+			bullets.add(new Bullet(getX(), getY(), InputManager.sharedInstance().getShootDirection()));
 		}
 	}
 

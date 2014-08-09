@@ -9,6 +9,8 @@ import com.badlogic.gdx.Input;
 
 public class InputManager implements InputProcessor {
 	
+	PlayerDirection shootDirection = PlayerDirection.Down;
+	
 	public enum PlayerDirection {
 		None,
 		Up,
@@ -21,10 +23,10 @@ public class InputManager implements InputProcessor {
 		DownRight
 	}
 	
-	
 	boolean isMouseMode;
 	
 	long shootTime = 0;
+	
 	
 	boolean isAPressed = false, isSPressed = false, isWPressed = false, isDPressed = false, isSpacePressed = false;
 	
@@ -52,6 +54,7 @@ public class InputManager implements InputProcessor {
 		}
 		else
 			isMouseMode = true;
+		
 	}
 	
 	
@@ -60,15 +63,19 @@ public class InputManager implements InputProcessor {
 		// TODO Auto-generated method stub
 		switch (keycode) {
 			case Keys.A:
+				shootDirection = PlayerDirection.Left;
 				isAPressed = true;
 				break;
 			case Keys.S:
+				shootDirection = PlayerDirection.Down;
 				isSPressed = true;
 				break;
 			case Keys.D:
+				shootDirection = PlayerDirection.Right;
 				isDPressed = true;
 				break;
 			case Keys.W:
+				shootDirection = PlayerDirection.Up;
 				isWPressed = true;
 				break;
 			case Keys.SPACE:
@@ -165,6 +172,9 @@ public class InputManager implements InputProcessor {
 	///////////                  EASY PUBLIC ACCESSOR METHODS              ////////////////
 	///////////////////////////////////////////////////////////////////////////////////////
 	
+	public PlayerDirection getShootDirection(){
+		return shootDirection;
+	}
 	
 	public PlayerDirection getPlayDirection() {
 		

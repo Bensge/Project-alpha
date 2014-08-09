@@ -132,7 +132,6 @@ public class InputManager implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		
 		joystickKnobDelta[0] = 0;
 		joystickKnobDelta[1] = 0;
 		joystickLastTouchPosition = new float[2];
@@ -274,7 +273,7 @@ public class InputManager implements InputProcessor {
 			return isSpacePressed;
 		}
 		else
-			return true;
+			return false;
 	}
 	
 }

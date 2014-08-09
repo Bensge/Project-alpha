@@ -54,7 +54,8 @@ public class AlphaGame implements Screen {
 		player.draw(renderer.getSpriteBatch());
 		renderer.getSpriteBatch().end();
 		
-		joystick.render(null);
+		if (Joystick.joystickSupported())
+			joystick.render(null);
 	}
 
 	private void update(float delta) {
@@ -79,7 +80,9 @@ public class AlphaGame implements Screen {
 		renderer = new OrthogonalTiledMapRenderer(map);
 		
 		player = new Player(10, 160, layer);
-		joystick = new Joystick();
+		
+		if (Joystick.joystickSupported())
+			joystick = new Joystick();
 		
 		properties = map.getProperties();
 		tileWidth = (Integer) properties.get("tilewidth");

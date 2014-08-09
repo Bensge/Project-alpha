@@ -1,6 +1,7 @@
 package com.project.alpha.input;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -12,6 +13,10 @@ public class Joystick extends Sprite {
 	Sprite joystickKnobSprite;
 	SpriteBatch joystickSpriteBatch;
 	
+	
+	public static boolean joystickSupported() {
+		return (Gdx.app.getType() == ApplicationType.iOS || Gdx.app.getType() == ApplicationType.Android);
+	}
 	
 	public Joystick() {
 		

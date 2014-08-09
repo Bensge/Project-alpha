@@ -1,5 +1,7 @@
 package com.project.alpha.Objects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -12,11 +14,12 @@ public class Bullet extends Sprite{
 	private float factor = (float) (1f / Math.sqrt(2));
 	
 	public Bullet(float posX, float posY, PlayerDirection direction){
+		super(new Sprite(new Texture(Gdx.files.internal("img/rocket.png"))));
 		velocity = new Vector2();
-		speed = 10;
+		speed = 1;
 		setX(posX);
 		setY(posY);
-		
+		//setSize(20, 20);
 		switch(direction){
 		case Left:
 			velocity.x = -speed;
@@ -60,7 +63,7 @@ public class Bullet extends Sprite{
 	}
 	
 	public void update(float delta){
-		setPosition(getX() + velocity.x, getY() + velocity.y);
+		setPosition(getX() + velocity.x * delta, getY() + velocity.y * delta);
 		
 	}
 }

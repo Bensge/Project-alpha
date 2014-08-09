@@ -44,7 +44,7 @@ public class Player extends Sprite {
 		
 		//animation stuff
 		walkSheet = new Texture(Gdx.files.internal("img/player.png"));
-		TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth()/COL, walkSheet.getHeight()/ROW);              // #10
+		TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth() / COL, walkSheet.getHeight() / ROW);              // #10
         walkFrames = new TextureRegion[COL * ROW];
         int index = 0;
         for (int i = 0; i < ROW; i++) {
@@ -69,6 +69,9 @@ public class Player extends Sprite {
 	public void render(SpriteBatch batch){
 		super.draw(batch);
 		
+		for(Bullet b : bullets){
+			b.draw(batch);
+		}
 	}
 
 	public void update(float delta) {
@@ -76,13 +79,17 @@ public class Player extends Sprite {
 		if(stateTime > COL)
 			stateTime = 0;
 		
-		System.out.println(Gdx.graphics.getFramesPerSecond() + "jf");
+		//System.out.println(Gdx.graphics.getFramesPerSecond() + "jf");
 		
 		oldX = getX();
 		oldY = getY();
 		
 		handleControl();
 		
+		for(Bullet b : bullets){
+			b.update(delta);
+			System.out.println("ius");
+		}
 		
 	    setRegion(currentFrame);
 	   // System.out.println(getWidth()+", "+ getHeight());
@@ -132,6 +139,10 @@ public class Player extends Sprite {
 			setY(getY() - speed * delta * diagonalFactor);
 			setX(getX() - speed * delta * diagonalFactor);
 			currentFrame = walk.getKeyFrame((4 + stateTime) * animTime);
+		}
+		
+		if(InputManager.sharedInstance().getShouldShoot()){
+			bullets.add(new Bullet(getX(), getY(), direction));
 		}
 	}
 

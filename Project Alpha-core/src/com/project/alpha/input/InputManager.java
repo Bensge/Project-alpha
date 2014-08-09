@@ -216,17 +216,25 @@ public class InputManager implements InputProcessor {
 		//Identify Direction enum value and return
 			
 		if (up == true) {
-			if (left == true)
+			if (left == true){
+				shootDirection = PlayerDirection.UpLeft;
 				return PlayerDirection.UpLeft;
-			if (right == true)
+			}
+			if (right == true){
+				shootDirection = PlayerDirection.UpRight;
 				return PlayerDirection.UpRight;
+			}
 			return PlayerDirection.Up;
 		}
 		else if (down == true) {
-			if (left == true)
+			if (left == true){
+				shootDirection = PlayerDirection.DownLeft;
 				return PlayerDirection.DownLeft;
-			if (right == true)
+			}
+			if (right == true){
+				shootDirection = PlayerDirection.DownLeft;
 				return PlayerDirection.DownRight;
+			}
 			return PlayerDirection.Down;
 		}
 		else if (left == true)

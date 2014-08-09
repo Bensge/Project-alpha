@@ -1,5 +1,6 @@
 package com.project.alpha.entities;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,7 +12,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 
 public class Player extends Sprite {
-	
 
 	private static final int    COL = 4;     
     private static final int    ROW = 4;     
@@ -24,9 +24,15 @@ public class Player extends Sprite {
     
     float stateTime, animTime;    
     float speed = 100, oldX, oldY;
+    ApplicationType type;
+    
+    private String blockKey = "blocked";
     
 	public Player(int x, int y, TiledMapTileLayer collision){
 		this.collision = collision;
+		
+		type = Gdx.app.getType();
+		
 		//animation stuff
 		walkSheet = new Texture(Gdx.files.internal("img/player.png"));
 		TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth()/COL, walkSheet.getHeight()/ROW);              // #10
@@ -48,10 +54,12 @@ public class Player extends Sprite {
         setX(x);
         setY(y);
         setRegion(currentFrame);
+        
 	}
 	
 	public void render(SpriteBatch batch){
 		super.draw(batch);
+		
 	}
 
 	public void update(float delta) {
@@ -59,8 +67,43 @@ public class Player extends Sprite {
 		if(stateTime > COL)
 			stateTime = 0;
 		
+		System.out.println(Gdx.graphics.getFramesPerSecond() + "jf");
+		
 		oldX = getX();
 		oldY = getY();
+		
+		handleControl();
+		
+		
+	    setRegion(currentFrame);
+	   // System.out.println(getWidth()+", "+ getHeight());
+	    collision();
+	}
+
+	private void handleControl() {
+		switch(type){
+		case Android:
+		case iOS:
+			mobileControl();
+			break;
+		
+		case Desktop:
+			desktopControl();
+			break;
+			
+		default: 
+			break;
+		}
+		
+	}
+
+	private void mobileControl() {
+		// android and iOS controls here
+		
+	}
+
+	private void desktopControl() {
+		float delta = Gdx.graphics.getDeltaTime();
 		
 		if(Gdx.input.isKeyPressed(Keys.W)){
 			setY(getY() + speed * delta);
@@ -78,41 +121,44 @@ public class Player extends Sprite {
 			setX(getX() + speed * delta);
 			currentFrame = walk.getKeyFrame((8 + stateTime) * animTime);
 			}
-		
-	    setRegion(currentFrame);
-	   // System.out.println(getWidth()+", "+ getHeight());
-	    collision();
 	}
 
 	private void collision() {
-		//up down tile
-		try{
-		Cell cell = collision.getCell((int) ((getX() + getWidth() / 2) / collision.getTileWidth()), (int) (getY() / collision.getTileHeight()));
-		if(cell.getTile().getProperties().containsKey("blocked")){
+		/////up tiles
+		if(isBlocked(getX() , getY() + getHeight()) ||
+			isBlocked(getX() + getWidth() / 2, getY() + getHeight()) ||
+			isBlocked(getX() + getWidth(), getY() + getHeight()))
+		{
 			setY(oldY);
 		}
-		else{
-			cell = collision.getCell((int) (getX() / collision.getTileWidth()), (int) ((getY() + getHeight()) / collision.getTileHeight()));
-			if(cell.getTile().getProperties().containsKey("blocked")){
-				setY(oldY);
-			}
+		
+		/////bottom tiles
+		else if(isBlocked(getX(), getY()) ||
+				isBlocked(getX() + getWidth() / 2, getY()) ||
+				isBlocked(getX() + getWidth(), getY()))
+		{
+			setY(oldY);
 		}
 		
-		//left right tile
-		cell = collision.getCell((int) ((getX() + getWidth() / 2) / collision.getTileWidth()), (int) ((getY() + getHeight() / 2) / collision.getTileHeight()));
-		if(cell.getTile().getProperties().containsKey("blocked")){
-			setX(oldX);
-		}
-		else{
-			cell = collision.getCell((int) (getX() / collision.getTileWidth()), (int) ((getY() + getHeight() / 2)  / collision.getTileHeight()));
-			if(cell.getTile().getProperties().containsKey("blocked")){
+		/////left tiles
+		if(isBlocked(getX(), getY()) ||
+			isBlocked(getX(), getY() + getHeight() / 2) ||
+			isBlocked(getX(), getY() + getHeight()))
+		{
 				setX(oldX);
-			}
-			
 		}
-		}catch(NullPointerException e){
-				setX(oldX);
-				setY(oldY);
+		
+		/////right tiles
+		else if(isBlocked(getX() + getWidth(), getY()) ||
+				isBlocked(getX() + getWidth(), getY() + getHeight() / 2) ||
+				isBlocked(getX() + getWidth(), getY() + getHeight()))
+			{
+					setX(oldX);
 			}
-		}
+	}
+	
+	private boolean isBlocked(float x, float y){
+		Cell cell = collision.getCell((int) (x / collision.getTileWidth()), (int) (y / collision.getTileHeight()));
+		return cell != null && cell.getTile().getProperties().containsKey(blockKey);
+	}
 }

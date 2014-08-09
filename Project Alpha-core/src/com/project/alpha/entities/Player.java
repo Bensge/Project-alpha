@@ -13,6 +13,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.project.alpha.Objects.Bullet;
+import com.project.alpha.input.InputManager;
+import com.project.alpha.input.InputManager.PlayerDirection;
 
 public class Player extends Sprite {
 
@@ -88,46 +90,49 @@ public class Player extends Sprite {
 	}
 
 	private void handleControl() {
-		switch(type){
-		case Android:
-		case iOS:
-			mobileControl();
-			break;
 		
-		case Desktop:
-			desktopControl();
-			break;
-			
-		default: 
-			break;
-		}
-		
-	}
-
-	private void mobileControl() {
-		// android and iOS controls here
-		
-	}
-
-	private void desktopControl() {
 		float delta = Gdx.graphics.getDeltaTime();
 		
-		if(Gdx.input.isKeyPressed(Keys.W)){
+		PlayerDirection direction = InputManager.sharedInstance().getPlayDirection();
+		
+		final float diagonalFactor = 0.70710678f;
+		
+		if (direction == PlayerDirection.Up) {
 			setY(getY() + speed * delta);
 			currentFrame = walk.getKeyFrame((12 + stateTime) * animTime);
-			}
-		if(Gdx.input.isKeyPressed(Keys.S)){
+		}
+		else if (direction == PlayerDirection.Down) {
 			setY(getY() - speed * delta);		
 			currentFrame = walk.getKeyFrame((stateTime) * animTime);
-			}
-		if(Gdx.input.isKeyPressed(Keys.A)){
+		}
+		else if (direction == PlayerDirection.Left) {
 			setX(getX() - speed * delta);
 			currentFrame = walk.getKeyFrame((4 + stateTime) * animTime);
-			}
-		if(Gdx.input.isKeyPressed(Keys.D)){
+		}
+		else if (direction == PlayerDirection.Right) {
 			setX(getX() + speed * delta);
 			currentFrame = walk.getKeyFrame((8 + stateTime) * animTime);
-			}
+		}
+		else if (direction == PlayerDirection.UpRight) {
+			setY(getY() + speed * delta * diagonalFactor);
+			setX(getX() + speed * delta * diagonalFactor);
+			currentFrame = walk.getKeyFrame((8 + stateTime) * animTime);
+		}
+		else if (direction == PlayerDirection.UpLeft) {
+			setY(getY() + speed * delta * diagonalFactor);
+			setX(getX() - speed * delta * diagonalFactor);
+			currentFrame = walk.getKeyFrame((8 + stateTime) * animTime);
+		}
+		else if (direction == PlayerDirection.DownRight) {
+			setY(getY() - speed * delta * diagonalFactor);
+			setX(getX() + speed * delta * diagonalFactor);
+			currentFrame = walk.getKeyFrame((8 + stateTime) * animTime);
+		}
+		else if (direction == PlayerDirection.DownLeft) {
+			setY(getY() - speed * delta * diagonalFactor);
+			setX(getX() - speed * delta * diagonalFactor);
+			currentFrame = walk.getKeyFrame((8 + stateTime) * animTime);
+		}
 	}
 
 	private void collision() {

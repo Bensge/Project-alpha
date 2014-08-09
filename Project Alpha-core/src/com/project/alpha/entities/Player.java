@@ -1,5 +1,7 @@
 package com.project.alpha.entities;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -10,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
+import com.project.alpha.Objects.Bullet;
 
 public class Player extends Sprite {
 
@@ -26,12 +29,16 @@ public class Player extends Sprite {
     float speed = 100, oldX, oldY;
     ApplicationType type;
     
+    private ArrayList<Bullet> bullets;
+    
     private String blockKey = "blocked";
     
 	public Player(int x, int y, TiledMapTileLayer collision){
 		this.collision = collision;
 		
 		type = Gdx.app.getType();
+		
+		bullets = new ArrayList<Bullet>();
 		
 		//animation stuff
 		walkSheet = new Texture(Gdx.files.internal("img/player.png"));

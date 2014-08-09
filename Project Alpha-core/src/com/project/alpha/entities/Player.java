@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -69,9 +70,17 @@ public class Player extends Sprite {
 	public void render(SpriteBatch batch){
 		super.draw(batch);
 		
+		
+	}
+	
+	@Override
+	public void draw(Batch batch) {
+		
 		for(Bullet b : bullets){
 			b.draw(batch);
 		}
+		
+		super.draw(batch);
 	}
 
 	public void update(float delta) {
@@ -88,7 +97,7 @@ public class Player extends Sprite {
 		
 		for(Bullet b : bullets){
 			b.update(delta);
-			System.out.println("ius");
+			//System.out.println("ius");
 		}
 		
 	    setRegion(currentFrame);

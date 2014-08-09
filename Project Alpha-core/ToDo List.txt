@@ -31,11 +31,13 @@
 PLAYER:
 	Justus:
 	(done)- fix collision	
-	- fix controls
+	(done)- fix controls
 	(done)- fix animation
+	- add Bullets
 	
 	Benno:
 	- add android & IOS control support
+	- complete inputManager
 	
 MENUS:
 	Benno:

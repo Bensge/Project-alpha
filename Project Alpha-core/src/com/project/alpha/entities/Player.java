@@ -95,7 +95,7 @@ public class Player extends Sprite {
 		
 		PlayerDirection direction = InputManager.sharedInstance().getPlayDirection();
 		
-		final float diagonalFactor = 0.70710678f;
+		final float diagonalFactor = (float) (1 / Math.sqrt(2));
 		
 		if (direction == PlayerDirection.Up) {
 			setY(getY() + speed * delta);

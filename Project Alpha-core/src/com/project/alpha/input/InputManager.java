@@ -25,12 +25,12 @@ public class InputManager implements InputProcessor {
 	boolean isMouseMode;
 	
 	
-	boolean isAPressed = false, isSPressed = false, isWPressed = false, isDPressed = false;
+	boolean isAPressed = false, isSPressed = false, isWPressed = false, isDPressed = false, isSpacePressed = false;
 	
 	
 	float[] joystickLastTouchPosition;
 	float[] joystickKnobDelta = new float[2];
-	final float joystickThreshold = 10.f;
+	final float joystickThreshold = 20.f;
 	
 	private static InputManager instance = null;
 	
@@ -70,6 +70,9 @@ public class InputManager implements InputProcessor {
 			case Keys.W:
 				isWPressed = true;
 				break;
+			case Keys.SPACE:
+				isSpacePressed = true;
+				break;
 			default:
 				break;
 		}
@@ -91,6 +94,9 @@ public class InputManager implements InputProcessor {
 				break;
 			case Keys.W:
 				isWPressed = false;
+				break;
+			case Keys.SPACE:
+				isSpacePressed = false;
 				break;
 			default:
 				break;
@@ -222,6 +228,10 @@ public class InputManager implements InputProcessor {
 	
 	public float[] getJoystickDelta() {
 		return joystickKnobDelta;
+	}
+	
+	public boolean getShouldShoot() {
+		return isSpacePressed;
 	}
 	
 }

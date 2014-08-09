@@ -142,7 +142,6 @@ public class InputManager implements InputProcessor {
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
 		joystickKnobDelta[0] = 0;
 		joystickKnobDelta[1] = 0;
 		return false;
@@ -150,10 +149,7 @@ public class InputManager implements InputProcessor {
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		// TODO Auto-generated method stub
-		Gdx.app.log("tag", ""+screenX);
-		Gdx.app.log("tag", ""+joystickLastTouchPosition[0]);
-		//Gdx.app.log("tag", "fps: " + Gdx.graphics.getFramesPerSecond() + ", x: " + screenX);
+
 		joystickKnobDelta[0] = screenX - joystickLastTouchPosition[0];
 		if (joystickKnobDelta[0] > 30)
 			joystickKnobDelta[0] = 30;

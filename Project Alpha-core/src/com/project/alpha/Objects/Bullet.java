@@ -15,11 +15,13 @@ public class Bullet extends Sprite{
 	
 	public Bullet(float posX, float posY, PlayerDirection direction){
 		super(new Sprite(new Texture(Gdx.files.internal("img/rocket.png"))));
+		
 		velocity = new Vector2();
 		speed = 160;
 		setX(posX);
 		setY(posY);
 		setSize(5, 5);
+		
 		switch(direction){
 		case Left:
 			velocity.x = -speed;
@@ -65,5 +67,10 @@ public class Bullet extends Sprite{
 	public void update(float delta){
 		setPosition(getX() + velocity.x * delta, getY() + velocity.y * delta);
 		
+	}
+	
+	public boolean isOutOfBounds(){
+		
+		return false;
 	}
 }

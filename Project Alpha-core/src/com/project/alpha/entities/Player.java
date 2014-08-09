@@ -1,6 +1,7 @@
 package com.project.alpha.entities;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.project.alpha.Objects.Bullet;
@@ -23,6 +25,7 @@ public class Player extends Sprite {
     private static final int    ROW = 4;     
 
     TiledMapTileLayer collision;
+    TiledMap		  map;
     Animation           walk;     
     Texture             walkSheet;      
     TextureRegion[]         walkFrames;     
@@ -36,8 +39,9 @@ public class Player extends Sprite {
     
     private String blockKey = "blocked";
     
-	public Player(int x, int y, TiledMapTileLayer collision){
-		this.collision = collision;
+	public Player(int x, int y, TiledMap map){
+		this.map = map;
+		collision = (TiledMapTileLayer) map.getLayers().get(0);
 		
 		type = Gdx.app.getType();
 		
@@ -70,7 +74,6 @@ public class Player extends Sprite {
 	public void render(SpriteBatch batch){
 		super.draw(batch);
 		
-		
 	}
 	
 	@Override
@@ -88,21 +91,29 @@ public class Player extends Sprite {
 		if(stateTime > COL)
 			stateTime = 0;
 		
-		//System.out.println(Gdx.graphics.getFramesPerSecond() + "jf");
-		
 		oldX = getX();
 		oldY = getY();
 		
 		handleControl();
 		
-		for(Bullet b : bullets){
+			
+		Iterator<Bullet> it = bullets.iterator();
+		while(it.hasNext()){
+			Bullet b = it.next();
 			b.update(delta);
-			//System.out.println("ius");
+			if(collisionX(b.getX(), b.getY()) || collisionY(b.getX(), b.getY()) || b.isOutOfBounds()){
+				//collide with player check missing here
+				it.remove();
+			}
+				
 		}
 		
 	    setRegion(currentFrame);
-	   // System.out.println(getWidth()+", "+ getHeight());
-	    collision();
+	    
+	    if(collisionX(getX(), getY()))
+	    	setX(oldX);
+	    if(collisionY(getX(), getY()))
+	    	setY(oldY);
 	}
 
 	private void handleControl() {
@@ -155,38 +166,44 @@ public class Player extends Sprite {
 		}
 	}
 
-	private void collision() {
-		/////up tiles
-		if(isBlocked(getX() , getY() + getHeight()) ||
-			isBlocked(getX() + getWidth() / 2, getY() + getHeight()) ||
-			isBlocked(getX() + getWidth(), getY() + getHeight()))
-		{
-			setY(oldY);
-		}
-		
-		/////bottom tiles
-		else if(isBlocked(getX(), getY()) ||
-				isBlocked(getX() + getWidth() / 2, getY()) ||
-				isBlocked(getX() + getWidth(), getY()))
-		{
-			setY(oldY);
-		}
+	private boolean collisionX(float x, float y) {
 		
 		/////left tiles
-		if(isBlocked(getX(), getY()) ||
-			isBlocked(getX(), getY() + getHeight() / 2) ||
-			isBlocked(getX(), getY() + getHeight()))
+		if(isBlocked(x, y) ||
+			isBlocked(x, y + getHeight() / 2) ||
+			isBlocked(x, y + getHeight()))
 		{
-				setX(oldX);
+				return true;
 		}
 		
 		/////right tiles
-		else if(isBlocked(getX() + getWidth(), getY()) ||
-				isBlocked(getX() + getWidth(), getY() + getHeight() / 2) ||
-				isBlocked(getX() + getWidth(), getY() + getHeight()))
+		else if(isBlocked(x + getWidth(), y) ||
+				isBlocked(x + getWidth(), y + getHeight() / 2) ||
+				isBlocked(x + getWidth(), y + getHeight()))
 			{
-					setX(oldX);
+					return true;
 			}
+		return false;
+	}
+	
+	private boolean collisionY(float x, float y){
+		/////up tiles
+		if(isBlocked(x , y + getHeight()) ||
+			isBlocked(x + getWidth() / 2, y + getHeight()) ||
+			isBlocked(x + getWidth(), y + getHeight()))
+		{
+			return true;
+		}
+		
+		/////bottom tiles
+		else if(isBlocked(x, y) ||
+				isBlocked(x + getWidth() / 2, y) ||
+				isBlocked(x + getWidth(), y))
+		{
+			return true;
+		}
+		
+		return false;
 	}
 	
 	private boolean isBlocked(float x, float y){

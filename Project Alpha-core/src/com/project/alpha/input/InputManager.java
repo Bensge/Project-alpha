@@ -1,10 +1,23 @@
 package com.project.alpha.input;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Graphics.GraphicsType;
 
 public class InputManager implements InputProcessor {
+	
+	public enum PlayerDirection {
+		None,
+		Up,
+		Down,
+		Left,
+		Right,
+		UpLeft,
+		UpRight,
+		DownLeft,
+		DownRight
+	}
 	
 	boolean isMouseMode;
 	
@@ -25,7 +38,7 @@ public class InputManager implements InputProcessor {
 	public InputManager() {
 		Gdx.input.setInputProcessor(this);
 		
-		if (Gdx.graphics.getType() == GraphicsType.iOSGL || Gdx.graphics.getType() == GraphicsType.AndroidGL){
+		if (Gdx.app.getType() == ApplicationType.iOS || Gdx.app.getType() == ApplicationType.Android){
 			//Joystick
 			isMouseMode = false;
 		}
@@ -54,7 +67,7 @@ public class InputManager implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
+		
 		joystickKnobDelta[0] = 0;
 		joystickKnobDelta[1] = 0;
 		joystickLastTouchPosition = new float[2];
@@ -106,17 +119,6 @@ public class InputManager implements InputProcessor {
 	///////////                  EASY PUBLIC ACCESSOR METHODS              ////////////////
 	///////////////////////////////////////////////////////////////////////////////////////
 	
-	enum PlayerDirection {
-		None,
-		Up,
-		Down,
-		Left,
-		Right,
-		UpLeft,
-		UpRight,
-		DownLeft,
-		DownRight
-	}
 	
 	public PlayerDirection getPlayDirection() {
 		if (isMouseMode) {

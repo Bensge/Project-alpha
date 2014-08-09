@@ -29,7 +29,7 @@ public class Player extends Sprite {
     TextureRegion           currentFrame;      
     
     float stateTime, animTime;    
-    float speed = 100, oldX, oldY;
+    float speed = 70, oldX, oldY;
     ApplicationType type;
     
     private ArrayList<Bullet> bullets;
@@ -150,7 +150,7 @@ public class Player extends Sprite {
 			currentFrame = walk.getKeyFrame((4 + stateTime) * animTime);
 		}
 		
-		if(InputManager.sharedInstance().getShouldShoot()){
+		if (InputManager.sharedInstance().getShouldShoot()){
 			bullets.add(new Bullet(getX(), getY(), InputManager.sharedInstance().getShootDirection()));
 		}
 	}

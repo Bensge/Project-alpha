@@ -57,25 +57,30 @@ public class InputManager implements InputProcessor {
 		
 	}
 	
+	private void updateShootDirection() {
+		PlayerDirection direction = getPlayDirection();
+		if (direction != PlayerDirection.None)
+			shootDirection = direction;
+	}
+	
 	
 	@Override
 	public boolean keyDown(int keycode) {
 		// TODO Auto-generated method stub
+		
+		System.out.println("Key: " + keycode + " New shoot direction: " + shootDirection);
+		
 		switch (keycode) {
 			case Keys.A:
-				shootDirection = PlayerDirection.Left;
 				isAPressed = true;
 				break;
 			case Keys.S:
-				shootDirection = PlayerDirection.Down;
 				isSPressed = true;
 				break;
 			case Keys.D:
-				shootDirection = PlayerDirection.Right;
 				isDPressed = true;
 				break;
 			case Keys.W:
-				shootDirection = PlayerDirection.Up;
 				isWPressed = true;
 				break;
 			case Keys.SPACE:
@@ -84,12 +89,17 @@ public class InputManager implements InputProcessor {
 			default:
 				break;
 		}
+		
+		//It is important to call this after the checks above ^ !!!
+		updateShootDirection();
+		
 		return false;
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
 		// TODO Auto-generated method stub
+		
 		switch (keycode) {
 			case Keys.A:
 				isAPressed = false;
@@ -109,6 +119,10 @@ public class InputManager implements InputProcessor {
 			default:
 				break;
 		}
+		
+		//It is important to call this after the checks above ^ !!!
+		updateShootDirection();
+		
 		return false;
 	}
 
@@ -251,7 +265,7 @@ public class InputManager implements InputProcessor {
 	
 	public boolean getShouldShoot() {
 		
-		final int shotsPerSecond = 2;
+		final int shotsPerSecond = 7;
 		
 		if (isMouseMode){
 			if (isSpacePressed) {

@@ -16,10 +16,11 @@ public class Bullet extends Sprite{
 	public Bullet(float posX, float posY, PlayerDirection direction){
 		super(new Sprite(new Texture(Gdx.files.internal("img/rocket.png"))));
 		velocity = new Vector2();
-		speed = 300;
+		speed = 160;
 		setX(posX);
 		setY(posY);
 		setSize(5, 5);
+		System.out.println("New bullet(" + direction + ")");
 		switch(direction){
 		case Left:
 			velocity.x = -speed;
@@ -39,19 +40,19 @@ public class Bullet extends Sprite{
 			break;
 		case DownLeft:
 			velocity.x = -speed * factor;
-			velocity.y = velocity.x;
+			velocity.y = -speed * factor;//velocity.x;
 			break;
 		case DownRight:
 			velocity.x = speed * factor;
-			velocity.y = -velocity.x;
+			velocity.y = -speed * factor;//-velocity.x;
 			break;
 		case UpLeft:
 			velocity.x = -speed * factor;
-			velocity.y = -velocity.x;
+			velocity.y = speed * factor;//-velocity.x;
 			break;
 		case UpRight:
 			velocity.x = speed * factor;
-			velocity.y = velocity.x;
+			velocity.y = speed * factor;//velocity.x;
 			break;
 		default:
 			break;

@@ -231,7 +231,10 @@ public class InputManager implements InputProcessor {
 	}
 	
 	public boolean getShouldShoot() {
-		return isSpacePressed;
+		if (isMouseMode)
+			return isSpacePressed;
+		else
+			return true;
 	}
 	
 }

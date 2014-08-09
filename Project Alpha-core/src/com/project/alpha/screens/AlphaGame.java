@@ -17,6 +17,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.project.alpha.Main;
 import com.project.alpha.entities.Player;
+import com.project.alpha.input.Joystick;
 
 public class AlphaGame implements Screen {
 	
@@ -29,6 +30,7 @@ public class AlphaGame implements Screen {
 	
 	private float mapWidth, mapHeight, tileWidth, tileHeight;
 	Player player;
+	Joystick joystick;
 	
 	public AlphaGame(){
 	}
@@ -54,7 +56,9 @@ public class AlphaGame implements Screen {
 		
 		renderer.getSpriteBatch().begin();
 		player.draw(renderer.getSpriteBatch());
-		renderer.getSpriteBatch().end();	
+		renderer.getSpriteBatch().end();
+		
+		joystick.render(null);
 	}
 
 	private void update(float delta) {
@@ -79,6 +83,7 @@ public class AlphaGame implements Screen {
 		renderer = new OrthogonalTiledMapRenderer(map);
 		
 		player = new Player(10, 160, layer);
+		joystick = new Joystick();
 		
 		properties = map.getProperties();
 		tileWidth = (Integer) properties.get("tilewidth");

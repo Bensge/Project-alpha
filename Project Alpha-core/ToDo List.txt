@@ -37,7 +37,7 @@ PLAYER:
 	
 	Benno:
 	- add android & IOS control support
-	- complete inputManager
+	(complete)- complete inputManager
 	
 MENUS:
 	Benno:

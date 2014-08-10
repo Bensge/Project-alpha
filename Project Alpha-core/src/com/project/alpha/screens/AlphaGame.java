@@ -28,7 +28,30 @@ public class AlphaGame implements Screen {
 	Player player;
 	Joystick joystick;
 	
-	public AlphaGame(){
+	public AlphaGame(){		}
+	
+	@Override
+	public void show() {
+		
+		camera = new OrthographicCamera();
+		//camera.setToOrtho(true);
+		map = new TmxMapLoader().load("maps/map.tmx");
+		
+		layer = (TiledMapTileLayer) map.getLayers().get(0);
+		renderer = new OrthogonalTiledMapRenderer(map);
+		
+		player = new Player(10, 160, map);
+		
+		if (Joystick.joystickSupported())
+			joystick = new Joystick();
+		
+		properties = map.getProperties();
+		tileWidth = (Integer) properties.get("tilewidth");
+		tileHeight = (Integer) properties.get("tileheight");
+		
+		mapWidth = tileWidth * (Integer) properties.get("width");
+		mapHeight = tileHeight * (Integer) properties.get("height");
+		
 	}
 	
 	@Override
@@ -36,7 +59,7 @@ public class AlphaGame implements Screen {
 		
 		if(Gdx.input.isKeyPressed(Keys.ESCAPE)){
 			System.out.println("escaped");
-			dispose();
+			hide();
 		}
 		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -65,32 +88,10 @@ public class AlphaGame implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		camera.viewportWidth = width / 3;
-		camera.viewportHeight = height / 3;
+		camera.position.set(800, 800 * (width / height), 0);
+		camera.viewportWidth = width / 5;
+		camera.viewportHeight = width / 5 * (width / height);
 		camera.update();
-	}
-
-	@Override
-	public void show() {
-		
-		camera = new OrthographicCamera();
-		map = new TmxMapLoader().load("maps/map.tmx");
-		
-		layer = (TiledMapTileLayer) map.getLayers().get(0);
-		renderer = new OrthogonalTiledMapRenderer(map);
-		
-		player = new Player(10, 160, layer);
-		
-		if (Joystick.joystickSupported())
-			joystick = new Joystick();
-		
-		properties = map.getProperties();
-		tileWidth = (Integer) properties.get("tilewidth");
-		tileHeight = (Integer) properties.get("tileheight");
-		
-		mapWidth = tileWidth * (Integer) properties.get("width");
-		mapHeight = tileHeight * (Integer) properties.get("height");
-		
 	}
 
 	private void cameraBounds() {
@@ -124,7 +125,7 @@ public class AlphaGame implements Screen {
 	
 	@Override
 	public void hide() {
-	
+		
 	}
 
 	@Override
@@ -140,7 +141,6 @@ public class AlphaGame implements Screen {
 	@Override
 	public void dispose() {
 		map.dispose();
-		
 		Main.sharedInstance().screenWantsDismissal(this);
 	}
 }

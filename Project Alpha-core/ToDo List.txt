@@ -33,11 +33,12 @@ PLAYER:
 	(done)- fix collision	
 	(done)- fix controls
 	(done)- fix animation
-	- add Bullets
+	(done)- add Bullets
+	-fix ratio
 	
 	Benno:
-	- add android & IOS control support
-	(complete)- complete inputManager
+	(incomplete)- add android & IOS control support
+	(done)- complete inputManager
 	
 MENUS:
 	Benno:

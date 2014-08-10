@@ -69,8 +69,4 @@ public class Bullet extends Sprite{
 		
 	}
 	
-	public boolean isOutOfBounds(){
-		
-		return false;
-	}
 }

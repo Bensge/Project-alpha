@@ -34,7 +34,7 @@ PLAYER:
 	(done)- fix controls
 	(done)- fix animation
 	(done)- add Bullets
-	-fix ratio
+	- fix ratio
 	
 	Benno:
 	(incomplete)- add android & IOS control support

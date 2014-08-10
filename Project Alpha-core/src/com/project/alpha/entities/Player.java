@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
@@ -26,6 +27,7 @@ public class Player extends Sprite {
 
     TiledMapTileLayer collision;
     TiledMap		  map;
+    MapProperties 		properties;
     Animation           walk;     
     Texture             walkSheet;      
     TextureRegion[]         walkFrames;     
@@ -33,6 +35,7 @@ public class Player extends Sprite {
     
     float stateTime, animTime;    
     float speed = 70, oldX, oldY;
+    float mapWidth, mapHeight, tileWidth, tileHeight;
     ApplicationType type;
     
     private ArrayList<Bullet> bullets;
@@ -41,7 +44,15 @@ public class Player extends Sprite {
     
 	public Player(int x, int y, TiledMap map){
 		this.map = map;
+		
+		properties = map.getProperties();
 		collision = (TiledMapTileLayer) map.getLayers().get(0);
+		
+		tileWidth = (Integer) properties.get("tilewidth");
+		tileHeight = (Integer) properties.get("tileheight");
+		
+		mapWidth = tileWidth * (Integer) properties.get("width");
+		mapHeight = tileHeight * (Integer) properties.get("height");
 		
 		type = Gdx.app.getType();
 		
@@ -96,26 +107,34 @@ public class Player extends Sprite {
 		
 		handleControl();
 		
-			
 		Iterator<Bullet> it = bullets.iterator();
 		while(it.hasNext()){
 			Bullet b = it.next();
 			b.update(delta);
-			if(collisionX(b.getX(), b.getY()) || collisionY(b.getX(), b.getY()) || b.isOutOfBounds()){
+			if(collisionX(b.getX(), b.getY()) || collisionY(b.getX(), b.getY()) || isOutOfBoundsX(b.getX(), b.getWidth()) || isOutOfBoundsY(b.getY(), b.getHeight())){
 				//collide with player check missing here
 				it.remove();
 			}
 				
 		}
 		
+		//System.out.println("X: " + getX() + ", Y: " + getY());
 	    setRegion(currentFrame);
 	    
-	    if(collisionX(getX(), getY()))
+	    if(collisionX(getX(), getY()) || isOutOfBoundsX(getX(), getWidth()))
 	    	setX(oldX);
-	    if(collisionY(getX(), getY()))
+	    if(collisionY(getX(), getY()) || isOutOfBoundsY(getY(), getHeight()))
 	    	setY(oldY);
 	}
 
+	private boolean isOutOfBoundsX(float x, float width) {
+		return (x < 0 || x + width > mapWidth);
+	}
+
+	private boolean isOutOfBoundsY(float y, float height) {
+		return (y < 0 || y + height > mapHeight);
+	}
+	
 	private void handleControl() {
 		
 		float delta = Gdx.graphics.getDeltaTime();

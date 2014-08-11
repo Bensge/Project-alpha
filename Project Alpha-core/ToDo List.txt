@@ -40,6 +40,11 @@ PLAYER:
 	(incomplete)- add android & IOS control support
 	(done)- complete inputManager
 	
+ENEMY:
+	Justus:
+	- add 
+	- add pathfinding
+
 MENUS:
 	Benno:
 	- create something or anything

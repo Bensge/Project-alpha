@@ -19,6 +19,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.project.alpha.Objects.Bullet;
 import com.project.alpha.input.InputManager;
 import com.project.alpha.input.InputManager.PlayerDirection;
+import com.project.alpha.screens.AlphaGame;
 
 public class Player extends Sprite {
 
@@ -35,7 +36,7 @@ public class Player extends Sprite {
     
     float stateTime, animTime;    
     float speed = 70, oldX, oldY;
-    float mapWidth, mapHeight, tileWidth, tileHeight;
+    float mapWidth, mapHeight;
     ApplicationType type;
     
     private ArrayList<Bullet> bullets;
@@ -47,12 +48,9 @@ public class Player extends Sprite {
 		
 		properties = map.getProperties();
 		collision = (TiledMapTileLayer) map.getLayers().get(0);
-		
-		tileWidth = (Integer) properties.get("tilewidth");
-		tileHeight = (Integer) properties.get("tileheight");
-		
-		mapWidth = tileWidth * (Integer) properties.get("width");
-		mapHeight = tileHeight * (Integer) properties.get("height");
+
+		mapWidth = AlphaGame.getInstance().mapWidth;
+		mapHeight = AlphaGame.getInstance().mapHeight;
 		
 		type = Gdx.app.getType();
 		
@@ -74,7 +72,7 @@ public class Player extends Sprite {
         walk = new Animation(animTime, walkFrames);   
         stateTime = 0;
         currentFrame = walk.getKeyFrame(0);
-        setSize(currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
+        //setSize(currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
         setSize(collision.getTileWidth(), collision.getTileHeight());
         setX(x);
         setY(y);
@@ -89,7 +87,6 @@ public class Player extends Sprite {
 	
 	@Override
 	public void draw(Batch batch) {
-		
 		for(Bullet b : bullets){
 			b.draw(batch);
 		}
@@ -228,5 +225,9 @@ public class Player extends Sprite {
 	private boolean isBlocked(float x, float y){
 		Cell cell = collision.getCell((int) (x / collision.getTileWidth()), (int) (y / collision.getTileHeight()));
 		return cell != null && cell.getTile().getProperties().containsKey(blockKey);
+	}
+	
+	private ArrayList<Bullet> getBullets(){
+		return bullets;
 	}
 }

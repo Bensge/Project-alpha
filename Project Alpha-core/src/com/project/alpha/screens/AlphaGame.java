@@ -1,6 +1,8 @@
 package com.project.alpha.screens;
 
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
@@ -12,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.project.alpha.Main;
+import com.project.alpha.entities.Enemy;
 import com.project.alpha.entities.Player;
 import com.project.alpha.input.Joystick;
 
@@ -23,15 +26,25 @@ public class AlphaGame implements Screen {
 	TiledMapTileLayer layer;
 	OrthographicCamera camera;
 	
+	ArrayList<Enemy> enemys;
 	
-	private float mapWidth, mapHeight, tileWidth, tileHeight;
+	public float mapWidth;
+	public float mapHeight;
+	public float tileWidth;
+	public float tileHeight;
+	public float spawnTime = 3000;
+	private long timeSinceSpawn;
 	Player player;
 	Joystick joystick;
 	
-	public AlphaGame(){		}
+	public static AlphaGame instance = null;
+	long l;
+	public AlphaGame(){	}
 	
 	@Override
 	public void show() {
+		
+		enemys = new ArrayList<Enemy>();
 		
 		camera = new OrthographicCamera();
 		//camera.setToOrtho(true);
@@ -39,8 +52,6 @@ public class AlphaGame implements Screen {
 		
 		layer = (TiledMapTileLayer) map.getLayers().get(0);
 		renderer = new OrthogonalTiledMapRenderer(map);
-		
-		player = new Player(10, 160, map);
 		
 		if (Joystick.joystickSupported())
 			joystick = new Joystick();
@@ -52,6 +63,12 @@ public class AlphaGame implements Screen {
 		mapWidth = tileWidth * (Integer) properties.get("width");
 		mapHeight = tileHeight * (Integer) properties.get("height");
 		
+		instance = this;
+		
+		player = new Player(10, 160, map);
+		
+		timeSinceSpawn = System.currentTimeMillis();
+		l = timeSinceSpawn;
 	}
 	
 	@Override
@@ -66,7 +83,6 @@ public class AlphaGame implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		camera.position.set(player.getX(), player.getY(), 0);
-		
 		update(delta);
 		
 		camera.update();
@@ -75,6 +91,8 @@ public class AlphaGame implements Screen {
 		
 		renderer.getSpriteBatch().begin();
 		player.draw(renderer.getSpriteBatch());
+		for(Enemy e : enemys)
+			e.draw(renderer.getSpriteBatch());
 		renderer.getSpriteBatch().end();
 		
 		if (Joystick.joystickSupported())
@@ -83,6 +101,16 @@ public class AlphaGame implements Screen {
 
 	private void update(float delta) {
 		player.update(delta);
+		
+		for(Enemy e : enemys){
+			e.update(player.getX(), player.getY(), delta);
+		}
+		
+		if(System.currentTimeMillis() - timeSinceSpawn >= spawnTime && enemys.size() <= 1){
+			enemys.add(new Enemy());
+			timeSinceSpawn = System.currentTimeMillis();
+		}
+		
 		cameraBounds();
 	}
 
@@ -122,6 +150,11 @@ public class AlphaGame implements Screen {
 		    camera.position.y = mapHeight - cameraHalfHeight;
 		}
 	}
+	
+	public static AlphaGame getInstance(){
+		return instance;
+	}
+	
 	
 	@Override
 	public void hide() {

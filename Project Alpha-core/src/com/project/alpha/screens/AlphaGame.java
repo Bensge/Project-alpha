@@ -244,7 +244,6 @@ public class AlphaGame implements Screen {
 		           r2.bottom < r1.top);*/
 	}
 	
-	
 	public static AlphaGame getInstance(){
 		return instance;
 	}

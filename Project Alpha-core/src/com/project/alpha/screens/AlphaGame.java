@@ -226,22 +226,11 @@ public class AlphaGame implements Screen {
 		float xa = a.getX(), xb = b.getX();
 		float ya = a.getY(), yb = b.getY();
 		
-		System.out.println();
-		
 		Rectangle rectOne = new Rectangle(xa, ya, wa, ha);
 		Rectangle rectTwo = new Rectangle(xb, yb, wb, hb);
 		
 		return Intersector.overlaps(rectOne, rectTwo);
 	
-		//return false;
-		//boolean ret =  !(xb > xa + wa || xb + wb < xa || yb + hb > ya || yb < ya + ha);
-		
-		//System.out.println(ret);
-		//return ret;
-		 /*return !(r2.left > r1.right || 
-		           r2.right < r1.left || 
-		           r2.top > r1.bottom ||
-		           r2.bottom < r1.top);*/
 	}
 	
 	public static AlphaGame getInstance(){

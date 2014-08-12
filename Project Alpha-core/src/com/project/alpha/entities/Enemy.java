@@ -8,15 +8,14 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.project.alpha.screens.AlphaGame;
 
-public class Enemy extends Sprite{
+public class Enemy extends Entity{
 
-	private int delay, life, speed;
-	private float playerX, playerY;
+	int delay, life, speed;
+	float playerX, playerY;
 	private Random r;
-	private static Texture t = new Texture(Gdx.files.internal("img/enemy.png"));;
 	
-	public Enemy(){
-		super(new Sprite(t));
+	public Enemy(String s){
+		super(s);
 		
 		r = new Random();
 		speed = 50;
@@ -24,7 +23,7 @@ public class Enemy extends Sprite{
 		setX(r.nextInt((int) AlphaGame.getInstance().mapWidth));
 		setY(r.nextInt((int) AlphaGame.getInstance().mapHeight));
 		
-		setSize(t.getWidth(),t.getHeight());
+		setSize(getTexture().getWidth(), getTexture().getHeight());
 	}
 	
 	@Override
@@ -36,14 +35,6 @@ public class Enemy extends Sprite{
 		playerX = x;
 		playerY = y;
 		
-		if(playerX > getX())
-			setX(getX() + speed * delta);
-		else
-			setX(getX() - speed * delta);
 		
-		if(playerY > getY())
-			setY(getY() + speed * delta);
-		else
-			setY(getY() - speed * delta);
 	}
 }

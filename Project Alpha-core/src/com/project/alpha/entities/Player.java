@@ -5,7 +5,6 @@ import java.util.Iterator;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -16,12 +15,11 @@ import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
-import com.project.alpha.Objects.Bullet;
 import com.project.alpha.input.InputManager;
 import com.project.alpha.input.InputManager.PlayerDirection;
 import com.project.alpha.screens.AlphaGame;
 
-public class Player extends Sprite {
+public class Player extends Entity {
 
 	private static final int    COL = 4;     
     private static final int    ROW = 4;     
@@ -38,9 +36,7 @@ public class Player extends Sprite {
     float speed = 70, oldX, oldY;
     float mapWidth, mapHeight;
     ApplicationType type;
-    
-    private ArrayList<Bullet> bullets;
-    
+        
     private String blockKey = "blocked";
     
 	public Player(int x, int y, TiledMap map){
@@ -53,8 +49,6 @@ public class Player extends Sprite {
 		mapHeight = AlphaGame.getInstance().mapHeight;
 		
 		type = Gdx.app.getType();
-		
-		bullets = new ArrayList<Bullet>();
 		
 		//animation stuff
 		walkSheet = new Texture(Gdx.files.internal("img/player.png"));
@@ -82,17 +76,10 @@ public class Player extends Sprite {
 	
 	public void render(SpriteBatch batch){
 		super.draw(batch);
-		
 	}
 	
 	@Override
-	public void draw(Batch batch) {
-		for(Bullet b : bullets){
-			b.draw(batch);
-		}
-		
-		super.draw(batch);
-	}
+	public void draw(Batch batch) {	super.draw(batch);	}
 
 	public void update(float delta) {
 		stateTime += delta / animTime;
@@ -104,17 +91,6 @@ public class Player extends Sprite {
 		
 		handleControl();
 		
-		Iterator<Bullet> it = bullets.iterator();
-		while(it.hasNext()){
-			Bullet b = it.next();
-			b.update(delta);
-			if(collisionX(b.getX(), b.getY()) || collisionY(b.getX(), b.getY()) || isOutOfBoundsX(b.getX(), b.getWidth()) || isOutOfBoundsY(b.getY(), b.getHeight())){
-				//collide with player check missing here
-				it.remove();
-			}
-				
-		}
-		
 		//System.out.println("X: " + getX() + ", Y: " + getY());
 	    setRegion(currentFrame);
 	    
@@ -124,11 +100,11 @@ public class Player extends Sprite {
 	    	setY(oldY);
 	}
 
-	private boolean isOutOfBoundsX(float x, float width) {
+	public boolean isOutOfBoundsX(float x, float width) {
 		return (x < 0 || x + width > mapWidth);
 	}
 
-	private boolean isOutOfBoundsY(float y, float height) {
+	public boolean isOutOfBoundsY(float y, float height) {
 		return (y < 0 || y + height > mapHeight);
 	}
 	
@@ -177,12 +153,9 @@ public class Player extends Sprite {
 			currentFrame = walk.getKeyFrame((4 + stateTime) * animTime);
 		}
 		
-		if (InputManager.sharedInstance().getShouldShoot()){
-			bullets.add(new Bullet(getX(), getY(), InputManager.sharedInstance().getShootDirection()));
-		}
 	}
 
-	private boolean collisionX(float x, float y) {
+	public boolean collisionX(float x, float y) {
 		
 		/////left tiles
 		if(isBlocked(x, y) ||
@@ -202,7 +175,7 @@ public class Player extends Sprite {
 		return false;
 	}
 	
-	private boolean collisionY(float x, float y){
+	public boolean collisionY(float x, float y){
 		/////up tiles
 		if(isBlocked(x , y + getHeight()) ||
 			isBlocked(x + getWidth() / 2, y + getHeight()) ||
@@ -227,7 +200,4 @@ public class Player extends Sprite {
 		return cell != null && cell.getTile().getProperties().containsKey(blockKey);
 	}
 	
-	private ArrayList<Bullet> getBullets(){
-		return bullets;
-	}
 }

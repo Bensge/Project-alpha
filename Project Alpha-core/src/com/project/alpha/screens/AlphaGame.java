@@ -2,6 +2,7 @@ package com.project.alpha.screens;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -13,9 +14,15 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import com.project.alpha.Main;
+import com.project.alpha.entities.Bullet;
 import com.project.alpha.entities.Enemy;
+import com.project.alpha.entities.Entity;
 import com.project.alpha.entities.Player;
+import com.project.alpha.entities.Zombie;
+import com.project.alpha.input.InputManager;
 import com.project.alpha.input.Joystick;
 
 public class AlphaGame implements Screen {
@@ -26,7 +33,8 @@ public class AlphaGame implements Screen {
 	TiledMapTileLayer layer;
 	OrthographicCamera camera;
 	
-	ArrayList<Enemy> enemys;
+	ArrayList<Enemy> enemies;
+	ArrayList<Bullet> bullets;
 	
 	public float mapWidth;
 	public float mapHeight;
@@ -38,13 +46,15 @@ public class AlphaGame implements Screen {
 	Joystick joystick;
 	
 	public static AlphaGame instance = null;
-	long l;
+	
 	public AlphaGame(){	}
 	
 	@Override
 	public void show() {
 		
-		enemys = new ArrayList<Enemy>();
+		//initialize entities
+		enemies = new ArrayList<Enemy>();
+		bullets = new ArrayList<Bullet>();
 		
 		camera = new OrthographicCamera();
 		//camera.setToOrtho(true);
@@ -68,7 +78,6 @@ public class AlphaGame implements Screen {
 		player = new Player(10, 160, map);
 		
 		timeSinceSpawn = System.currentTimeMillis();
-		l = timeSinceSpawn;
 	}
 	
 	@Override
@@ -76,7 +85,7 @@ public class AlphaGame implements Screen {
 		
 		if(Gdx.input.isKeyPressed(Keys.ESCAPE)){
 			System.out.println("escaped");
-			hide();
+			dispose();
 		}
 		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -91,8 +100,16 @@ public class AlphaGame implements Screen {
 		
 		renderer.getSpriteBatch().begin();
 		player.draw(renderer.getSpriteBatch());
-		for(Enemy e : enemys)
+		
+		//draw enenmies
+		for(Enemy e : enemies)
 			e.draw(renderer.getSpriteBatch());
+		
+		//draw bullets
+		for(Bullet b : bullets){
+			b.draw(renderer.getSpriteBatch());
+		}
+		
 		renderer.getSpriteBatch().end();
 		
 		if (Joystick.joystickSupported())
@@ -102,14 +119,48 @@ public class AlphaGame implements Screen {
 	private void update(float delta) {
 		player.update(delta);
 		
-		for(Enemy e : enemys){
+		//update bullets
+		Iterator<Bullet> it = bullets.iterator();
+		while(it.hasNext()){
+			Bullet b = it.next();
+			b.update(delta);
+			if(player.collisionX(b.getX(), b.getY()) || player.collisionY(b.getX(), b.getY()) || player.isOutOfBoundsX(b.getX(), b.getWidth()) || player.isOutOfBoundsY(b.getY(), b.getHeight())){
+				it.remove();
+			}		
+		}
+		
+		if (InputManager.sharedInstance().getShouldShoot()){
+			bullets.add(new Bullet(player.getX(), player.getY(), InputManager.sharedInstance().getShootDirection()));
+		}
+		
+		//update enemies
+		for(Enemy e : enemies){
 			e.update(player.getX(), player.getY(), delta);
 		}
 		
-		if(System.currentTimeMillis() - timeSinceSpawn >= spawnTime && enemys.size() <= 1){
-			enemys.add(new Enemy());
+		//update bullet & enemie collision
+		
+		if(!enemies.isEmpty() && !bullets.isEmpty()){
+			for(int i = 0; i < bullets.size(); i++){
+				for(int j = 0; j < enemies.size(); j++){
+					if(collidesWith(bullets.get(i), enemies.get(j))){
+						bullets.remove(i);
+						//enemies.get(j).gotDamaged();
+						enemies.remove(j);
+						System.out.println("enemy removed");
+						break;
+					}
+				}
+			}
+		}
+		
+		
+		if(System.currentTimeMillis() - timeSinceSpawn >= spawnTime){
+			addEnemy(new Zombie());
 			timeSinceSpawn = System.currentTimeMillis();
 		}
+		
+		
 		
 		cameraBounds();
 	}
@@ -151,10 +202,52 @@ public class AlphaGame implements Screen {
 		}
 	}
 	
+	public void add(Entity e){
+		if(e instanceof Bullet){
+		//	bullets.add(new Bullet());
+			}
+		else if(e instanceof Player){
+			
+		}
+		//else if(e instanceof )	add more stuff here
+	}
+	
+	public void addEnemy(Enemy e){
+		if(e instanceof Zombie){
+			enemies.add(e);
+		}
+	}
+	
+	public boolean collidesWith(Entity a, Entity b){
+		// collision between two entities
+		
+		float wa = a.getWidth(), wb = b.getWidth();
+		float ha = a.getWidth(), hb = b.getWidth();
+		float xa = a.getX(), xb = b.getX();
+		float ya = a.getY(), yb = b.getY();
+		
+		System.out.println();
+		
+		Rectangle rectOne = new Rectangle(xa, ya, wa, ha);
+		Rectangle rectTwo = new Rectangle(xb, yb, wb, hb);
+		
+		return Intersector.overlaps(rectOne, rectTwo);
+	
+		//return false;
+		//boolean ret =  !(xb > xa + wa || xb + wb < xa || yb + hb > ya || yb < ya + ha);
+		
+		//System.out.println(ret);
+		//return ret;
+		 /*return !(r2.left > r1.right || 
+		           r2.right < r1.left || 
+		           r2.top > r1.bottom ||
+		           r2.bottom < r1.top);*/
+	}
+	
+	
 	public static AlphaGame getInstance(){
 		return instance;
 	}
-	
 	
 	@Override
 	public void hide() {
@@ -175,5 +268,6 @@ public class AlphaGame implements Screen {
 	public void dispose() {
 		map.dispose();
 		Main.sharedInstance().screenWantsDismissal(this);
+		player.getTexture().dispose();
 	}
 }

@@ -3,6 +3,7 @@ package com.project.alpha.entities;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.project.alpha.screens.AlphaGame;
 
 public class Zombie extends Enemy{
 
@@ -76,14 +77,13 @@ public class Zombie extends Enemy{
 		
 		super.draw(batch);
 		setX(tmpX);
-		setY(tmpY);
+		setY(tmpY); 
 	}
 	
 	@Override
 	public void renderStuff(){
-		
+	
 		shapeRenderer.begin(ShapeType.Line);
-		//shapeRenderer.re
 		shapeRenderer.setColor(Color.RED);
 		shapeRenderer.rect(getX(), getY(), getWidth(), 3);
 		shapeRenderer.end();

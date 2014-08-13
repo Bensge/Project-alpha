@@ -1,16 +1,12 @@
 package com.project.alpha.screens;
 
-
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -26,7 +22,6 @@ import com.project.alpha.entities.Player;
 import com.project.alpha.entities.Zombie;
 import com.project.alpha.input.InputManager;
 import com.project.alpha.input.Joystick;
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 public class AlphaGame implements Screen {
 	
@@ -164,7 +159,7 @@ public class AlphaGame implements Screen {
 		}
 		
 		
-		if(System.currentTimeMillis() - timeSinceSpawn >= spawnTime){
+		if(System.currentTimeMillis() - timeSinceSpawn >= spawnTime && enemies.size() < 1){
 			addEnemy(new Zombie());
 			timeSinceSpawn = System.currentTimeMillis();
 		}		
@@ -174,7 +169,7 @@ public class AlphaGame implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		camera.position.set(800, 800 * (width / height), 0);
+		camera.position.set(800, 600, 0);
 		camera.viewportWidth = width / 5;
 		camera.viewportHeight = width / 5 * (width / height);
 		camera.update();
@@ -257,5 +252,9 @@ public class AlphaGame implements Screen {
 		renderer.dispose();
 		Main.sharedInstance().screenWantsDismissal(this);
 		player.getTexture().dispose();
+	}
+
+	public OrthographicCamera getCamera() {
+		return camera;
 	}
 }

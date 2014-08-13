@@ -1,20 +1,17 @@
 package com.project.alpha.screens;
 
-import org.omg.CORBA.PRIVATE_MEMBER;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.*;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.project.alpha.Main;
+
 
 public class MainMenu implements Screen {
 	
@@ -31,10 +28,12 @@ public class MainMenu implements Screen {
 		
 		stage = new Stage(new ScreenViewport());
 		skin = new Skin();
+		
 		font = new BitmapFont();
 		table = new Table();
 		buttonStyle = new TextButtonStyle();
         buttonStyle.font = font;
+        //font.dispose();
         //textButtonStyle.up = skin.getDrawable("up-button");
         //textButtonStyle.down = skin.getDrawable("down-button");
         //textButtonStyle.checked = skin.getDrawable("checked-button");
@@ -43,6 +42,7 @@ public class MainMenu implements Screen {
 		topButton = new TextButton("Start game", buttonStyle);
 		final MainMenu menu = this;
 		topButton.addListener(new ChangeListener() {
+			@Override
 		    public void changed (ChangeEvent event, Actor actor) {
 		        System.out.println("Start game!!!");
 		        Main.sharedInstance().screenWantsDismissal(menu);
@@ -50,12 +50,14 @@ public class MainMenu implements Screen {
 		});
 		middleButton = new TextButton("Multiplayer", buttonStyle);
 		middleButton.addListener(new ChangeListener() {
+			@Override
 		    public void changed (ChangeEvent event, Actor actor) {
 		        System.out.println("Multiplayer!!!");
 		    }
 		});
 		bottomButton = new TextButton("Options", buttonStyle);
 		bottomButton.addListener(new ChangeListener() {
+			@Override
 		    public void changed (ChangeEvent event, Actor actor) {
 		        System.out.println("Options!!!");
 		    }
@@ -107,6 +109,7 @@ public class MainMenu implements Screen {
 	@Override
 	public void dispose() {
 		stage.dispose();
+		skin.dispose();
 	}
 
 }

@@ -61,7 +61,7 @@ public class Main extends Game implements ScreenCallback {
 		{
 			setScreen(new EndMenu());
 		}
-		
 		/// more screens...
+		screen.dispose();
 	}
 }

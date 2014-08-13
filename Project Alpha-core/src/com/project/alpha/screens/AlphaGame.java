@@ -9,6 +9,8 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -24,6 +26,7 @@ import com.project.alpha.entities.Player;
 import com.project.alpha.entities.Zombie;
 import com.project.alpha.input.InputManager;
 import com.project.alpha.input.Joystick;
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 public class AlphaGame implements Screen {
 	
@@ -92,6 +95,7 @@ public class AlphaGame implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		camera.position.set(player.getX(), player.getY(), 0);
+		
 		update(delta);
 		
 		camera.update();
@@ -99,6 +103,7 @@ public class AlphaGame implements Screen {
 		renderer.render();
 		
 		renderer.getSpriteBatch().begin();
+		
 		player.draw(renderer.getSpriteBatch());
 		
 		//draw enenmies
@@ -111,6 +116,10 @@ public class AlphaGame implements Screen {
 		}
 		
 		renderer.getSpriteBatch().end();
+		
+		//draw enenmies life
+		for(Enemy e : enemies)
+			e.renderStuff();
 		
 		if (Joystick.joystickSupported())
 			joystick.render(null);
@@ -158,9 +167,7 @@ public class AlphaGame implements Screen {
 		if(System.currentTimeMillis() - timeSinceSpawn >= spawnTime){
 			addEnemy(new Zombie());
 			timeSinceSpawn = System.currentTimeMillis();
-		}
-		
-		
+		}		
 		
 		cameraBounds();
 	}
@@ -233,28 +240,21 @@ public class AlphaGame implements Screen {
 	
 	}
 	
-	public static AlphaGame getInstance(){
-		return instance;
-	}
+	public static AlphaGame getInstance(){	return instance;	}
 	
 	@Override
-	public void hide() {
-		
-	}
+	public void hide() {	}
 
 	@Override
-	public void pause() {
-	
-	}
+	public void pause() {	}
 
 	@Override
-	public void resume() {
-	
-	}
+	public void resume() {	}
 
 	@Override
 	public void dispose() {
 		map.dispose();
+		renderer.dispose();
 		Main.sharedInstance().screenWantsDismissal(this);
 		player.getTexture().dispose();
 	}

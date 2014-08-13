@@ -1,13 +1,15 @@
 package com.project.alpha.entities;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class Zombie extends Enemy{
 
 	public Zombie() {
 		super("img/enemy.png");
 		
-		speed = 10;
+		speed = 50;
 	}
 
 	@Override
@@ -23,7 +25,6 @@ public class Zombie extends Enemy{
 			velocity.y = speed;
 		else if(playerY < getY())
 			velocity.y = -speed;
-		
 		
 		setX(getX() + velocity.x * delta);
 		setY(getY() + velocity.y * delta);
@@ -41,8 +42,18 @@ public class Zombie extends Enemy{
 			setY((int) playerY);
 		
 		super.draw(batch);
-		
 		setX(tmpX);
 		setY(tmpY);
+	}
+	
+	@Override
+	public void renderStuff(){
+		
+		shapeRenderer.begin(ShapeType.Line);
+		//shapeRenderer.re
+		shapeRenderer.setColor(Color.RED);
+		shapeRenderer.rect(getX(), getY(), getWidth(), 3);
+		shapeRenderer.end();
+		
 	}
 }

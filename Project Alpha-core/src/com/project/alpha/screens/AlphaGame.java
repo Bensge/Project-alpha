@@ -159,7 +159,7 @@ public class AlphaGame implements Screen {
 		}
 		
 		
-		if(System.currentTimeMillis() - timeSinceSpawn >= spawnTime && enemies.size() < 1){
+		if(System.currentTimeMillis() - timeSinceSpawn >= spawnTime){
 			addEnemy(new Zombie());
 			timeSinceSpawn = System.currentTimeMillis();
 		}		

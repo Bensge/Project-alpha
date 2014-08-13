@@ -23,13 +23,8 @@ public class Zombie extends Enemy{
 		float xDistance = Math.abs(playerX - getX());
 		float yDistance = Math.abs(playerY - getY());
 		
-		System.out.println("xDinstance = " + xDistance);
-		System.out.println("yDinstance = " + yDistance);
-		
 		//TODO: handle yDistance == 0 case
 		float axesRatio = xDistance / yDistance;
-		
-		System.out.println("axesRatio = " + axesRatio);
 		
 		//Super special magical formulas from James 
 		// c = runDistance
@@ -40,21 +35,13 @@ public class Zombie extends Enemy{
 		
 		float xPowerTwo = axesRatio * axesRatio;
 		float cPowerTwo = runDistance * runDistance;
-		
-		System.out.println("xPowerTwo = " + xPowerTwo);
-		System.out.println("cPowerTwo = " + cPowerTwo);
-		
+	
 		float xRoot = (xPowerTwo * cPowerTwo) / (xPowerTwo + 1);
 		float yRoot = cPowerTwo / (xPowerTwo + 1);
-		
-		System.out.println("xRoot = " + xRoot);
-		System.out.println("yRoot = " + yRoot);
 		
 		float xMovement = (float) Math.sqrt(xRoot);
 		float yMovement = (float) Math.sqrt(yRoot);
 		
-		System.out.println("xMovement = " + xMovement);
-		System.out.println("yMovement = " + yMovement);
 		//MOVE MOVE MOVE!!!!!!!!!!!!!!!!!!!!
 		
 		velocity.x = (playerX > getX()) ? xMovement : -xMovement;

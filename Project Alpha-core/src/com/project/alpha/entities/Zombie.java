@@ -1,8 +1,10 @@
 package com.project.alpha.entities;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector3;
 import com.project.alpha.screens.AlphaGame;
 
 public class Zombie extends Enemy{
@@ -54,17 +56,7 @@ public class Zombie extends Enemy{
 	
 	@Override
 	public void draw(Batch batch) {
-		float tmpX = getX();
-		float tmpY = getY();
-		
-		if(tmpX > playerX - 2 && tmpX < playerX + 2)
-			setX((int) playerX);
-		if(tmpY > playerY - 2 && tmpY < playerY + 2)
-			setY((int) playerY);
-		
 		super.draw(batch);
-		setX(tmpX);
-		setY(tmpY); 
 	}
 	
 	@Override
@@ -72,13 +64,14 @@ public class Zombie extends Enemy{
 	
 		shapeRenderer.begin(ShapeType.Line);
 		shapeRenderer.setColor(Color.RED);
-		shapeRenderer.rect(getX(), getY(), getWidth(), 3);
+		
+		Camera camera = AlphaGame.getInstance().camera;
+		
+		Vector3 windowPosition = camera.project(new Vector3(getX(), getY() + getHeight(), 0));
+		Vector3 playerWidthVector3 =  camera.project(new Vector3(getWidth(), 0, 0));
+		
+		shapeRenderer.rect(windowPosition.x, windowPosition.y, playerWidthVector3.x, 3);
 		shapeRenderer.end();
 		
-	}
-	
-	public void setBack(){
-		setX(oldX);
-		setY(oldY);
 	}
 }

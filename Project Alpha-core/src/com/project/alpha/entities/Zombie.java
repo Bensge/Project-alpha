@@ -76,4 +76,9 @@ public class Zombie extends Enemy{
 		shapeRenderer.end();
 		
 	}
+	
+	public void setBack(){
+		setX(oldX);
+		setY(oldY);
+	}
 }

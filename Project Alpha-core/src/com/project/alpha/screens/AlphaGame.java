@@ -142,16 +142,33 @@ public class AlphaGame implements Screen {
 			e.update(player.getX(), player.getY(), delta);
 		}
 		
+		for(int b = 0; b < enemies.size(); b++){
+			for(int k = 0; k < enemies.size(); k++){
+				if(b == k)
+					continue;
+				if(XCollision(enemies.get(b), enemies.get(k))){
+					greaterDistanceToPlayerX(enemies.get(b), enemies.get(k)).resetPosX();
+				}
+				if(YCollision(enemies.get(b), enemies.get(k))){
+					greaterDistanceToPlayerY(enemies.get(b), enemies.get(k)).resetPosX();
+				}
+			}
+		}
+		
 		//update bullet & enemie collision
 		
 		if(!enemies.isEmpty() && !bullets.isEmpty()){
 			for(int i = 0; i < bullets.size(); i++){
 				for(int j = 0; j < enemies.size(); j++){
-					if(collidesWith(bullets.get(i), enemies.get(j))){
+					if(XCollision(bullets.get(i), enemies.get(j)) || XCollision(bullets.get(i), enemies.get(j))){
 						bullets.remove(i);
-						//enemies.get(j).gotDamaged();
-						enemies.remove(j);
-						System.out.println("enemy removed");
+						
+						enemies.get(j).hit(player.getDamage());
+						
+						if(enemies.get(j).isDown()){
+							enemies.remove(j);
+							System.out.println("enemy removed");
+						}
 						break;
 					}
 				}
@@ -165,6 +182,14 @@ public class AlphaGame implements Screen {
 		}
 		
 		cameraBounds();
+	}
+
+	private Enemy greaterDistanceToPlayerX(Enemy one, Enemy two) {
+		return (one.getX() - player.getX() > two.getX() - player.getX()) ? one : two;
+	}
+	
+	private Enemy greaterDistanceToPlayerY(Enemy one, Enemy two) {
+		return (one.getY() - player.getY() > two.getY() - player.getY()) ? one : two;
 	}
 
 	@Override
@@ -220,7 +245,7 @@ public class AlphaGame implements Screen {
 		}
 	}
 	
-	public boolean collidesWith(Entity a, Entity b){
+	public boolean XCollision(Entity a, Entity b){
 		// collision between two entities
 		
 		float wa = a.getWidth(), wb = b.getWidth();
@@ -230,9 +255,32 @@ public class AlphaGame implements Screen {
 		
 		Rectangle rectOne = new Rectangle(xa, ya, wa, ha);
 		Rectangle rectTwo = new Rectangle(xb, yb, wb, hb);
+		Rectangle rectOverlap = new Rectangle();
 		
-		return Intersector.overlaps(rectOne, rectTwo);
+		//return Intersector.overlaps(rectOne, rectTwo);
+		
+		boolean ret = Intersector.intersectRectangles(rectOne, rectTwo, rectOverlap);
+		
+		return rectOverlap.width > 0;
+	}
 	
+	public boolean YCollision(Entity a, Entity b){
+		// collision between two entities
+		
+		float wa = a.getWidth(), wb = b.getWidth();
+		float ha = a.getWidth(), hb = b.getWidth();
+		float xa = a.getX(), xb = b.getX();
+		float ya = a.getY(), yb = b.getY();
+		
+		Rectangle rectOne = new Rectangle(xa, ya, wa, ha);
+		Rectangle rectTwo = new Rectangle(xb, yb, wb, hb);
+		Rectangle rectOverlap = new Rectangle();
+		
+		//return Intersector.overlaps(rectOne, rectTwo);
+		
+		boolean ret = Intersector.intersectRectangles(rectOne, rectTwo, rectOverlap);
+		
+		return rectOverlap.height > 0;
 	}
 	
 	public static AlphaGame getInstance(){	return instance;	}

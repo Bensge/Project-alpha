@@ -136,7 +136,6 @@ public class AlphaGame implements Screen {
 		
 		if (InputManager.sharedInstance().getShouldShoot()){
 			bullets.add(new Bullet(player.getX(), player.getY(), player.getWidth(), player.getHeight(), InputManager.sharedInstance().getShootDirection()));
-			System.out.println(player.getWidth());
 		}
 		
 		//update enemies
@@ -198,7 +197,7 @@ public class AlphaGame implements Screen {
 	public void resize(int width, int height) {
 		camera.position.set(800, 600, 0);
 
-		camera.viewportHeight = height / 5;
+		camera.viewportWidth = height / 5;
 
 		camera.viewportHeight = height / 5;//width / 5 * (width / height);
 

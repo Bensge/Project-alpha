@@ -9,14 +9,15 @@ public class Bullet extends Entity{
 	private float speed;
 	private float factor = (float) (1f / Math.sqrt(2));
 	
-	public Bullet(float posX, float posY, PlayerDirection direction){
+	public Bullet(float posX, float posY, float width, float height, PlayerDirection direction){
 		super("img/rocket.png");
 		
 		velocity = new Vector2();
 		speed = 160;
-		setX(posX);
-		setY(posY);
+		
 		setSize(5, 5);
+		setX(posX + .5f * width - .5f * getWidth());
+		setY(posY + .5f * height - .5f * getHeight());
 		
 		switch(direction){
 		case Left:

@@ -37,6 +37,7 @@ public class Enemy extends Entity{
 	@Override
 	public void draw(Batch batch) {
 		super.draw(batch);
+		
 		oldX = getX();
 		oldY = getY();
 	}
@@ -45,9 +46,7 @@ public class Enemy extends Entity{
 	
 	public void update(float x, float y, float delta){
 		playerX = x;
-		playerY = y;
-		
-		
+		playerY = y;		
 	}
 	
 	public void resetPosX(){

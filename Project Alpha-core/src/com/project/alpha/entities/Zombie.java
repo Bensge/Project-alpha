@@ -68,9 +68,9 @@ public class Zombie extends Enemy{
 		Camera camera = AlphaGame.getInstance().camera;
 		
 		Vector3 windowPosition = camera.project(new Vector3(getX(), getY() + getHeight(), 0));
-		Vector3 playerWidthVector3 =  camera.project(new Vector3(getWidth(), 0, 0));
+		//Vector3 playerWidthVector3 =  camera.project(new Vector3(getWidth(), 0, 0));
 		
-		shapeRenderer.rect(windowPosition.x, windowPosition.y, playerWidthVector3.x, 3);
+		shapeRenderer.rect(windowPosition.x, windowPosition.y, getWidth() * 5, 3);
 		shapeRenderer.end();
 		
 	}

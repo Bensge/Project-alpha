@@ -40,8 +40,10 @@ public class Player extends Entity {
     private String blockKey = "blocked";
     
 	public Player(int x, int y, TiledMap map){
+		super();
 		this.map = map;
 		
+		damage = 34;
 		properties = map.getProperties();
 		collision = (TiledMapTileLayer) map.getLayers().get(0);
 

@@ -10,12 +10,17 @@ import com.badlogic.gdx.math.Vector2;
 public class Entity extends Sprite {
 	
 	protected Vector2 velocity;
+	int damage;
 	
-	public Entity() {}
+	public Entity() {
+		damage = 0;
+		velocity = new Vector2();
+	}
 	
 	public Entity(String s){
 		super(new Sprite(new Texture(Gdx.files.internal(s))));
 		
+		damage = 0;
 		velocity = new Vector2();
 		setSize(getTexture().getWidth(), getTexture().getHeight());
 	}
@@ -25,5 +30,9 @@ public class Entity extends Sprite {
 	
 	public void render(SpriteBatch batch){
 		super.draw(batch);
+	}
+	
+	public int getDamage(){
+		return damage;
 	}
 }

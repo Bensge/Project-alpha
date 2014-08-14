@@ -12,7 +12,7 @@ import com.project.alpha.screens.AlphaGame;
 public class Enemy extends Entity{
 
 	int delay, life, speed;
-	float playerX, playerY;
+	float playerX, playerY, oldX, oldY;
 	private Random r;
 	ShapeRenderer shapeRenderer;
 	
@@ -28,12 +28,17 @@ public class Enemy extends Entity{
 		setX(r.nextInt((int) AlphaGame.getInstance().mapWidth));
 		setY(r.nextInt((int) AlphaGame.getInstance().mapHeight));
 		
+		oldX = getX();
+		oldY = getY();
+		
 		setSize(getTexture().getWidth(), getTexture().getHeight());
 	}
 	
 	@Override
 	public void draw(Batch batch) {
 		super.draw(batch);
+		oldX = getX();
+		oldY = getY();
 	}
 	
 	public void renderStuff(){	}
@@ -43,5 +48,21 @@ public class Enemy extends Entity{
 		playerY = y;
 		
 		
+	}
+	
+	public void resetPosX(){
+		setX(oldX);
+	}
+	
+	public void resetPosY(){
+		setY(oldY);
+	}
+
+	public void hit(int damage) {
+		life -= damage;
+	}
+	
+	public boolean isDown(){
+		return life <= 0;
 	}
 }

@@ -40,7 +40,6 @@ public class AlphaGame implements Screen {
 	public float tileHeight;
 	public float spawnTime = 60 * 60 * 1000;//3000;
 	private long timeSinceSpawn;
-	private boolean spawnedZombie = false;
 	Player player;
 	Joystick joystick;
 	
@@ -199,8 +198,7 @@ public class AlphaGame implements Screen {
 		camera.position.set(800, 600, 0);
 
 		camera.viewportHeight = height / 5;
-
-		camera.viewportHeight = height / 5;//width / 5 * (width / height);
+		camera.viewportWidth = width / 5;
 
 		camera.update();
 	}

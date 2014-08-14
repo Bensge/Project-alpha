@@ -29,7 +29,7 @@ public class AlphaGame implements Screen {
 	TiledMap map;
 	MapProperties properties;
 	TiledMapTileLayer layer;
-	OrthographicCamera camera;
+	public OrthographicCamera camera;
 	
 	ArrayList<Enemy> enemies;
 	ArrayList<Bullet> bullets;
@@ -38,8 +38,9 @@ public class AlphaGame implements Screen {
 	public float mapHeight;
 	public float tileWidth;
 	public float tileHeight;
-	public float spawnTime = 3000;
+	public float spawnTime = 60 * 60 * 1000;//3000;
 	private long timeSinceSpawn;
+	private boolean spawnedZombie = false;
 	Player player;
 	Joystick joystick;
 	
@@ -75,7 +76,7 @@ public class AlphaGame implements Screen {
 		
 		player = new Player(10, 160, map);
 		
-		timeSinceSpawn = System.currentTimeMillis();
+		//timeSinceSpawn = System.currentTimeMillis();
 	}
 	
 	@Override
@@ -130,7 +131,7 @@ public class AlphaGame implements Screen {
 			b.update(delta);
 			if(player.collisionX(b.getX(), b.getY()) || player.collisionY(b.getX(), b.getY()) || player.isOutOfBoundsX(b.getX(), b.getWidth()) || player.isOutOfBoundsY(b.getY(), b.getHeight())){
 				it.remove();
-			}		
+			}
 		}
 		
 		if (InputManager.sharedInstance().getShouldShoot()){
@@ -180,7 +181,7 @@ public class AlphaGame implements Screen {
 		if(System.currentTimeMillis() - timeSinceSpawn >= spawnTime){
 			addEnemy(new Zombie());
 			timeSinceSpawn = System.currentTimeMillis();
-		}		
+		}
 		
 		cameraBounds();
 	}
@@ -196,8 +197,11 @@ public class AlphaGame implements Screen {
 	@Override
 	public void resize(int width, int height) {
 		camera.position.set(800, 600, 0);
-		camera.viewportWidth = width / 5;
+
 		camera.viewportHeight = height / 5;
+
+		camera.viewportHeight = height / 5;//width / 5 * (width / height);
+
 		camera.update();
 	}
 

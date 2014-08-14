@@ -130,7 +130,7 @@ public class AlphaGame implements Screen {
 			b.update(delta);
 			if(player.collisionX(b.getX(), b.getY()) || player.collisionY(b.getX(), b.getY()) || player.isOutOfBoundsX(b.getX(), b.getWidth()) || player.isOutOfBoundsY(b.getY(), b.getHeight())){
 				it.remove();
-			}		
+			}
 		}
 		
 		if (InputManager.sharedInstance().getShouldShoot()){
@@ -162,7 +162,7 @@ public class AlphaGame implements Screen {
 		if(System.currentTimeMillis() - timeSinceSpawn >= spawnTime){
 			addEnemy(new Zombie());
 			timeSinceSpawn = System.currentTimeMillis();
-		}		
+		}
 		
 		cameraBounds();
 	}

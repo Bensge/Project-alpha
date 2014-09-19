@@ -38,7 +38,7 @@ public class AlphaGame implements Screen {
 	public float mapHeight;
 	public float tileWidth;
 	public float tileHeight;
-	public float spawnTime = 60 * 60 * 1000;//3000;
+	public float spawnTime = 3000;//3000;
 	private long timeSinceSpawn;
 	Player player;
 	Joystick joystick;
@@ -75,7 +75,7 @@ public class AlphaGame implements Screen {
 		
 		player = new Player(10, 160, map);
 		
-		//timeSinceSpawn = System.currentTimeMillis();
+		timeSinceSpawn = System.currentTimeMillis();
 	}
 	
 	@Override
@@ -174,7 +174,6 @@ public class AlphaGame implements Screen {
 				}
 			}
 		}
-		
 		
 		if(System.currentTimeMillis() - timeSinceSpawn >= spawnTime){
 			addEnemy(new Zombie());

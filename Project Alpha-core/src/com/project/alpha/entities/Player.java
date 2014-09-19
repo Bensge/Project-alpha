@@ -1,14 +1,10 @@
 package com.project.alpha.entities;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapProperties;
@@ -53,7 +49,7 @@ public class Player extends Entity {
 		type = Gdx.app.getType();
 		
 		//animation stuff
-		walkSheet = new Texture(Gdx.files.internal("img/player.png"));
+		walkSheet = new Texture(Gdx.files.internal("img/Kurokami.png"));
 		TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth() / COL, walkSheet.getHeight() / ROW);              // #10
         walkFrames = new TextureRegion[COL * ROW];
         int index = 0;
@@ -96,9 +92,9 @@ public class Player extends Entity {
 		//System.out.println("X: " + getX() + ", Y: " + getY());
 	    setRegion(currentFrame);
 	    
-	    if(collisionX(getX(), getY()) || isOutOfBoundsX(getX(), getWidth()))
+	    if(collisionX(getX(), getY(), getWidth(), getHeight()) || isOutOfBoundsX(getX(), getWidth()))
 	    	setX(oldX);
-	    if(collisionY(getX(), getY()) || isOutOfBoundsY(getY(), getHeight()))
+	    if(collisionY(getX(), getY(), getWidth(), getHeight()) || isOutOfBoundsY(getY(), getHeight()))
 	    	setY(oldY);
 	}
 
@@ -157,39 +153,39 @@ public class Player extends Entity {
 		
 	}
 
-	public boolean collisionX(float x, float y) {
+	public boolean collisionX(float x, float y, float width, float height) {
 		
 		/////left tiles
 		if(isBlocked(x, y) ||
-			isBlocked(x, y + getHeight() / 2) ||
-			isBlocked(x, y + getHeight()))
+			isBlocked(x, y + height / 2) ||
+			isBlocked(x, y + height))
 		{
 				return true;
 		}
 		
 		/////right tiles
-		else if(isBlocked(x + getWidth(), y) ||
-				isBlocked(x + getWidth(), y + getHeight() / 2) ||
-				isBlocked(x + getWidth(), y + getHeight()))
+		else if(isBlocked(x + width, y) ||
+				isBlocked(x + width, y + height / 2) ||
+				isBlocked(x + width, y + height))
 			{
 					return true;
 			}
 		return false;
 	}
 	
-	public boolean collisionY(float x, float y){
+	public boolean collisionY(float x, float y, float width, float height){
 		/////up tiles
-		if(isBlocked(x , y + getHeight()) ||
-			isBlocked(x + getWidth() / 2, y + getHeight()) ||
-			isBlocked(x + getWidth(), y + getHeight()))
+		if(isBlocked(x , y + height) ||
+			isBlocked(x + width / 2, y + height) ||
+			isBlocked(x + width, y + height))
 		{
 			return true;
 		}
 		
 		/////bottom tiles
 		else if(isBlocked(x, y) ||
-				isBlocked(x + getWidth() / 2, y) ||
-				isBlocked(x + getWidth(), y))
+				isBlocked(x + width / 2, y) ||
+				isBlocked(x + width, y))
 		{
 			return true;
 		}

@@ -1,25 +1,45 @@
 package com.project.main;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.project.GameStates.GameStateManager;
+import com.project.GameStates.test;
 
 public class Main implements ApplicationListener{
 
+	private GameStateManager manager;
+	private SpriteBatch b;
+	
 	@Override
 	public void create() {
-		// TODO Auto-generated method stub
+		b = new SpriteBatch();
 		
+		manager = new GameStateManager();
+		manager.push(new test(manager));
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
 	public void render() {
-		// TODO Auto-generated method stub
-		
+		Gdx.gl20.glClearColor(0.1f, 0.1f, 0.1f, 1);
+		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		b.begin();
+		manager.render(b);
+		b.end();
+		update();
+	}
+	
+	
+
+	private void update() {
+		float delta = Gdx.graphics.getDeltaTime();
+		manager.update(delta);
 	}
 
 	@Override

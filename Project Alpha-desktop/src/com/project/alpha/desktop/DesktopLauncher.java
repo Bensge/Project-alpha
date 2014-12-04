@@ -2,7 +2,7 @@ package com.project.alpha.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.project.alpha.Main;
+import com.project.menus.alpha.Main;
 
 
 public class DesktopLauncher {

@@ -17,7 +17,7 @@ public class test extends GameState {
 	public void update(float delta) {
 		System.out.println("update");
 	}
-
+	
 	@Override
 	public void render(SpriteBatch b) {
 		System.out.println("la");
@@ -29,5 +29,5 @@ public class test extends GameState {
 		}
 		sprite.draw(b);
 	}
-
+	
 }

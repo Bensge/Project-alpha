@@ -15,4 +15,11 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.robovm.eclipse.RoboVMNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>data/img/enemy.png</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/android/assets/img/enemy.png</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>

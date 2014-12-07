@@ -1,11 +1,14 @@
 package com.project.GameStates;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class test extends GameState {
 
+	private Sprite sprite = null;
+	
 	public test(GameStateManager manager){
 		super(manager);
 	}
@@ -18,7 +21,13 @@ public class test extends GameState {
 	@Override
 	public void render(SpriteBatch b) {
 		System.out.println("la");
-		b.draw(new Sprite(new Texture("badlogic.jpg.png")), 10, 10);
+		if (sprite == null)
+		{
+			sprite = new Sprite(new Texture("img/enemy.png"));
+			sprite.setSize(100, 20);
+			sprite.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+		}
+		sprite.draw(b);
 	}
 
 }

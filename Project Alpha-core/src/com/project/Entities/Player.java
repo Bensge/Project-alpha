@@ -3,18 +3,22 @@ package com.project.Entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 
 public class Player extends Entity {
 
-	float oldX, oldY, jump;
+	float oldX, oldY;
 	
-	public Player(int x, int y) {
-		super("img/enemy.png");
+	public Player(int x, int y, TiledMap map) {
+		super("img/enemy.png", map);
+		
+		gravity = 70;
+		XSpeed = 20;
 		
 		setX(x);
 		setY(y);
 		
-		jump = 50;
+		jump = 30;
 	}
 	
 	@Override
@@ -24,26 +28,41 @@ public class Player extends Entity {
 		oldY = getY();
 		
 		//velocity.x = 0;
-		velocity.y = 0;
+		velocity.y -= gravity * delta;
 		
 		if(Gdx.input.isKeyPressed(Keys.A))
-			velocity.x = -10;
+			velocity.x -= XSpeed;
 		else if(Gdx.input.isKeyPressed(Keys.D))
-			velocity.x = 10;
+			velocity.x += XSpeed;
 		
 		else{decreaseXVelocity();};
 		
-		if(Gdx.input.isKeyPressed(Keys.W))
-			velocity.y = 10;
+		if(Gdx.input.isKeyPressed(Keys.W) && canJump){
+			velocity.y += jump;
+			canJump = false;
+		}
 		else if(Gdx.input.isKeyPressed(Keys.S)){
 			//go down a level
-			velocity.y -= 10;
+			
 		}
 			
+		System.out.println(canJump);
+		setX(getX() + velocity.x * delta);
+		setY(getY() + velocity.y * delta);
+		
+		if(getY() == 0){
+			canJump = true;
+		}
 		
 		
-		setX(getX() + velocity.x);
-		setY(getY() + velocity.y);
+		if(getY() < 0){
+			setY(0);
+			velocity.y = 0;
+		}
+		if(getX() < 0){
+			setX(0);
+			velocity.x = -velocity.x * 0.3f;
+		}
 	}
 	
 	private void decreaseXVelocity() {

@@ -48,7 +48,13 @@ public class GameWorld extends GameState {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		camera.position.set(20, 20, 0);
+		
+		float pX = player.getX();
+		float pY = player.getY();
+		float cX = Math.max(pX, camera.viewportWidth / 2);
+		float cY = Math.max(pY, camera.viewportHeight / 2);
+		
+		camera.position.set(cX, cY, 0);
 		
 		camera.update();
 		renderer.setView(camera);

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.project.Entities.Player;
@@ -48,11 +49,16 @@ public class GameWorld extends GameState {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		
+		//Get player position
 		float pX = player.getX();
 		float pY = player.getY();
+		//Limit camera position (left, bottom)
 		float cX = Math.max(pX, camera.viewportWidth / 2);
 		float cY = Math.max(pY, camera.viewportHeight / 2);
+		//Limit camera position (right, top)
+		TiledMapTileLayer layer = ((TiledMapTileLayer)map.getLayers().get(0));
+		cX = Math.min(cX, layer.getWidth() * layer.getTileWidth() - camera.viewportWidth / 2);
+		cY = Math.min(cY, layer.getHeight() * layer.getTileHeight() - camera.viewportHeight / 2);
 		
 		camera.position.set(cX, cY, 0);
 		

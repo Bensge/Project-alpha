@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Player extends Entity {
 
-	float oldX, oldY, posX, posY;
+	float oldX, oldY;
 	
 	public Player(int x, int y) {
 		super("img/enemy.png");
@@ -14,16 +14,13 @@ public class Player extends Entity {
 		setX(x);
 		setY(y);
 		
-		posX = x;
-		posY = y;
-		
 	}
 	
 	@Override
 	public void update(float delta) {
 		
-		oldX = posX;
-		oldY = posY;
+		oldX = getX();
+		oldY = getY();
 		
 		if(Gdx.input.isKeyPressed(Keys.A))
 			velocity.x = -10;
@@ -35,8 +32,8 @@ public class Player extends Entity {
 		else if(Gdx.input.isKeyPressed(Keys.S))
 			velocity.y = 10;
 		
-		posX = velocity.x;
-		posY = velocity.y;
+		setX(getX() + velocity.x);
+		setY(getY() + velocity.y);
 	}
 	
 	@Override

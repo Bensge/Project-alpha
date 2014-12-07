@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public abstract class Entity extends Sprite {
 	
+	protected int mapWidth, mapHeight;
 	protected Vector2 velocity;
 	protected int damage;
 	
@@ -26,6 +27,14 @@ public abstract class Entity extends Sprite {
 	
 	public void render(SpriteBatch b){
 		super.draw(b);
+	}
+	
+	public boolean isOutOfBoundsX(float x, float width) {
+		return (x < 0 || x + width > mapWidth);
+	}
+
+	public boolean isOutOfBoundsY(float y, float height) {
+		return (y < 0 || y + height > mapHeight);
 	}
 	
 	public abstract void update(float delta);

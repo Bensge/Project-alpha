@@ -12,13 +12,15 @@ public class Player extends Entity {
 	public Player(int x, int y, TiledMap map) {
 		super("img/enemy.png", map);
 		
-		gravity = 70;
-		XSpeed = 20;
+		gravity = 1000;
+		XSpeed = 10;
+		maxSpeed = 250;
 		
 		setX(x);
 		setY(y);
 		
-		jump = 30;
+		canJump = true;
+		jump = 450;
 	}
 	
 	@Override
@@ -35,43 +37,68 @@ public class Player extends Entity {
 		else if(Gdx.input.isKeyPressed(Keys.D))
 			velocity.x += XSpeed;
 		
+		
 		else{decreaseXVelocity();};
+		
+		
+		
+		if(velocity.x > maxSpeed )
+			velocity.x = maxSpeed;
+		else if(velocity.x < -maxSpeed)
+			velocity.x = -maxSpeed;
 		
 		if(Gdx.input.isKeyPressed(Keys.W) && canJump){
 			velocity.y += jump;
 			canJump = false;
 		}
+		
 		else if(Gdx.input.isKeyPressed(Keys.S)){
 			//go down a level
-			
+
 		}
-			
-		System.out.println(canJump);
+
 		setX(getX() + velocity.x * delta);
 		setY(getY() + velocity.y * delta);
 		
-		if(getY() == 0){
+		if(getY() <= 0){
 			canJump = true;
-		}
-		
-		
-		if(getY() < 0){
 			setY(0);
 			velocity.y = 0;
 		}
-		if(getX() < 0){
-			setX(0);
+		
+		//check out of map
+		if(isOutOfBoundsX(getX(), getWidth())){
+			setX(oldX);
 			velocity.x = -velocity.x * 0.3f;
 		}
+		
+		if(isOutOfBoundsY(getY(), getWidth())){
+			setY(oldY);
+			velocity.y = -velocity.y * 0.3f;
+		}
+		
+		System.out.println(oldX - getX());
+		
+		//check object collision
+		if(collisionX(getX(), getY())){
+			velocity.x = 0;
+			setX(oldX);
+		}
+		
+		
+		
+		if(collisionY(getX(), getY())){
+			setY(oldY);
+			velocity.y = 0;
+			canJump = true;
+		}
+		
+		//System.out.println("posX: " + getX());
 	}
 	
-	private void decreaseXVelocity() {
-		if(velocity.x < 0)
-			velocity.x += 1;
-		else if(velocity.x > 0)
-			velocity.x -= 1;
-	}
+	private void decreaseXVelocity() {	velocity.x /= 1.1f;	}
 
+	
 	@Override
 	public void render(SpriteBatch b) {
 		super.render(b);

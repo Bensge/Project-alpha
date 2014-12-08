@@ -2,7 +2,7 @@
 <map version="1.0" orientation="orthogonal" width="50" height="50" tilewidth="16" tileheight="16">
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16" spacing="1" margin="1">
   <tileoffset x="1" y="1"/>
-  <image source="Tiles.png" width="343" height="410"/>
+  <image source="maps/Tiles.png" width="343" height="410"/>
   <tile id="5">
    <properties>
     <property name="blocked" value=""/>
@@ -11,7 +11,7 @@
  </tileset>
  <layer name="Kachelebene 1" width="50" height="50">
   <data encoding="base64" compression="zlib">
-   eJztmksOwyAMRJMNK3q+3v8mXUVCFnj8A5yKxahVlcR+tjEmar2uqwJ9XqDvjfXwSK59gzLzoJp6i26jPPdm02HJp9UcZSIHWn9FoJ0co16h9VPDEs1RySeyg+rvYUE9NZJjxIDs9K6n9cflXVuD1jxIbNTBd0msZzNobXDrCnFo+iPKrzdOI19QTgu4H/mEZhhtLqS+cHbo/bQ39HoGiqElF9EcmpqKrCcvB3pGFMeoPjNySOy2azcDh9V2j8m6n2XgaO/n5scVHJEsFtsR/SqCxbsPRXNYWCRrXMph3c818ZWekyws0vmq3dMt9dKbBygbYtHuSVxcS+c3qZAfPRZqm/NP0081daiNmeSsZDkPotxqWbxncU8cVnJIai+Kw1Nbuzi4nEScEUbvs2ZwcvuAlgH1Oklf9+SLxq/1SyPpvGCdTyLfX6FYzORYxSL1LzvH4yPXO7yz6ioOyqOd27JxeOxnWOuHY+1zLHYjbe/OR8bc7tbhyKeWZff/jY7+Uz8iTEAQ
+   eJztl0EOgCAMwLjz0/3/Ad4NIMONDdJDL8ZIOzViLaVUAAAAAAAAAAAAAGgiCRzooCMrt3REtYjTupbXFAWeM5LGsehnxrLJe73oZjru6jj9Hcza0XP5cszY8fYZOe74lqw2aNyydvztzuB5SsfIfdYjYq+1MtPZ8y3up3WDxiOqozfr3r44Y4f2/8Gj4wFt1Zc3
   </data>
  </layer>
 </map>

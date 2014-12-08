@@ -8,10 +8,15 @@
     <property name="blocked" value=""/>
    </properties>
   </tile>
+  <tile id="105">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="Kachelebene 1" width="50" height="50">
   <data encoding="base64" compression="zlib">
-   eJztmksOwyAMRJMNK3q+3v8mXUVCFnj8A5yKxahVlcR+tjEmar2uqwJ9XqDvjfXwSK59gzLzoJp6i26jPPdm02HJp9UcZSIHWn9FoJ0co16h9VPDEs1RySeyg+rvYUE9NZJjxIDs9K6n9cflXVuD1jxIbNTBd0msZzNobXDrCnFo+iPKrzdOI19QTgu4H/mEZhhtLqS+cHbo/bQ39HoGiqElF9EcmpqKrCcvB3pGFMeoPjNySOy2azcDh9V2j8m6n2XgaO/n5scVHJEsFtsR/SqCxbsPRXNYWCRrXMph3c818ZWekyws0vmq3dMt9dKbBygbYtHuSVxcS+c3qZAfPRZqm/NP0081daiNmeSsZDkPotxqWbxncU8cVnJIai+Kw1Nbuzi4nEScEUbvs2ZwcvuAlgH1Oklf9+SLxq/1SyPpvGCdTyLfX6FYzORYxSL1LzvH4yPXO7yz6ioOyqOd27JxeOxnWOuHY+1zLHYjbe/OR8bc7tbhyKeWZff/jY7+Uz8iTEAQ
+   eJztlzESgDAIBNPnp/7/ATZWjlFDIHcwV2zNbYgBe2utCyGEEEIIIYSR4wKdw8Mhs8vdIZPHU/ZMHl/55bA3J6vDanYGhww9mKnJlLsCVc6pSs+reMiFkyoeVhfWeTGqP8oWMcOjzsFzrq/WiXT464buQfRdj6iF/l496yHfG4a3ztslqw9rfsv/GDqzwDK7vzDydt8teybawWPXRcxZz70WufdEUsFh1u0EwAXXag==
   </data>
  </layer>
 </map>

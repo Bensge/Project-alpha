@@ -12,20 +12,20 @@ import com.badlogic.gdx.math.Vector2;
 
 public abstract class Entity extends Sprite {
 	
-	protected TiledMapTileLayer collision;
+	protected TiledMapTileLayer collisionLayer;
 	protected TiledMap		  map;
 	
 	protected final String blockKey = "blocked";
 	
-	protected float gravity, XSpeed, jump;
+	protected float gravity, XSpeed, jump, maxSpeed;
 	protected boolean canJump, collisionX, collisionY;
-	protected int mapWidth, mapHeight;
+	protected float mapWidth, mapHeight;
 	protected Vector2 velocity;
 	protected int damage;
 	
 	public Entity(TiledMap map) {
 		this.map = map;
-	
+		
 		init();
 	}
 	
@@ -43,7 +43,10 @@ public abstract class Entity extends Sprite {
 		velocity = new Vector2();
 		
 		canJump = false;
-		collision = (TiledMapTileLayer) map.getLayers().get(0);
+		collisionLayer = (TiledMapTileLayer) map.getLayers().get(0);
+		
+		mapWidth = collisionLayer.getWidth() * collisionLayer.getTileWidth();
+		mapHeight = collisionLayer.getHeight() * collisionLayer.getTileHeight();
 	}
 	
 	public void render(SpriteBatch b){
@@ -101,7 +104,7 @@ public abstract class Entity extends Sprite {
 	}
 	
 	private boolean isBlocked(float x, float y){
-		Cell cell = collision.getCell((int) (x / collision.getTileWidth()), (int) (y / collision.getTileHeight()));
+		Cell cell = collisionLayer.getCell((int) (x / collisionLayer.getTileWidth()), (int) (y / collisionLayer.getTileHeight()));
 		return cell != null && cell.getTile().getProperties().containsKey(blockKey);
 	}
 }

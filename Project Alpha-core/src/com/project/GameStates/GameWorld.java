@@ -12,6 +12,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.project.Entities.Player;
 
 public class GameWorld extends GameState {
@@ -22,8 +23,10 @@ public class GameWorld extends GameState {
 	private Player player;
 	private BitmapFont fpsFont;
 	private SpriteBatch fpsBatch;
-	private final float fpsPadding = 10;
+	private final float fpsPadding = 7;
 	private String fpsString;
+	private long fpsTimestamp = 0;
+	private final int FPS_UPDATES_PER_SECOND = 10;
 
 	public GameWorld(GameStateManager manager) {
 		super(manager);
@@ -45,9 +48,8 @@ public class GameWorld extends GameState {
 		//Logging
 		System.out.println("camera: " + camera + " map: " + map + " renderer: " + renderer);
 		
-		fpsFont = new BitmapFont();
+		fpsFont = new BitmapFont(Gdx.files.internal("fonts/Menlo-32.fnt"),Gdx.files.internal("fonts/Menlo.png"), false);
 		fpsFont.setColor(Color.RED);
-		fpsFont.setScale(2);
 		
 		fpsBatch = new SpriteBatch();
 	}
@@ -56,7 +58,12 @@ public class GameWorld extends GameState {
 	public void update(float delta) {
 		player.update(delta);
 		
-		fpsString = (int)(1.f / delta) + "";
+		long time;
+		if ((time = TimeUtils.nanoTime()) - fpsTimestamp > 1000*1000*1000 / FPS_UPDATES_PER_SECOND)
+		{
+			fpsString = (int)(1.f / delta) + "";
+			fpsTimestamp = time;
+		}
 	}
 
 	@Override

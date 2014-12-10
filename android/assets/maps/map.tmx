@@ -13,10 +13,15 @@
     <property name="blocked" value=""/>
    </properties>
   </tile>
+  <tile id="108">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="Kachelebene 1" width="50" height="50">
   <data encoding="base64" compression="zlib">
-   eJztlzESgDAIBNPnp/7/ATZWjlFDIHcwV2zNbYgBe2utCyGEEEIIIYSR4wKdw8Mhs8vdIZPHU/ZMHl/55bA3J6vDanYGhww9mKnJlLsCVc6pSs+reMiFkyoeVhfWeTGqP8oWMcOjzsFzrq/WiXT464buQfRdj6iF/l496yHfG4a3ztslqw9rfsv/GDqzwDK7vzDydt8teybawWPXRcxZz70WufdEUsFh1u0EwAXXag==
+   eJztlzsSgCAMROm9qTPcv7WxcByRAIm7iSlex5h9fONWStmSxAFVaQwaDx5VkKE3RvIN9Dxfc/ZgXYfoMPtL984IaKck0SLPx//YT9A5NBw8u9wdPHk8Zffk0cufDt/mZHVYzc7g4GENRmoy5Y5AlHmKsuZRPNKFkygesy6s70WrfiubxRtuNQ+a7/pqHUsHqRt6Daz3ukUt9HnVrIe8bxjuOm0Xrz6s+Wf+x9CZEyyj/Qsjb/t9ps9EO2j0uoh3VrOvRfY9lkRwGHU7APUd8K4=
   </data>
  </layer>
 </map>

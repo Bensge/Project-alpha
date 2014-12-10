@@ -63,39 +63,45 @@ public abstract class Entity extends Sprite {
 	
 	public abstract void update(float delta);
 	
-	public boolean collisionX(float x, float y) {
-		
+	public boolean collisionXLeft(float x, float y) {
 		/////left tiles
-		if(isBlocked(x, y) ||
-			isBlocked(x, y + getHeight() / 2) ||
-			isBlocked(x, y + getHeight()))
+		if(isBlocked(x, y + 2) ||
+			isBlocked(x, y + getHeight() - 2) ||
+			x + getWidth() > mapWidth)
 		{
 				return true;
 		}
+		return false;
+	}
 		
+	public boolean collisionXRight(float x, float y){
 		/////right tiles
-		else if(isBlocked(x + getWidth(), y) ||
-				isBlocked(x + getWidth(), y + getHeight() / 2) ||
-				isBlocked(x + getWidth(), y + getHeight()))
+		if(isBlocked(x + getWidth(), y + 2) ||
+			isBlocked(x + getWidth(), y + getHeight() - 2) ||
+			(x < 0))
 			{
 					return true;
 			}
 		return false;
 	}
 	
-	public boolean collisionY(float x, float y){
-		/////up tiles
-		if(isBlocked(x , y + getHeight()) ||
-			isBlocked(x + getWidth() / 2, y + getHeight()) ||
-			isBlocked(x + getWidth(), y + getHeight()))
+	public boolean collisionYDown(float x, float y){
+		/////bottom tiles
+		if(isBlocked(x + 0.1f, y) ||
+			isBlocked(x - 0.1f + getWidth(), y) ||
+			y < 0)
 		{
 			return true;
 		}
 		
-		/////bottom tiles
-		else if(isBlocked(x, y) ||
-				isBlocked(x + getWidth() / 2, y) ||
-				isBlocked(x + getWidth(), y))
+		return false;
+	}
+	
+	public boolean collisionYUp(float x, float y){
+		/////up tiles
+		if(isBlocked(x , y + getHeight()) ||
+			//isBlocked(x + getWidth() / 2, y + getHeight()) ||
+			isBlocked(x + getWidth(), y + getHeight()))
 		{
 			return true;
 		}

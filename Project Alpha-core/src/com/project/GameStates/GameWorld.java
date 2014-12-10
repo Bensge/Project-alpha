@@ -40,7 +40,7 @@ public class GameWorld extends GameState {
 		renderer = new OrthogonalTiledMapRenderer(map);
 		
 		//Player
-		player = new Player(10, 10, map);
+		player = new Player(24 * 16, 39 * 16, map);
 
 		//Logging
 		System.out.println("camera: " + camera + " map: " + map + " renderer: " + renderer);

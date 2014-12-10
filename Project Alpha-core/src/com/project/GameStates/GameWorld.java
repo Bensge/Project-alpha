@@ -1,13 +1,17 @@
 package com.project.GameStates;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.project.Entities.Player;
 
 public class GameWorld extends GameState {
@@ -16,6 +20,10 @@ public class GameWorld extends GameState {
 	private OrthogonalTiledMapRenderer renderer;
 	private TiledMap map;
 	private Player player;
+	private BitmapFont fpsFont;
+	private SpriteBatch fpsBatch;
+	private final float fpsPadding = 10;
+	private String fpsString;
 
 	public GameWorld(GameStateManager manager) {
 		super(manager);
@@ -36,11 +44,19 @@ public class GameWorld extends GameState {
 
 		//Logging
 		System.out.println("camera: " + camera + " map: " + map + " renderer: " + renderer);
+		
+		fpsFont = new BitmapFont();
+		fpsFont.setColor(Color.RED);
+		fpsFont.setScale(2);
+		
+		fpsBatch = new SpriteBatch();
 	}
 
 	@Override
 	public void update(float delta) {
 		player.update(delta);
+		
+		fpsString = (int)(1.f / delta) + "";
 	}
 
 	@Override
@@ -70,9 +86,16 @@ public class GameWorld extends GameState {
 		renderer.getBatch().begin();
 		
 		player.draw(renderer.getBatch());
-		//player.draw(renderer.getSpriteBatch());
 		
 		renderer.getBatch().end();
+		
+		//FPS counter
+		fpsBatch.begin();
+		String str = fpsString != null ? fpsString : (Gdx.graphics.getFramesPerSecond() + "");
+		TextBounds bounds = fpsFont.getBounds(str);
+		fpsFont.draw(fpsBatch,str,Gdx.graphics.getWidth() - bounds.width - fpsPadding, Gdx.graphics.getHeight() - fpsPadding);
+		fpsBatch.end();
+		
 		
 	}
 

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 
 public class Player extends Entity {
 
@@ -50,13 +49,11 @@ public class Player extends Entity {
 		
 		//Handle jump keyboard input
 		if (Gdx.input.isKeyPressed(Keys.W) && canJump){
-			//System.out.println("jumping");
 			velocity.y = jump; //use += instead!?
 			canJump = false;
 		}
 		else if(Gdx.input.isKeyPressed(Keys.S)){
 			//go down a level
-			//TODO
 		}
 
 		//Handle jump states
@@ -70,33 +67,25 @@ public class Player extends Entity {
 		
 		//y-axis collision
 		if(collisionYUp(getX(), getY())){
-			if(velocity.y != 0)
-				velocity.y = 0;
+			velocity.y = 0;
 			
 			setY(oldY);
 		}
 		else if(collisionYDown(getX(), getY())){
 			canJump = true;
-			//if(velocity.y != 0)
-				velocity.y = -velocity.y * 0.1f;
+			velocity.y = -velocity.y * 0.1f;
 			setY(oldY);
 		}
 		
 		//x-axis collision
 		if(collisionXLeft(getX(), getY())){
-			//if(velocity.x != 0)
-				velocity.x = -velocity.x * 0.3f;
+			velocity.x = -velocity.x * 0.3f;
 			setX(oldX);
-			System.out.println("mi");
 		}
 		else if(collisionXRight(getX(), getY())){
-			//if(velocity.x != 0)
-				velocity.x = -velocity.x * 0.3f;
-			System.out.println("ma");
+			velocity.x = -velocity.x * 0.3f;
 			setX(oldX);
 		}
-		
-		//System.out.println(velocity.x);
 	}
 	
 	private void decreaseXVelocity() {

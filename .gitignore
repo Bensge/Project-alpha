@@ -61,7 +61,7 @@ build/
 
 ## OS Specific
 .DS_Store
-.classpath.txt
+
 *.gen
 .recommenders/index/http___download_eclipse_org_recommenders_models_luna_/segments_1
 *.lock
@@ -78,15 +78,6 @@ build/
 .recommenders/repository/http___download_eclipse_org_recommenders_models_luna_/org/eclipse/recommenders/index/0.0.0-SNAPSHOT/resolver-status.properties
 .recommenders/repository/http___download_eclipse_org_recommenders_models_luna_/org/eclipse/recommenders/index/0.0.0-SNAPSHOT/_remote.repositories
 
-*.classpath
-
-Project Alpha-core/.classpath
-
 
 Project Alpha-core/com/project/main/Main.java
 
-Project Alpha-desktop/.classpath
-
-Project Alpha-core/.project
-
-Project Alpha-ios/.classpath

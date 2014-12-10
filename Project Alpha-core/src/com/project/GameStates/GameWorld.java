@@ -67,12 +67,12 @@ public class GameWorld extends GameState {
 		
 		renderer.render();
 		
-		renderer.getSpriteBatch().begin();
+		renderer.getBatch().begin();
 		
-		player.draw(renderer.getSpriteBatch());
+		player.draw(renderer.getBatch());
 		//player.draw(renderer.getSpriteBatch());
 		
-		renderer.getSpriteBatch().end();
+		renderer.getBatch().end();
 		
 	}
 

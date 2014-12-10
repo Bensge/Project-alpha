@@ -69,9 +69,15 @@ public class Player extends Entity {
 		}
 		
 		//check out of map
-		if(isOutOfBoundsX(getX(), getWidth())){
-			velocity.x = -velocity.x * 0.3f;
+		if (getX() <= 0)
+		{
+			velocity.x = velocity.x > 0 ? velocity.x : 0;
 		}
+		else if (getX() + getWidth() >= mapWidth)
+		{
+			velocity.x = velocity.x < 0 ? velocity.x : 0;
+		}
+		
 		
 		if(isOutOfBoundsY(getY(), getWidth())){
 			velocity.y = -velocity.y * 0.3f;
@@ -89,7 +95,6 @@ public class Player extends Entity {
 		Cell cell = collisionLayer.getCell((int) ((getX()) / collisionLayer.getTileWidth()), (int) ((getY() + 2) / collisionLayer.getTileHeight()));
 		if (cell != null && cell.getTile().getProperties().containsKey(blockKey))
 		{
-			System.out.println("Can't move left!");
 			//Can't move left!
 			velocity.x = (velocity.x > 0) ? velocity.x : 0;
 			//STOP MOVEEEEEEENNNNN
@@ -99,7 +104,6 @@ public class Player extends Entity {
 		cell = collisionLayer.getCell(((int) ((getX()) / collisionLayer.getTileWidth())) + 1, (int) ((getY() + 2) / collisionLayer.getTileHeight()));
 		if (cell != null && cell.getTile().getProperties().containsKey(blockKey))
 		{
-			System.out.println("Can't move right!");
 			//Can't move right!
 			velocity.x = (velocity.x < 0) ? velocity.x : 0;
 			//STOP MOVEEEEEEENNNNN
@@ -111,7 +115,6 @@ public class Player extends Entity {
 		if (cell != null && cell.getTile().getProperties().containsKey(blockKey))
 		{
 			//Can't jump up!
-			System.out.println("Collision above");
 			velocity.y = (velocity.y < 0) ? velocity.y : 0;
 			canJump = false;
 			//STOP MOVEEEEEEENNNNN
@@ -123,7 +126,6 @@ public class Player extends Entity {
 		if (cell != null && cell.getTile().getProperties().containsKey(blockKey))
 		{
 			//Can't jump down!
-			System.out.println("Collision below");
 			velocity.y = (velocity.y > 0) ? velocity.y : 0;
 			canJump = true;
 			//STOP MOVEEEEEEENNNNN
@@ -134,7 +136,6 @@ public class Player extends Entity {
 		if (cell != null && cell.getTile().getProperties().containsKey(blockKey))
 		{
 			//Can't jump down!
-			System.out.println("Collision below");
 			velocity.y = (velocity.y > 0) ? velocity.y : 0;
 			canJump = true;
 			//STOP MOVEEEEEEENNNNN
@@ -154,7 +155,6 @@ public class Player extends Entity {
 		if (cell != null && cell.getTile().getProperties().containsKey(blockKey))
 		{
 			//Can't jump up!
-			System.out.println("Collision above");
 			velocity.y = (velocity.y < 0) ? velocity.y : 0;
 			canJump = false;
 			//STOP MOVEEEEEEENNNNN
@@ -166,7 +166,6 @@ public class Player extends Entity {
 		if (cell != null && cell.getTile().getProperties().containsKey(blockKey))
 		{
 			//Can't jump down!
-			System.out.println("Collision below");
 			velocity.y = (velocity.y > 0) ? velocity.y : 0;
 			canJump = true;
 			//STOP MOVEEEEEEENNNNN
@@ -191,7 +190,6 @@ public class Player extends Entity {
 		cell = collisionLayer.getCell((int) ((newX) / collisionLayer.getTileWidth()), (int) ((newY + 2) / collisionLayer.getTileHeight()));
 		if (cell != null && cell.getTile().getProperties().containsKey(blockKey))
 		{
-			System.out.println("Can't move left!");
 			//Can't move left!
 			velocity.x = (velocity.x > 0) ? velocity.x : 0;
 			//STOP MOVEEEEEEENNNNN
@@ -201,12 +199,12 @@ public class Player extends Entity {
 		cell = collisionLayer.getCell(((int) ((newX) / collisionLayer.getTileWidth())) + 1, (int) ((newY + 2) / collisionLayer.getTileHeight()));
 		if (cell != null && cell.getTile().getProperties().containsKey(blockKey))
 		{
-			System.out.println("Can't move right!");
 			//Can't move right!
 			velocity.x = (velocity.x < 0) ? velocity.x : 0;
 			//STOP MOVEEEEEEENNNNN
 			newX = oldX;
 		}
+		
 		
 		//Update player position
 		setX(newX);

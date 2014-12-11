@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 
 public class Player extends Entity {
 
@@ -50,166 +49,43 @@ public class Player extends Entity {
 		
 		//Handle jump keyboard input
 		if (Gdx.input.isKeyPressed(Keys.W) && canJump){
-			System.out.println("jumping");
 			velocity.y = jump; //use += instead!?
 			canJump = false;
 		}
 		else if(Gdx.input.isKeyPressed(Keys.S)){
 			//go down a level
-			//TODO
 		}
 
-		
 		//Handle jump states
-		//(ground)
-		if(getY() < 0){
-			canJump = true;
-			setY(0);
-			velocity.y = 0;
-		}
 		
-		//check out of map
-		if (getX() <= 0)
-		{
-			velocity.x = velocity.x > 0 ? velocity.x : 0;
-		}
-		else if (getX() + getWidth() >= mapWidth)
-		{
-			velocity.x = velocity.x < 0 ? velocity.x : 0;
-		}
-		
-		
-		if(isOutOfBoundsY(getY(), getWidth())){
-			velocity.y = -velocity.y * 0.3f;
-		}
-		
+		setX(getX() + velocity.x * delta);
+		setY(getY() + velocity.y * delta);
 		
 		/*
 		** check object collision
 		*/
 		
-		float newX = 999999999;
-		float newY = 999999999;
-		
-		//Check left
-		Cell cell = collisionLayer.getCell((int) ((getX()) / collisionLayer.getTileWidth()), (int) ((getY() + 2) / collisionLayer.getTileHeight()));
-		if (cell != null && cell.getTile().getProperties().containsKey(blockKey))
-		{
-			//Can't move left!
-			velocity.x = (velocity.x > 0) ? velocity.x : 0;
-			//STOP MOVEEEEEEENNNNN
-			//newX = getX();
+		//y-axis collision
+		if(collisionYUp(getX(), getY())){
+			velocity.y = 0;
+			
+			setY(oldY);
 		}
-		//Check right
-		cell = collisionLayer.getCell(((int) ((getX()) / collisionLayer.getTileWidth())) + 1, (int) ((getY() + 2) / collisionLayer.getTileHeight()));
-		if (cell != null && cell.getTile().getProperties().containsKey(blockKey))
-		{
-			//Can't move right!
-			velocity.x = (velocity.x < 0) ? velocity.x : 0;
-			//STOP MOVEEEEEEENNNNN
-			//newX = getX();
-		}
-		
-		//Check up
-		cell = collisionLayer.getCell(((int) ((getX() + getWidth() / 2) / collisionLayer.getTileWidth())), (int)(getY() / collisionLayer.getTileHeight()) + 1);
-		if (cell != null && cell.getTile().getProperties().containsKey(blockKey))
-		{
-			//Can't jump up!
-			velocity.y = (velocity.y < 0) ? velocity.y : 0;
-			canJump = false;
-			//STOP MOVEEEEEEENNNNN
-			//newY = getY();
-		}
-		
-		//Check down (l)
-		cell = collisionLayer.getCell(((int) ((getX()) / collisionLayer.getTileWidth())), (int)((getY()) / collisionLayer.getTileHeight()));
-		if (cell != null && cell.getTile().getProperties().containsKey(blockKey))
-		{
-			//Can't jump down!
-			velocity.y = (velocity.y > 0) ? velocity.y : 0;
+		else if(collisionYDown(getX(), getY())){
 			canJump = true;
-			//STOP MOVEEEEEEENNNNN
-			//newY = getY();
-		}
-		//Check down (r)
-		cell = collisionLayer.getCell(((int) ((getX() + getWidth()) / collisionLayer.getTileWidth())), (int)((getY()) / collisionLayer.getTileHeight()));
-		if (cell != null && cell.getTile().getProperties().containsKey(blockKey))
-		{
-			//Can't jump down!
-			velocity.y = (velocity.y > 0) ? velocity.y : 0;
-			canJump = true;
-			//STOP MOVEEEEEEENNNNN
-			//newY = getY();
+			velocity.y = -velocity.y * 0.1f;
+			setY(oldY);
 		}
 		
-		//Update running stuff
-		if (newX == 999999999)
-			newX = getX() + velocity.x * delta;
-		
-		if (newY == 999999999)
-			newY = getY() + velocity.y * delta;
-		
-		
-		//Check up again
-		cell = collisionLayer.getCell(((int) ((newX + getWidth() / 2) / collisionLayer.getTileWidth())), (int)(newY / collisionLayer.getTileHeight()) + 1);
-		if (cell != null && cell.getTile().getProperties().containsKey(blockKey))
-		{
-			//Can't jump up!
-			velocity.y = (velocity.y < 0) ? velocity.y : 0;
-			canJump = false;
-			//STOP MOVEEEEEEENNNNN
-			newY = oldY;
+		//x-axis collision
+		if(collisionXLeft(getX(), getY())){
+			velocity.x = -velocity.x * 0.3f;
+			setX(oldX);
 		}
-		
-		//Check down again (l)
-		cell = collisionLayer.getCell(((int) ((newX) / collisionLayer.getTileWidth())), (int)((newY) / collisionLayer.getTileHeight()));
-		if (cell != null && cell.getTile().getProperties().containsKey(blockKey))
-		{
-			//Can't jump down!
-			velocity.y = (velocity.y > 0) ? velocity.y : 0;
-			canJump = true;
-			//STOP MOVEEEEEEENNNNN
-			newY = oldY;
+		else if(collisionXRight(getX(), getY())){
+			velocity.x = -velocity.x * 0.3f;
+			setX(oldX);
 		}
-		
-		//Check down again (r)
-		cell = collisionLayer.getCell(((int) ((newX + getWidth()) / collisionLayer.getTileWidth())), (int)((newY) / collisionLayer.getTileHeight()));
-		if (cell != null && cell.getTile().getProperties().containsKey(blockKey))
-		{
-			//Can't jump down!
-			System.out.println("Collision below");
-			velocity.y = (velocity.y > 0) ? velocity.y : 0;
-			canJump = true;
-			//STOP MOVEEEEEEENNNNN
-			newY = oldY;
-		}
-		
-		
-		
-		//Check left again
-		cell = collisionLayer.getCell((int) ((newX) / collisionLayer.getTileWidth()), (int) ((newY + 2) / collisionLayer.getTileHeight()));
-		if (cell != null && cell.getTile().getProperties().containsKey(blockKey))
-		{
-			//Can't move left!
-			velocity.x = (velocity.x > 0) ? velocity.x : 0;
-			//STOP MOVEEEEEEENNNNN
-			newX = oldX;
-		}
-		//Check right again
-		cell = collisionLayer.getCell(((int) ((newX) / collisionLayer.getTileWidth())) + 1, (int) ((newY + 2) / collisionLayer.getTileHeight()));
-		if (cell != null && cell.getTile().getProperties().containsKey(blockKey))
-		{
-			//Can't move right!
-			velocity.x = (velocity.x < 0) ? velocity.x : 0;
-			//STOP MOVEEEEEEENNNNN
-			newX = oldX;
-		}
-		
-		
-		//Update player position
-		setX(newX);
-		setY(newY);
-		
 	}
 	
 	private void decreaseXVelocity() {

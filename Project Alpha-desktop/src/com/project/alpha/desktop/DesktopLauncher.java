@@ -6,8 +6,16 @@ import com.project.main.Main;
 
 
 public class DesktopLauncher {
-	public static void main (String[] arg) {
+	public static void main (String[] arg)
+	{
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new Main(), config);
+		
+		config.vSyncEnabled = true;
+		config.backgroundFPS = 0;
+		config.foregroundFPS = 0;
+		
+		Main m = new Main();
+		
+		LwjglApplication lwjglApplication = new LwjglApplication(m,config);
 	}
 }

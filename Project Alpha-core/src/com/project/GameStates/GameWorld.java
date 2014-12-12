@@ -41,7 +41,7 @@ public class GameWorld extends GameState {
 	public GameWorld(GameStateManager manager) {
 		super(manager);
 		
-		new MultiplayerController("10.32.116.6", 80);
+		//new MultiplayerController("10.32.116.6", 80);
 		
 		//Camera
 		camera = new OrthographicCamera();

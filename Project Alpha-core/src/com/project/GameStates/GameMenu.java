@@ -22,9 +22,15 @@ public class GameMenu extends GameState {
 	{
 		super(m);
 		
+		stage = new Stage();
+		
 		Gdx.input.setInputProcessor(stage);
+		
 	    table = new Table();
 	    table.setFillParent(true);
+	    table.debugTable();
+	    table.debugCell();
+	    table.debug();
 	    stage.addActor(table);
 	    
 	    shapeRenderer = new ShapeRenderer();
@@ -34,23 +40,26 @@ public class GameMenu extends GameState {
 	    TextButtonStyle style = new TextButtonStyle();
 	    //style.up = new TextureRegionDrawable(upRegion);
 	    //style.down = new TextureRegionDrawable(downRegion);
-	    style.font = new BitmapFont();
+	    style.font = new BitmapFont(Gdx.files.internal("fonts/Menlo-32.fnt"),Gdx.files.internal("fonts/Menlo.png"), false);
 
 	    TextButton button = new TextButton("Single Player", style);
+	    table.row().pad(20);
 	    table.add(button);
-	    
 	    button.addListener(new ChangeListener() {
 	        public void changed (ChangeEvent event, Actor actor) {
-	            System.out.println("Changed!");
+	            manager.push(new GameWorld(manager));
 	        }
 	    });
 
 	    button = new TextButton("Multiplayer", style);
+	    table.row().pad(20);
 	    table.add(button);
+	    table.row();
 	    
 	    button = new TextButton("Settings", style);
+	    table.row().pad(20);
 	    table.add(button);
-	    
+	    table.row();
 	}
 	
 	@Override
@@ -64,8 +73,7 @@ public class GameMenu extends GameState {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 	    stage.act(Gdx.graphics.getDeltaTime());
 	    stage.draw();
-
-	    table.drawDebug(shapeRenderer); // This is optional, but enables debug lines for tables.
+	    Table.drawDebug(stage); // This is optional, but enables debug lines for tables.
 	}
 
 }

@@ -65,7 +65,7 @@ public class GameWorld extends GameState {
 		
 		//Parallax
 		backgroundBatch = new SpriteBatch();
-		backgroundSprite = new Sprite(new TextureRegion(new Texture(Gdx.files.internal("img/parallax_background.jpg")),1260,600,900,1000));
+		backgroundSprite = new Sprite(new TextureRegion(new Texture(Gdx.files.internal("img/parallax_background.jpg")),1260,800,900,700));
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -16,6 +17,9 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.Method;
+import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.project.Entities.Player;
 import com.project.constants.Constants;
 import com.project.networking.MultiplayerController;
@@ -125,11 +129,39 @@ public class GameWorld extends GameState {
 		renderer.render();
 		
 		//Draw player
-		renderer.getBatch().begin();
+		Method getBatchMethod = null;
+		try
+		{
+			getBatchMethod = ClassReflection.getMethod(renderer.getClass(), "getBatch", new Class[0]);
+		}
+		catch (ReflectionException exc)
+		{
+			try
+			{
+				getBatchMethod = ClassReflection.getMethod(renderer.getClass(), "getSpriteBatch", new Class[0]);
+			}
+			catch (ReflectionException e)
+			{
+				System.out.println("Ugh...");
+				e.printStackTrace();
+			}
+		}
 		
-		player.draw(renderer.getBatch());
+		Batch batch = null;
+		try
+		{
+			batch = (Batch) getBatchMethod.invoke(renderer, (Object[])null);
+		} catch (ReflectionException e)
+		{
+			System.out.println("Damn.");
+			e.printStackTrace();
+		}
 		
-		renderer.getBatch().end();
+		batch.begin();
+		
+		player.draw(batch);
+		
+		batch.end();
 		
 		//FPS counter
 		fpsBatch.begin();

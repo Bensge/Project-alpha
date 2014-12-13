@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -20,6 +21,7 @@ public class GameMenu extends GameState {
 
 	private Table table;
 	private Stage stage;
+	private ShapeRenderer backgroundRenderer;
 	
 	public GameMenu(GameStateManager m)
 	{
@@ -39,19 +41,19 @@ public class GameMenu extends GameState {
 	    //Setup stage
 	    stage.addActor(table);
 	    
+	    //Setup renderer
+	    backgroundRenderer = new ShapeRenderer();
+	    
 	    //Add header
 	    
 	    LabelStyle headerStyle = new LabelStyle(Constants.menlo50Font, new Color(200, 10, 50, 255));
 		Label header = new Label("Project alpha", headerStyle);
 		
-		table.row().pad(80);
+		table.row().pad(60);
 		table.add(header);
 	    
 	    //Add buttons
-	    
 	    TextButtonStyle style = new TextButtonStyle();
-	    //style.up = new TextureRegionDrawable(upRegion);
-	    //style.down = new TextureRegionDrawable(downRegion);
 	    style.font = Constants.menlo32Font;
 
 	    TextButton button = new TextButton("Single Player", style);
@@ -59,7 +61,7 @@ public class GameMenu extends GameState {
 	    table.add(button);
 	    button.addListener(new ChangeListener() {
 	        public void changed (ChangeEvent event, Actor actor) {
-	            manager.push(new GameWorld(manager));
+	            manager.setRenderBackgroundStateExclusively(true);
 	        }
 	    });
 
@@ -85,6 +87,14 @@ public class GameMenu extends GameState {
 	{
 		super.render(b);
 		
+		//Draw dim background
+		Gdx.gl.glEnable(GL20.GL_BLEND);
+		backgroundRenderer.begin(ShapeType.Filled);
+		backgroundRenderer.setColor(0, 0, 0, .6f);
+		backgroundRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		backgroundRenderer.end();
+		
+		//Draw UI
 		stage.act(Gdx.graphics.getDeltaTime());
 	    stage.draw();
 	    

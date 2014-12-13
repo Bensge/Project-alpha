@@ -20,6 +20,7 @@ public class Main implements ApplicationListener{
 		
 		manager = new GameStateManager();
 		manager.push(new GameMenu(manager));
+		manager.setBackgroundState(new GameWorld(manager));
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public abstract class GameState {
 	
 	public boolean shouldClearScreen;
+	private boolean isInBackground;
 
 	protected GameStateManager manager;
 	
@@ -23,5 +24,10 @@ public abstract class GameState {
 			Gdx.gl.glClearColor(0, 0, 0, 1);
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		}
+	}
+	
+	public void setIsInBackground(boolean bg)
+	{
+		isInBackground = bg;
 	}
 }

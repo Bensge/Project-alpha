@@ -120,11 +120,11 @@ public class GameWorld extends GameState {
 		renderer.render();
 		
 		//Draw player
-		renderer.getSpriteBatch().begin();
+		renderer.getBatch().begin();
 		
-		player.draw(renderer.getSpriteBatch());
+		player.draw(renderer.getBatch());
 		
-		renderer.getSpriteBatch().end();
+		renderer.getBatch().end();
 		
 		//FPS counter
 		fpsBatch.begin();

@@ -68,6 +68,11 @@ public class GameWorld extends GameState {
 		backgroundBatch = new SpriteBatch();
 		backgroundSprite = new Sprite(new TextureRegion(new Texture(Gdx.files.internal("img/parallax_background.jpg")),1260,800,900,700));
 	}
+	
+	public void setIsInBackground(boolean background)
+	{
+		System.out.println("setIsInBackground(" + background + ")");
+	}
 
 	@Override
 	public void update(float delta) {
@@ -132,8 +137,6 @@ public class GameWorld extends GameState {
 		TextBounds bounds = fpsFont.getBounds(str);
 		fpsFont.draw(fpsBatch,str,Gdx.graphics.getWidth() - bounds.width - fpsPadding, Gdx.graphics.getHeight() - fpsPadding);
 		fpsBatch.end();
-		
-		
 	}
 
 }

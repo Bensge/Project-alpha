@@ -25,7 +25,7 @@ public class GameMenu extends GameState {
 	private ShapeRenderer backgroundRenderer;
 	private Transition undimTransition;
 	
-	private final float INITIAL_DIM_VALUE = .6f;
+	private final float INITIAL_DIM_VALUE = .4f;
 	
 	public GameMenu(GameStateManager m)
 	{

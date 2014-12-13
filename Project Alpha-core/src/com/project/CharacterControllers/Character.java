@@ -5,4 +5,5 @@ public interface Character {
 	public boolean canMoveLeft();
 	public boolean hasGroundLeft();
 	public boolean hasGroundRight();
+	public boolean isJumping();
 }

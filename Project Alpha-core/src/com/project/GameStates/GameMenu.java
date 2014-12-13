@@ -23,7 +23,6 @@ public class GameMenu extends GameState {
 	private Table table;
 	private Stage stage;
 	private ShapeRenderer backgroundRenderer;
-	private float dimValue;
 	private Transition undimTransition;
 	
 	private final float INITIAL_DIM_VALUE = .6f;
@@ -35,9 +34,6 @@ public class GameMenu extends GameState {
 		stage = new Stage();
 		
 		Gdx.input.setInputProcessor(stage);
-		
-		//Set default values
-		dimValue = .5f;
 		
 		//Create table
 	    table = new Table();
@@ -71,7 +67,7 @@ public class GameMenu extends GameState {
 	        public void changed (ChangeEvent event, Actor actor) {
 	        	undimTransition = new Transition() {
 					public float duration() {
-						return 1;
+						return 0.6f;
 					}
 					public void completion() {
 						manager.setRenderBackgroundStateExclusively(true);

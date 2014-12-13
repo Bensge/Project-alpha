@@ -2,8 +2,7 @@ package com.project.CharacterControllers;
 
 public abstract class CharacterController
 {
-	@SuppressWarnings("unused")
-	private Character character;
+	protected Character character;
 	
 	public enum Direction {
 		None,

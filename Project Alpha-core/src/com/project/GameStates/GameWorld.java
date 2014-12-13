@@ -1,5 +1,7 @@
 package com.project.GameStates;
 
+import java.lang.reflect.InvocationTargetException;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -20,6 +22,8 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.Method;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
+import com.project.CharacterControllers.CharacterController;
+import com.project.CharacterControllers.ComputerDemoController;
 import com.project.CharacterControllers.UserDesktopController;
 import com.project.Entities.Player;
 import com.project.constants.Constants;
@@ -63,7 +67,7 @@ public class GameWorld extends GameState {
 		//Player
 		player = new Player(24 * 16, 39 * 16, map);
 		//TODO: Decide between touch / desktop character controller
-		player.controller = new UserDesktopController(player);
+		//player.controller = new UserDesktopController(player);
 
 		//FPS
 		fpsFont = Constants.menlo32Font;
@@ -79,6 +83,21 @@ public class GameWorld extends GameState {
 	public void setIsInBackground(boolean background)
 	{
 		System.out.println("setIsInBackground(" + background + ")");
+		
+		if (background != isInBackground)
+		{
+			//The background state actually changed
+			Class<? extends CharacterController> controllerClass = background ? ComputerDemoController.class : UserDesktopController.class;
+			try {
+				player.controller = (CharacterController)controllerClass.getConstructors()[0].newInstance(player);
+			} catch (Exception e)
+			{
+				System.out.println("Ouch, creating CharacterController failed");
+				e.printStackTrace();
+			}
+		}
+		
+		super.setIsInBackground(background);
 	}
 
 	@Override

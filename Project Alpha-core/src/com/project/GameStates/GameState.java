@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public abstract class GameState {
 	
 	public boolean shouldClearScreen;
-	private boolean isInBackground;
+	protected boolean isInBackground;
 
 	protected GameStateManager manager;
 	

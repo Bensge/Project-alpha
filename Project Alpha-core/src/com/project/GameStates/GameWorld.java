@@ -1,10 +1,7 @@
 package com.project.GameStates;
 
-import java.lang.reflect.InvocationTargetException;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -17,7 +14,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.Method;
@@ -27,7 +23,6 @@ import com.project.CharacterControllers.ComputerDemoController;
 import com.project.CharacterControllers.UserDesktopController;
 import com.project.Entities.Player;
 import com.project.constants.Constants;
-import com.project.networking.MultiplayerController;
 
 public class GameWorld extends GameState {
 	
@@ -55,8 +50,8 @@ public class GameWorld extends GameState {
 		
 		//Camera
 		camera = new OrthographicCamera();
-		camera.viewportWidth = Gdx.graphics.getWidth();
-		camera.viewportHeight = Gdx.graphics.getHeight();
+		camera.viewportWidth = Gdx.graphics.getWidth() * 0.6f;
+		camera.viewportHeight = Gdx.graphics.getHeight() * 0.6f;
 		
 		//Map
 		map = new TmxMapLoader().load("maps/map.tmx");
@@ -128,7 +123,7 @@ public class GameWorld extends GameState {
 		cX = Math.min(cX, layer.getWidth() * layer.getTileWidth() - camera.viewportWidth / 2);
 		cY = Math.min(cY, layer.getHeight() * layer.getTileHeight() - camera.viewportHeight / 2);
 		
-		camera.position.set(cX, cY, 0);
+		camera.position.set((int)cX, (int)cY, 0);
 		camera.update();
 		renderer.setView(camera);
 		

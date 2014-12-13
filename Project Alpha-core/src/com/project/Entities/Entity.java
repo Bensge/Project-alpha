@@ -50,7 +50,13 @@ public abstract class Entity extends Sprite {
 	}
 	
 	public void render(SpriteBatch b){
+		float x = getX(), y = getY();
+		setX((int)x);
+		setX((int)y);
 		super.draw(b);
+		
+		setX(x);
+		setY(y);
 	}
 	
 	public boolean isOutOfBoundsX(float x, float width) {

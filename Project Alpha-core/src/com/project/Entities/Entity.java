@@ -67,7 +67,8 @@ public abstract class Entity extends Sprite {
 		/////left tiles
 		if(isBlocked(x, y + 2) ||
 			isBlocked(x, y + getHeight() - 2) ||
-			x + getWidth() > mapWidth)
+			(x < 0)
+			)
 		{
 				return true;
 		}
@@ -78,7 +79,7 @@ public abstract class Entity extends Sprite {
 		/////right tiles
 		if(isBlocked(x + getWidth(), y + 2) ||
 			isBlocked(x + getWidth(), y + getHeight() - 2) ||
-			(x < 0))
+			(x + getWidth() > mapWidth))
 			{
 					return true;
 			}

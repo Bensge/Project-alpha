@@ -13,6 +13,11 @@ public class Player extends Entity implements Character {
 	private float oldX, oldY;
 	public CharacterController controller;
 	
+	/*
+	 * Booleans for the Character interface
+	 */
+	private boolean canMoveLeft, canMoveRight, hasGroundLeft, hasGroundRight, isJumping;
+	
 	public Player(int x, int y, TiledMap map) {
 		super("img/enemy.png", map);
 		
@@ -38,9 +43,10 @@ public class Player extends Entity implements Character {
 		velocity.y -= gravity * delta;
 		
 		//Handle left/right keyboard inputs
-		if (controller.walkDirection() == Direction.Left)
+		Direction dir = controller.walkDirection();
+		if (dir == Direction.Left)
 			velocity.x -= XSpeed;
-		else if (controller.walkDirection() == Direction.Right)
+		else if (dir == Direction.Right)
 			velocity.x += XSpeed;
 		else
 			decreaseXVelocity();
@@ -67,27 +73,41 @@ public class Player extends Entity implements Character {
 		** check object collision
 		*/
 		
+		isJumping = true;
+		canMoveLeft = true;
+		canMoveRight = true;
+		
 		//y-axis collision
-		if(collisionYUp(getX(), getY())){
+		//TODO: collisionYUp is a stupid name, because the method actually checks for collisions below the player, hence it should be called DOWN not UP
+		if (collisionYUp(getX(), getY()))
+		{
 			velocity.y = 0;
-			
 			setY(oldY);
+			isJumping = false;
 		}
-		else if(collisionYDown(getX(), getY())){
+		else if (collisionYDown(getX(), getY()))
+		{
 			canJump = true;
 			velocity.y = -velocity.y * 0.1f;
 			setY(oldY);
+			isJumping = false;
 		}
 		
 		//x-axis collision
-		if(collisionXLeft(getX(), getY())){
+		if (collisionXLeft(getX(), getY()))
+		{
 			velocity.x = -velocity.x * 0.3f;
 			setX(oldX);
+			canMoveLeft = false;
 		}
-		else if(collisionXRight(getX(), getY())){
+		else if (collisionXRight(getX(), getY()))
+		{
 			velocity.x = -velocity.x * 0.3f;
 			setX(oldX);
+			canMoveRight = false;
 		}
+		
+		controller.update();
 	}
 	
 	private void decreaseXVelocity() {
@@ -99,25 +119,36 @@ public class Player extends Entity implements Character {
 	public void render(SpriteBatch b) {
 		super.render(b);
 	}
+	
+	/*
+	 * Character interface
+	 */
 
 	@Override
 	public boolean canMoveRight() {
-		return false;
+		return canMoveRight;
 	}
 
 	@Override
 	public boolean canMoveLeft() {
-		return false;
+		return canMoveLeft;
 	}
 
 	@Override
 	public boolean hasGroundLeft() {
-		return false;
+		//TODO: implement correctly
+		return hasGroundLeft;
 	}
 
 	@Override
 	public boolean hasGroundRight() {
-		return false;
+		//TODO: implement correctly
+		return hasGroundRight;
+	}
+
+	@Override
+	public boolean isJumping() {
+		return isJumping;
 	}
 
 }

@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.Method;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
+import com.project.CharacterControllers.UserDesktopController;
 import com.project.Entities.Player;
 import com.project.constants.Constants;
 import com.project.networking.MultiplayerController;
@@ -61,6 +62,8 @@ public class GameWorld extends GameState {
 		
 		//Player
 		player = new Player(24 * 16, 39 * 16, map);
+		//TODO: Decide between touch / desktop character controller
+		player.controller = new UserDesktopController(player);
 
 		//FPS
 		fpsFont = Constants.menlo32Font;

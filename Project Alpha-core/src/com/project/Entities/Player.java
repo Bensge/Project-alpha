@@ -4,10 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.project.CharacterControllers.Character;
+import com.project.CharacterControllers.CharacterController;
+import com.project.CharacterControllers.CharacterController.Direction;
 
-public class Player extends Entity {
+public class Player extends Entity implements Character {
 
-	float oldX, oldY;
+	private float oldX, oldY;
+	public CharacterController controller;
 	
 	public Player(int x, int y, TiledMap map) {
 		super("img/enemy.png", map);
@@ -34,9 +38,9 @@ public class Player extends Entity {
 		velocity.y -= gravity * delta;
 		
 		//Handle left/right keyboard inputs
-		if (Gdx.input.isKeyPressed(Keys.A))
+		if (controller.walkDirection() == Direction.Left)
 			velocity.x -= XSpeed;
-		else if (Gdx.input.isKeyPressed(Keys.D))
+		else if (controller.walkDirection() == Direction.Right)
 			velocity.x += XSpeed;
 		else
 			decreaseXVelocity();
@@ -48,12 +52,10 @@ public class Player extends Entity {
 			velocity.x = -maxSpeed;
 		
 		//Handle jump keyboard input
-		if (Gdx.input.isKeyPressed(Keys.W) && canJump){
-			velocity.y = jump; //use += instead!?
+		if (controller.shouldJump() && canJump)
+		{
+			velocity.y = jump;
 			canJump = false;
-		}
-		else if(Gdx.input.isKeyPressed(Keys.S)){
-			//go down a level
 		}
 
 		//Handle jump states
@@ -96,6 +98,26 @@ public class Player extends Entity {
 	@Override
 	public void render(SpriteBatch b) {
 		super.render(b);
+	}
+
+	@Override
+	public boolean canMoveRight() {
+		return false;
+	}
+
+	@Override
+	public boolean canMoveLeft() {
+		return false;
+	}
+
+	@Override
+	public boolean hasGroundLeft() {
+		return false;
+	}
+
+	@Override
+	public boolean hasGroundRight() {
+		return false;
 	}
 
 }

@@ -26,4 +26,8 @@ public class UserDesktopController extends CharacterController {
 		return Direction.None;
 	}
 
+	@Override
+	public void update() {}
+	
+
 }

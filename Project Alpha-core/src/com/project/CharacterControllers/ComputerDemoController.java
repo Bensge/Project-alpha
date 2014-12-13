@@ -47,24 +47,33 @@ public class ComputerDemoController extends CharacterController {
 			jumpOnce = true;
 			walkDirection = random.nextBoolean() ? Direction.Left : Direction.Right;
 		}
+		
+		System.out.println("Recalculated direction = " + walkDirection + " jumpOnce = " + jumpOnce);
 	}
 
 	@Override
 	public boolean shouldJump() {
-		if (jumpOnce)
+		if (jumpOnce){
 			jumpOnce = false;
-		return jumpOnce;
+			return true;
+		}
+		return false;
 	}
 
 	@Override
 	public Direction walkDirection()
 	{
-		if (!character.isJumping() && (walkDirection == Direction.Right && !character.canMoveRight() || walkDirection == Direction.Left && !character.canMoveLeft()))
+		return walkDirection;
+	}
+
+	@Override
+	public void update()
+	{
+		if (!(character.isJumping() || jumpOnce) && ((walkDirection == Direction.Right && !character.canMoveRight()) || (walkDirection == Direction.Left && !character.canMoveLeft())))
 		{
 			reconsiderDirection();
 		}
 		
-		return walkDirection;
+		//System.out.println("Update isJumping=" + character.isJumping() + " canMoveRight=" + character.canMoveRight() + " canMoveLeft=" + character.canMoveLeft() + " walkingDirection=" + walkDirection);
 	}
-
 }

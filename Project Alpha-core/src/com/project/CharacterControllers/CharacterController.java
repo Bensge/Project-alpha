@@ -16,5 +16,6 @@ public abstract class CharacterController
 	}
 	
 	public abstract boolean shouldJump();
-	public abstract Direction walkDirection(); 
+	public abstract Direction walkDirection();
+	public abstract void update();
 }

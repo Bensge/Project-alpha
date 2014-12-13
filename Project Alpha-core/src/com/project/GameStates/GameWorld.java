@@ -17,6 +17,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.project.Entities.Player;
+import com.project.constants.Constants;
 import com.project.networking.MultiplayerController;
 
 public class GameWorld extends GameState {
@@ -58,7 +59,7 @@ public class GameWorld extends GameState {
 		player = new Player(24 * 16, 39 * 16, map);
 
 		//FPS
-		fpsFont = new BitmapFont(Gdx.files.internal("fonts/Menlo-32.fnt"),Gdx.files.internal("fonts/Menlo.png"), false);
+		fpsFont = Constants.menlo32Font;
 		fpsFont.setColor(Color.RED);
 		
 		fpsBatch = new SpriteBatch();
@@ -81,10 +82,9 @@ public class GameWorld extends GameState {
 	}
 
 	@Override
-	public void render(SpriteBatch b) {
-		
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+	public void render(SpriteBatch b)
+	{	
+		super.render(b);
 		
 		//Get player position
 		float pX = player.getX();

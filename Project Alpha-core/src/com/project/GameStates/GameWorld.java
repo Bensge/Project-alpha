@@ -50,8 +50,8 @@ public class GameWorld extends GameState {
 		
 		//Camera
 		camera = new OrthographicCamera();
-		camera.viewportWidth = Gdx.graphics.getWidth() * 0.6f;
-		camera.viewportHeight = Gdx.graphics.getHeight() * 0.6f;
+		camera.viewportWidth = Gdx.graphics.getWidth();// * 0.6f;
+		camera.viewportHeight = Gdx.graphics.getHeight();// * 0.6f;
 		
 		//Map
 		map = new TmxMapLoader().load("maps/map.tmx");
@@ -61,9 +61,7 @@ public class GameWorld extends GameState {
 		
 		//Player
 		player = new Player(24 * 16, 39 * 16, map);
-		//TODO: Decide between touch / desktop character controller
-		//player.controller = new UserDesktopController(player);
-
+		
 		//FPS
 		fpsFont = Constants.menlo32Font;
 		fpsFont.setColor(Color.RED);
@@ -77,11 +75,10 @@ public class GameWorld extends GameState {
 	
 	public void setIsInBackground(boolean background)
 	{
-		System.out.println("setIsInBackground(" + background + ")");
-		
 		if (background != isInBackground)
 		{
 			//The background state actually changed
+			//TODO: Decide between touch / desktop character controller
 			Class<? extends CharacterController> controllerClass = background ? ComputerDemoController.class : UserDesktopController.class;
 			try {
 				player.controller = (CharacterController)controllerClass.getConstructors()[0].newInstance(player);

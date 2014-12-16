@@ -39,6 +39,8 @@ public class GameWorld extends GameState {
 	private long fpsTimestamp = 0;
 	private final int FPS_UPDATES_PER_SECOND = 10;
 	
+	private float SCALING_FACTOR;
+	
 	//Parallax effect
 	private SpriteBatch backgroundBatch;
 	private Sprite backgroundSprite;
@@ -48,10 +50,12 @@ public class GameWorld extends GameState {
 		
 		//new MultiplayerController("10.32.116.6", 80);
 		
+		SCALING_FACTOR = Constants.SCREEN_SCALING_FACTOR;
+		
 		//Camera
 		camera = new OrthographicCamera();
-		camera.viewportWidth = Gdx.graphics.getWidth();// * 0.6f;
-		camera.viewportHeight = Gdx.graphics.getHeight();// * 0.6f;
+		camera.viewportWidth = Gdx.graphics.getWidth() / SCALING_FACTOR;
+		camera.viewportHeight = Gdx.graphics.getHeight() / SCALING_FACTOR;
 		
 		//Map
 		map = new TmxMapLoader().load("maps/map.tmx");
@@ -71,6 +75,7 @@ public class GameWorld extends GameState {
 		//Parallax
 		backgroundBatch = new SpriteBatch();
 		backgroundSprite = new Sprite(new TextureRegion(new Texture(Gdx.files.internal("img/parallax_background.jpg")),1260,800,900,700));
+		backgroundSprite.scale(SCALING_FACTOR);
 	}
 	
 	public void setIsInBackground(boolean background)
@@ -128,8 +133,8 @@ public class GameWorld extends GameState {
 		float xConstant = Gdx.graphics.getWidth();
 		float yConstant = Gdx.graphics.getHeight();
 		
-		float xVariable = backgroundSprite.getWidth() - xConstant;
-		float yVariable = backgroundSprite.getHeight() - yConstant;
+		float xVariable = backgroundSprite.getWidth() * SCALING_FACTOR - xConstant;
+		float yVariable = backgroundSprite.getHeight() * SCALING_FACTOR - yConstant;
 		
 		float xPercent = (cX - camera.viewportWidth / 2)/(layer.getWidth()*layer.getTileWidth() - camera.viewportWidth);
 		float yPercent = (cY - camera.viewportHeight / 2)/(layer.getHeight()*layer.getTileHeight() - camera.viewportHeight);

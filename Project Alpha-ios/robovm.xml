@@ -11,7 +11,7 @@
       <includes>
         <include>**</include>
       </includes>
-      <skipPngCrush>true</skipPngCrush>
+      <skipPngCrush>false</skipPngCrush>
     </resource>
     <resource>
       <directory>data</directory>

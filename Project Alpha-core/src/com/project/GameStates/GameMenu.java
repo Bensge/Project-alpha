@@ -38,9 +38,9 @@ public class GameMenu extends GameState {
 		//Create table
 	    table = new Table();
 	    table.setFillParent(true);
-	    table.debugTable();
-	    table.debugCell();
-	    table.debug();
+	    //table.debugTable();
+	    //table.debugCell();
+	    //table.debug();
 	    
 	    //Setup stage
 	    stage.addActor(table);

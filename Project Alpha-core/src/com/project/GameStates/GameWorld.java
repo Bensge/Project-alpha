@@ -1,6 +1,7 @@
 package com.project.GameStates;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Peripheral;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -21,6 +22,7 @@ import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.project.CharacterControllers.CharacterController;
 import com.project.CharacterControllers.ComputerDemoController;
 import com.project.CharacterControllers.UserDesktopController;
+import com.project.CharacterControllers.UserMobileController;
 import com.project.Entities.Player;
 import com.project.constants.Constants;
 
@@ -51,6 +53,7 @@ public class GameWorld extends GameState {
 		//new MultiplayerController("10.32.116.6", 80);
 		
 		SCALING_FACTOR = Constants.SCREEN_SCALING_FACTOR;
+		System.out.println("Screen scaling factor: " + SCALING_FACTOR);
 		
 		//Camera
 		camera = new OrthographicCamera();
@@ -75,7 +78,8 @@ public class GameWorld extends GameState {
 		//Parallax
 		backgroundBatch = new SpriteBatch();
 		backgroundSprite = new Sprite(new TextureRegion(new Texture(Gdx.files.internal("img/parallax_background.jpg")),1260,800,900,700));
-		backgroundSprite.scale(SCALING_FACTOR);
+		if (!(SCALING_FACTOR > 0.99f && SCALING_FACTOR < 1.01f))
+			backgroundSprite.scale(SCALING_FACTOR);
 	}
 	
 	public void setIsInBackground(boolean background)
@@ -83,8 +87,9 @@ public class GameWorld extends GameState {
 		if (background != isInBackground)
 		{
 			//The background state actually changed
-			//TODO: Decide between touch / desktop character controller
-			Class<? extends CharacterController> controllerClass = background ? ComputerDemoController.class : UserDesktopController.class;
+			Class <? extends CharacterController> userControllerClass = Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? UserMobileController.class : UserDesktopController.class;
+			
+			Class<? extends CharacterController> controllerClass = background ? ComputerDemoController.class : userControllerClass;
 			try {
 				player.controller = (CharacterController)controllerClass.getConstructors()[0].newInstance(player);
 			} catch (Exception e)

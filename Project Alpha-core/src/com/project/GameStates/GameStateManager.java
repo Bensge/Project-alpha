@@ -14,14 +14,26 @@ public class GameStateManager {
 		states = new Stack<GameState>();
 	}
 	
-	public void push(GameState state){
+	public void push(GameState state)
+	{
+		if (!states.isEmpty())
+		{
+			GameState bgState = states.peek();
+			bgState.setIsInBackground(true);
+		}
 		//adds on top
 		states.push(state);
 	}
 	
 	public void remove(){
 		//removes top
-		states.pop();
+		GameState state = states.pop();
+		//DIE
+		state.dispose();
+		
+		//Reactivate new frontmost state
+		state = states.peek();
+		state.setIsInBackground(false);
 	}
 	
 	/*

@@ -3,8 +3,9 @@ package com.project.GameStates;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Disposable;
 
-public abstract class GameState {
+public abstract class GameState implements Disposable {
 	
 	public boolean shouldClearScreen;
 	protected boolean isInBackground;
@@ -30,4 +31,6 @@ public abstract class GameState {
 	{
 		isInBackground = bg;
 	}
+	
+	public abstract void dispose();
 }

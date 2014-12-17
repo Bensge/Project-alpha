@@ -195,4 +195,9 @@ public class GameWorld extends GameState {
 		fpsBatch.end();
 	}
 
+	@Override
+	public void dispose() {
+		//The game world is never disposed, idiot!
+	}
+
 }

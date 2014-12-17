@@ -7,9 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.project.GameStates.GameMenu;
 import com.project.GameStates.GameStateManager;
 import com.project.GameStates.GameWorld;
-import com.project.GameStates.test;
 
-public class Main implements ApplicationListener{
+public class Main implements ApplicationListener {
 
 	private GameStateManager manager;
 	private SpriteBatch b;

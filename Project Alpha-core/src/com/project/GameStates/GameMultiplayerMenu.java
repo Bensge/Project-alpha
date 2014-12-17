@@ -3,34 +3,27 @@ package com.project.GameStates;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.project.constants.Constants;
 import com.project.main.Transition;
 
-public class GameMenu extends GameState {
-
+public class GameMultiplayerMenu extends GameState {
 	private Table table;
 	private Stage stage;
 	private ShapeRenderer backgroundRenderer;
 	private Transition undimTransition;
 	
-	private final float INITIAL_DIM_VALUE = .4f;
-	
-	public GameMenu(GameStateManager m)
+	public GameMultiplayerMenu(GameStateManager m)
 	{
 		super(m);
 		
@@ -51,7 +44,7 @@ public class GameMenu extends GameState {
 	    //Add header
 	    
 	    LabelStyle headerStyle = new LabelStyle(Constants.menlo50Font, new Color(200, 10, 50, 255));
-		Label header = new Label("Project alpha", headerStyle);
+		Label header = new Label("Multiplayer", headerStyle);
 		
 		table.row().pad(60);
 		table.add(header);
@@ -60,75 +53,38 @@ public class GameMenu extends GameState {
 	    TextButtonStyle style = new TextButtonStyle();
 	    style.font = Constants.menlo32Font;
 
-	    TextButton button = new TextButton("Single Player", style);
-	    table.row().pad(20);
-	    table.add(button);
-	    button.addListener(new ChangeListener() {
-	        public void changed (ChangeEvent event, Actor actor) {
-	        	undimTransition = new Transition() {
-					public float duration() {
-						return 0.6f;
-					}
-					public void completion() {
-						manager.setRenderBackgroundStateExclusively(true);
-					}
-				}; 
-	        }
-	    });
-
-	    button = new TextButton("Multiplayer", style);
-	    button.addListener(new ChangeListener() {
-			public void changed(ChangeEvent event, Actor actor) {
-				stage.addAction(Actions.sequence(Actions.fadeOut(1),new Action() {
-					public boolean act(float delta) {
-						manager.push(new GameMultiplayerMenu(manager));
-						return true;
-					}
-				},Actions.alpha(1)));
-			}
-		});
+	    TextButton button = new TextButton("Local Area Server", style);
 	    table.row().pad(20);
 	    table.add(button);
 	    table.row();
 	    
-	    button = new TextButton("Settings", style);
+	    button = new TextButton("Remote Server", style);
 	    table.row().pad(20);
 	    table.add(button);
 	    table.row();
+	    
+	    button = new TextButton("Back", style);
+	    table.row().pad(20);
+	    table.add(button);
+	    button.addListener(new ChangeListener() {
+	        public void changed (ChangeEvent event, Actor actor) {
+	        	manager.remove();
+	        }
+	    });
 	}
-	
-	public void setIsInBackground(boolean bg)
-	{
-		super.setIsInBackground(bg);
-		if (!bg)
-			Gdx.input.setInputProcessor(stage);
-	}
-	
+
 	@Override
 	public void update(float delta)
 	{
-		
 	}
-
+	
 	@Override
 	public void render(SpriteBatch b)
 	{
 		super.render(b);
 		
-		//Transition stuff
-		float alpha = 1.f;
-		if (undimTransition != null)
-		{
-			alpha = 1.f - undimTransition.progress();
-			if (undimTransition.isCompleted())
-			{
-				undimTransition = null;
-			}
-		}
-		
-		
 		//Draw dim background
-		float dimValue = INITIAL_DIM_VALUE * alpha;
+		float dimValue = .4f;
 		
 		Gdx.gl.glEnable(GL20.GL_BLEND);
 		backgroundRenderer.begin(ShapeType.Filled);
@@ -138,14 +94,12 @@ public class GameMenu extends GameState {
 		
 		//Draw UI
 		stage.act(Gdx.graphics.getDeltaTime());
-		table.setColor(1, 1, 1, alpha);
+		table.setColor(1, 1, 1, 1);
 	    stage.draw();
-	    
 	}
 
 	@Override
 	public void dispose() {
-		//We probably won't ever dispose the menu, so why even bother about it ~yolo
+		
 	}
-
 }

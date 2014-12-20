@@ -36,9 +36,6 @@ import com.project.main.Transition;
 
 public class GameMainMenu extends GameMenu {
 
-	
-	private Transition undimTransition;
-	
 	public GameMainMenu(GameStateManager m)
 	{
 		super(m);
@@ -49,14 +46,12 @@ public class GameMainMenu extends GameMenu {
 	    table.add(button);
 	    button.addListener(new ChangeListener() {
 	        public void changed (ChangeEvent event, Actor actor) {
-	        	undimTransition = new Transition() {
-					public float duration() {
-						return 0.6f;
-					}
-					public void completion() {
+	        	stage.addAction(Actions.sequence(Actions.fadeOut(.6f), new Action() {
+					public boolean act(float delta) {
 						manager.setRenderBackgroundStateExclusively(true);
+						return true;
 					}
-				};
+				}));
 	        }
 	    });
 
@@ -90,19 +85,6 @@ public class GameMainMenu extends GameMenu {
 	@Override
 	public void render(SpriteBatch b)
 	{	
-		//Transition stuff
-		float alpha = 1.f;
-		if (undimTransition != null)
-		{
-			alpha = 1.f - undimTransition.progress();
-			if (undimTransition.isCompleted())
-			{
-				undimTransition = null;
-			}
-		}
-		
-		table.setColor(1, 1, 1, alpha);
-		
 		super.render(b);
 	}
 

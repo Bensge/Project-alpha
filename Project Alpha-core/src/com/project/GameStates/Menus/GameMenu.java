@@ -81,12 +81,13 @@ public abstract class GameMenu extends GameState {
 	{
 		super.render(b);
 		
+		float alpha = stage.getRoot().getColor().a;
 		//Draw dim background
 		final float dimValue = .4f;
 		
 		Gdx.gl.glEnable(GL20.GL_BLEND);
 		backgroundRenderer.begin(ShapeType.Filled);
-		backgroundRenderer.setColor(0, 0, 0, dimValue);
+		backgroundRenderer.setColor(0, 0, 0, dimValue * alpha);
 		backgroundRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		backgroundRenderer.end();
 	    stage.draw();
@@ -139,8 +140,8 @@ public abstract class GameMenu extends GameState {
 		final Class<? extends GameMenu> mClass = menuClass; //Because anonymous classes are stupid
 		
 		stage.addAction(Actions.sequence(Actions.alpha(1),Actions.fadeOut(TRANSITION_DURATION / 2),new Action() {
-			public boolean act(float delta) {
-				
+			public boolean act(float delta)
+			{
 				GameMenu menu = null;
 				//Try&catch because type safety and exceptions are awesome and... actually no.
 				try {

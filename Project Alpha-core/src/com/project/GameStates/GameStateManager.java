@@ -36,6 +36,11 @@ public class GameStateManager {
 		state.setIsInBackground(false);
 	}
 	
+	public GameState topMostState()
+	{
+		return states.isEmpty() ? null : states.peek();
+	}
+	
 	/*
 	 * Properties 
 	 */

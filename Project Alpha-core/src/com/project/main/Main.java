@@ -4,9 +4,9 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.project.GameStates.GameMenu;
 import com.project.GameStates.GameStateManager;
 import com.project.GameStates.GameWorld;
+import com.project.GameStates.Menus.GameMainMenu;
 
 public class Main implements ApplicationListener {
 
@@ -18,7 +18,7 @@ public class Main implements ApplicationListener {
 		b = new SpriteBatch();
 		
 		manager = new GameStateManager();
-		manager.push(new GameMenu(manager));
+		manager.push(new GameMainMenu(manager));
 		manager.setBackgroundState(new GameWorld(manager));
 	}
 

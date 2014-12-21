@@ -21,4 +21,9 @@ public class MultiplayerServer {
 		
 		return false;
 	}
+	
+	public String toString()
+	{
+		return super.toString() + " name=" + name + " address=" + address + " adminName=" + adminName;
+	}
 }

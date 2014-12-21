@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
@@ -18,8 +20,8 @@ import com.project.constants.Constants;
 import com.project.networking.MultiplayerServer;
 import com.project.networking.NetworkController;
 import com.project.networking.NetworkDiscoveryListener;
-import com.project.networking.UI.MultiplayerServerLabel;
 import com.sun.corba.se.impl.activation.ServerMain;
+import com.sun.istack.internal.FinalArrayList;
 
 public class GameLocalMultiplayerMenu extends GameMenu implements NetworkDiscoveryListener {
 	
@@ -62,14 +64,24 @@ public class GameLocalMultiplayerMenu extends GameMenu implements NetworkDiscove
 	}
 
 	@Override
-	public void foundServer(MultiplayerServer server)
+	public void foundServer(final MultiplayerServer server)
 	{
-		table.insertServer(tableInsertionIndex, server, labelStyle);
+		table.insertServer(tableInsertionIndex, server, style, new ChangeListener() {
+			public void changed(ChangeEvent event, Actor actor)
+			{
+				selectedServer(server);
+			}
+		});
 	}
 
 	@Override
 	public void lostServer(MultiplayerServer server)
 	{
 		table.removeServer(server);
+	}
+	
+	private void selectedServer(MultiplayerServer server)
+	{
+		System.out.println("Need to connect to server!!!" + server.toString());
 	}
 }

@@ -1,13 +1,16 @@
 package com.project.UI;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 //import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.project.networking.MultiplayerServer;
-import com.project.networking.UI.MultiplayerServerLabel;
+import com.project.networking.UI.MultiplayerServerButton;
 
 public class Table extends com.badlogic.gdx.scenes.scene2d.ui.Table
 {
@@ -60,25 +63,26 @@ public class Table extends com.badlogic.gdx.scenes.scene2d.ui.Table
 		}
 	}
 	
-	public void insertServer(int index, MultiplayerServer server, LabelStyle style)
+	public void insertServer(int index, MultiplayerServer server, TextButtonStyle style, ChangeListener listener)
 	{
-		 insertRow(index, new MultiplayerServerLabel(server, style));
+		MultiplayerServerButton button = new MultiplayerServerButton(server, style, listener);
+		insertRow(index, button);
 	}
 	
 	public void removeServer(MultiplayerServer server)
 	{
-		Array<Cell> cells = getCells();
-		for (Cell cell : cells)
+		for (Cell cell : getCells())
 		{
-			if (cell.getActor() instanceof MultiplayerServerLabel)
+			if (cell.getActor() instanceof MultiplayerServerButton)
 			{
-				MultiplayerServerLabel label = (MultiplayerServerLabel)cell.getActor();
+				MultiplayerServerButton label = (MultiplayerServerButton)cell.getActor();
 				
 				if (label.getServer().equals(server))
 				{
 					//Remove actor, kill cell
 					removeActor(label);
-					cell.pad(0);
+					cell.pad(100);
+					getCells().removeValue(cell, true);
 				}
 			}
 		}

@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 import com.project.GameStates.GameStateManager;
 import com.project.GameStates.Menus.GameMenu;
 import com.project.UI.LoadingIndicator;
@@ -16,6 +18,8 @@ import com.project.constants.Constants;
 import com.project.networking.MultiplayerServer;
 import com.project.networking.NetworkController;
 import com.project.networking.NetworkDiscoveryListener;
+import com.project.networking.UI.MultiplayerServerLabel;
+import com.sun.corba.se.impl.activation.ServerMain;
 
 public class GameLocalMultiplayerMenu extends GameMenu implements NetworkDiscoveryListener {
 	
@@ -52,11 +56,26 @@ public class GameLocalMultiplayerMenu extends GameMenu implements NetworkDiscove
 	    //Set up server lookup
 	    NetworkController.sharedInstance().setUpListeningWithListener(this);
 	    
-	    //Debug server table
-	    MultiplayerServer server = new MultiplayerServer();
-	    server.name = "Debug Server";
-	    server.address = "127.0.0.1";
-	    foundServer(server);
+	    new Timer().scheduleTask(new Task() {
+			public void run() {
+				//Debug server table
+			    MultiplayerServer server = new MultiplayerServer();
+			    server.name = "Debug Server";
+			    server.address = "127.0.0.1";
+			    foundServer(server);
+			}
+		}, 3);
+	    
+	    
+	    new Timer().scheduleTask(new Task() {
+			public void run() {
+				//Debug server table
+			    MultiplayerServer server = new MultiplayerServer();
+			    server.name = "Debug Server";
+			    server.address = "127.0.0.1";
+			    lostServer(server);
+			}
+		}, 6);
 	}
 	
 	protected String header() {
@@ -66,60 +85,12 @@ public class GameLocalMultiplayerMenu extends GameMenu implements NetworkDiscove
 	@Override
 	public void foundServer(MultiplayerServer server)
 	{
-		
-		Array<Cell> cells = table.getCells();
-		Array<Array<Actor>> actors = new Array<Array<Actor>>();
-		
-		int lastRow = -9000;
-		for (Cell c : cells)
-		{
-			if (lastRow == c.getRow())
-			{
-				System.out.println("Last row=" + lastRow + " current row=" + c.getRow());
-				Array<Actor> items = actors.get(actors.size-1);
-				items.add(c.getActor());
-			}
-			else {
-				Array<Actor> items = new Array<Actor>();
-				items.add(c.getActor());
-				actors.add(items);
-			}
-			
-			lastRow = c.getRow();
-		}
-		
-		table.clearChildren();
-		
-		
-		for (int i = 0; i < tableInsertionIndex; i ++)
-		{
-			table.row().pad(20);
-			
-			Array<Actor> items = actors.get(i);
-			for (Actor a : items)
-				table.add(a);
-		}
-		
-		Label label = new Label(server.name + " " + server.address, labelStyle);
-		
-		//Insert the new row with a small padding
-		table.row().pad(10);
-		table.add(label);
-		
-		for (int i = tableInsertionIndex; i < actors.size; i ++)
-		{
-			//Add back rows below the inserted row, with standard padding
-			table.row().pad(20);
-			
-			Array<Actor> items = actors.get(i);
-			for (Actor a : items)
-				table.add(a);
-		}
+		table.insertServer(tableInsertionIndex, server, labelStyle);
 	}
 
 	@Override
 	public void lostServer(MultiplayerServer server)
 	{
-		
+		table.removeServer(server);
 	}
 }

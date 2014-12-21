@@ -35,8 +35,8 @@ public class LoadingIndicator extends Actor
 	public void draw(Batch batch, float parentAlpha)
 	{
 		super.draw(batch, parentAlpha);
-		
+		//Pay attention to parent alpha, important for correct transitions
+		batch.setColor(1, 1, 1, parentAlpha);
 		batch.draw(texture, getX() + getOriginX(), getY() + getOriginY(), texture.getWidth() / 2 / 2, texture.getHeight() / 2 / 2, texture.getWidth() / 2, texture.getHeight() / 2, 0.5f, 0.5f, rotation, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
-		drawDebugBounds(new ShapeRenderer());
 	}
 }

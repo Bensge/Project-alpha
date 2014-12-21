@@ -1,10 +1,13 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import javax.jmdns.JmDNS;
+import javax.jmdns.ServiceInfo;
 
 public class Main {
 	 
@@ -29,7 +32,7 @@ public class Main {
 	  }
 	  
 	  /*CONSTANTS*/
-	  private final int port = 80;
+	  private final int port = 1044;
 	  
 	  /*IVARS*/
 	  private ServerSocket socket;
@@ -65,6 +68,18 @@ public class Main {
 	    } catch(Exception e) {
 	      System.out.println("Error getting local IP address: " + e.toString());
 	    }
+	    
+	    ServiceInfo info = ServiceInfo.create("projectalpha","PAServer",port,"HelloWorld Server");
+	    try {
+	    	JmDNS dns = JmDNS.create();
+			dns.registerService(info);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	    
+	    System.out.println("Set up DNS server: " + info.toString());
+	    
+	    
 	    //Accept connections
 	    try { 
 	      clientSocket = socket.accept();

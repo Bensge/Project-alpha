@@ -55,27 +55,6 @@ public class GameLocalMultiplayerMenu extends GameMenu implements NetworkDiscove
 	    
 	    //Set up server lookup
 	    NetworkController.sharedInstance().setUpListeningWithListener(this);
-	    
-	    new Timer().scheduleTask(new Task() {
-			public void run() {
-				//Debug server table
-			    MultiplayerServer server = new MultiplayerServer();
-			    server.name = "Debug Server";
-			    server.address = "127.0.0.1";
-			    foundServer(server);
-			}
-		}, 3);
-	    
-	    
-	    new Timer().scheduleTask(new Task() {
-			public void run() {
-				//Debug server table
-			    MultiplayerServer server = new MultiplayerServer();
-			    server.name = "Debug Server";
-			    server.address = "127.0.0.1";
-			    lostServer(server);
-			}
-		}, 6);
 	}
 	
 	protected String header() {

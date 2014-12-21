@@ -29,7 +29,7 @@ public class GameLocalMultiplayerMenu extends GameMenu implements NetworkDiscove
 		labelStyle = new LabelStyle(Constants.menlo32Font, Color.WHITE);
 		
 		//Set up loading cell
-		Table loadingTable = new Table().debugAll();
+		Table loadingTable = new Table();
 		
 	    Label loadingLabel = new Label("Searching", labelStyle);
 	    LoadingIndicator loadingIndicator = new LoadingIndicator();
@@ -50,11 +50,11 @@ public class GameLocalMultiplayerMenu extends GameMenu implements NetworkDiscove
 	    
 	    
 	    //Set up server lookup
-	    //NetworkController.sharedInstance().setUpListeningWithListener(this);
+	    NetworkController.sharedInstance().setUpListeningWithListener(this);
 	    
 	    //Debug server table
 	    MultiplayerServer server = new MultiplayerServer();
-	    server.name = "Benno's Server";
+	    server.name = "Debug Server";
 	    server.address = "127.0.0.1";
 	    foundServer(server);
 	}

@@ -39,16 +39,23 @@ public class NetworkController {
 		return s;
 	}
 	
+	private boolean setUpDNS()
+	{
+		try {
+			dns = JmDNS.create();
+			return true;
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			return false;
+		}
+	}
+	
 	public boolean setUpHosting()
 	{
 		if (!isHostingSetUp)
 		{
-			try {
-				dns = JmDNS.create();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-				return false;
-			}
+			if (!setUpDNS()) return false;
+			
 		    ServiceInfo info = ServiceInfo.create("projectalpha","Messenger",80,"Messenger chat thingy");
 		    try {
 				dns.registerService(info);
@@ -80,6 +87,7 @@ public class NetworkController {
 		
 		if (!isDiscoverySetUp)
 		{
+			if (!setUpDNS()) return false;
 			
 			dns.addServiceListener("_projectalpha._tcp.local.", new ServiceListener(){
 		    	@Override

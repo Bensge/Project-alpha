@@ -1,4 +1,4 @@
-package com.project.networking;
+package com.project.networking.ServerLookup;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -10,12 +10,15 @@ import javax.jmdns.ServiceListener;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.Array;
+import com.project.networking.MultiplayerServer;
 
 public class NetworkController {
 	
 	private boolean isHostingSetUp;
 	private boolean isDiscoverySetUp;
 	
+	private Array<MultiplayerServer> serverCache;
 	private NetworkDiscoveryListener listener = null;
 	
 	private JmDNS dns = null;
@@ -28,17 +31,26 @@ public class NetworkController {
 		
 		return instance;
 	}
+
+	public NetworkController()
+	{
+		super();
+		
+		//Create a small server cache array
+		serverCache = new Array<>(2);
+	}
 	
 	/*
 	 * Small convenience method
 	 * */
 	
-	public MultiplayerServer serverWithEvent(ServiceEvent event)
+	private MultiplayerServer serverWithEvent(ServiceEvent event)
 	{
 		MultiplayerServer s = new MultiplayerServer();
 		s.address = event.getInfo().getHostAddress();
 		s.name = event.getInfo().getNiceTextString();
 		s.adminName = "Unknown";
+		s.key = event.getInfo().getKey();
 		
 		return s;
 	}
@@ -87,7 +99,10 @@ public class NetworkController {
 			return false;
 	}
 	
-	public NetworkDiscoveryListener getListener(){ return listener; }
+	public NetworkDiscoveryListener getListener()
+	{
+		return listener;
+	}
 	
 	
 	public boolean setUpListeningWithListener(NetworkDiscoveryListener listener)
@@ -100,26 +115,44 @@ public class NetworkController {
 			
 			dns.addServiceListener("_projectalpha._tcp.local.", new ServiceListener(){
 		    	@Override
-		    	public void serviceAdded(ServiceEvent event){
+		    	public void serviceAdded(ServiceEvent event)
+		    	{
 		    		System.out.println("Service added: " + event.toString());
 		    	}
 
 				@Override
-				public void serviceRemoved(ServiceEvent event) {
+				public void serviceRemoved(ServiceEvent event)
+				{
 					System.out.println("Service removed: " + event.toString());
 					
-					getListener().lostServer(serverWithEvent(event));
+					MultiplayerServer server = serverWithEvent(event);
+					serverCache.removeValue(server, false);
+					getListener().lostServer(server);
 				}
 
 				@Override
-				public void serviceResolved(ServiceEvent event) {
+				public void serviceResolved(ServiceEvent event)
+				{
 					System.out.println("Service resolved: " + event.toString());
 					
-					getListener().foundServer(serverWithEvent(event));
+					MultiplayerServer server = serverWithEvent(event);
+					serverCache.add(server);
+					getListener().foundServer(server);
 				}
 		    });
 			
 			isDiscoverySetUp = true;
+		}
+		else
+		{
+			//Tell the new listener about all cached servers
+			if (listener != null)
+			{
+				for (MultiplayerServer server : serverCache)
+				{
+					getListener().foundServer(server);
+				}
+			}
 		}
 		
 		return isDiscoverySetUp;

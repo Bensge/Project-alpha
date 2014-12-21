@@ -9,7 +9,15 @@ import java.net.Socket;
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
 
+
 public class Main {
+	
+	public static Main instance = null;
+	
+	public static Main getInstance()
+	{
+		return instance;
+	}
 	 
 	  
 	  // java.lang.Object shell size in bytes:
@@ -24,11 +32,18 @@ public class Main {
 	  public static final int DOUBLE_FIELD_SIZE   = 8;
 	  public static final int FLOAT_FIELD_SIZE    = 4;
 	  
-	  
-	  
 	  public static void main(String[] args)
 	  {
-	    Main m = new Main();
+		  
+		  Runtime.getRuntime().addShutdownHook(new Thread()
+		  {
+			  public void run() {
+				  System.out.println("Shutting down...:" + Main.getInstance() + " and variable:" + Main.instance);
+				  Main.getInstance().tearDown();
+			  }
+		  });
+		  
+		   new Main();
 	  }
 	  
 	  /*CONSTANTS*/
@@ -37,15 +52,16 @@ public class Main {
 	  /*IVARS*/
 	  private ServerSocket socket;
 	  private Socket clientSocket = null;
+	  private JmDNS dns;
 	  
 	  /*METHODS*/
 	  public Main()
 	  {
+		  super();
+		  instance = this;
 	    //Hello
-	    System.out.println("ChatServer by Justus & Benno");
-	    System.out.println("+----------------------------+");
-	    System.out.println("|           PREMIUM          |");
-	    System.out.println("+----------------------------+\n");
+	    System.out.println("Project-alpha Server by Justus & Benno");
+	    System.out.println("+------------------------------------+");
 	    
 	    while (true) {
 	      startUp();
@@ -69,16 +85,15 @@ public class Main {
 	      System.out.println("Error getting local IP address: " + e.toString());
 	    }
 	    
-	    ServiceInfo info = ServiceInfo.create("projectalpha","PAServer",port,"HelloWorld Server");
+	    ServiceInfo info = ServiceInfo.create("projectalpha","PAServer",port,"GG Server");
 	    try {
-	    	JmDNS dns = JmDNS.create();
+	    	dns = JmDNS.create();
 			dns.registerService(info);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	    
 	    System.out.println("Set up DNS server: " + info.toString());
-	    
 	    
 	    //Accept connections
 	    try { 
@@ -99,6 +114,11 @@ public class Main {
 	    //Close socket
 	    try { 
 	      socket.close();
+	      dns.unregisterAllServices();
+	      System.out.println("Unregistered services, waiting...");
+	      Thread.sleep(10*1000);
+	      dns.close();
+	      Thread.sleep(2*1000);
 	    } catch(Exception e) {
 	      
 	    } finally {

@@ -23,7 +23,8 @@ public class MultiplayerController implements Runnable, NetworkCallback{
 	private boolean connected = false;
 	private char[] input = new char[1];
 
-	public MultiplayerController(String addr, int port){
+	public MultiplayerController(String addr, int port)
+	{
 		System.out.println("lol");
 	    s = new Scanner(System.in);
 	    address = new InetSocketAddress(addr, port);

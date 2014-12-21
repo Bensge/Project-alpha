@@ -18,8 +18,8 @@ import com.project.GameStates.Menus.GameMenu;
 import com.project.UI.LoadingIndicator;
 import com.project.constants.Constants;
 import com.project.networking.MultiplayerServer;
-import com.project.networking.NetworkController;
-import com.project.networking.NetworkDiscoveryListener;
+import com.project.networking.ServerLookup.NetworkController;
+import com.project.networking.ServerLookup.NetworkDiscoveryListener;
 import com.sun.corba.se.impl.activation.ServerMain;
 import com.sun.istack.internal.FinalArrayList;
 
@@ -83,5 +83,12 @@ public class GameLocalMultiplayerMenu extends GameMenu implements NetworkDiscove
 	private void selectedServer(MultiplayerServer server)
 	{
 		System.out.println("Need to connect to server!!!" + server.toString());
+	}
+	
+	@Override
+	public void dispose() {
+		super.dispose();
+		
+		NetworkController.sharedInstance().setUpListeningWithListener(null);
 	}
 }

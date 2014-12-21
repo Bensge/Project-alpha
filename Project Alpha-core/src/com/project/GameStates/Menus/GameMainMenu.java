@@ -46,12 +46,22 @@ public class GameMainMenu extends GameMenu {
 	    table.add(button);
 	    button.addListener(new ChangeListener() {
 	        public void changed (ChangeEvent event, Actor actor) {
-	        	stage.addAction(Actions.sequence(Actions.fadeOut(.6f), new Action() {
-					public boolean act(float delta) {
-						manager.setRenderBackgroundStateExclusively(true);
-						return true;
+	        	stage.addAction(Actions.sequence(
+        			new Action() {
+    					public boolean act(float delta) {
+    						backgroundShouldUseStageAlpha = true;
+    						return true;
+    					}
+    				},
+		        	Actions.fadeOut(.6f),
+		        	new Action() {
+						public boolean act(float delta) {
+							manager.setRenderBackgroundStateExclusively(true);
+							backgroundShouldUseStageAlpha = false;
+							return true;
+						}
 					}
-				}));
+    			));
 	        }
 	    });
 

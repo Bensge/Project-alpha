@@ -32,6 +32,8 @@ public abstract class GameMenu extends GameState {
 	protected LabelStyle headerStyle;
 	protected TextButtonStyle style;
 	
+	protected boolean backgroundShouldUseStageAlpha = false;
+	
 	final static float TRANSITION_DURATION = 0.6f;
 	
 	public GameMenu(GameStateManager manager)
@@ -81,7 +83,7 @@ public abstract class GameMenu extends GameState {
 	{
 		super.render(b);
 		
-		float alpha = stage.getRoot().getColor().a;
+		float alpha = backgroundShouldUseStageAlpha ? stage.getRoot().getColor().a : 1;
 		//Draw dim background
 		final float dimValue = .4f;
 		
@@ -116,13 +118,17 @@ public abstract class GameMenu extends GameState {
 	protected ChangeListener backButtonListener() {
 		return new ChangeListener() {
 	        public void changed (ChangeEvent event, Actor actor) {
-	        	stage.addAction(Actions.sequence(Actions.fadeOut(TRANSITION_DURATION / 2), new Action() {
-					public boolean act(float delta) {
-						manager.remove();
-						((GameMenu)manager.topMostState()).stage.addAction(Actions.sequence(Actions.alpha(0),Actions.fadeIn(TRANSITION_DURATION / 2)));
-						return true;
-					}
-				}));
+	        	stage.addAction(Actions.sequence(
+	        			Actions.fadeOut(TRANSITION_DURATION / 2),
+	        			new Action() {
+							public boolean act(float delta) {
+								manager.remove();
+								((GameMenu)manager.topMostState()).stage.addAction(Actions.sequence(Actions.alpha(0),Actions.fadeIn(TRANSITION_DURATION / 2)));
+								return true;
+							}
+	        			}
+	        		)
+	        	);
 	        }
 	    };
 	}

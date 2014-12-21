@@ -1,5 +1,7 @@
 package com.project.CharacterControllers;
 
+import java.awt.Point;
+
 import com.badlogic.gdx.Gdx;
 
 public class UserMobileController extends CharacterController {
@@ -34,5 +36,6 @@ public class UserMobileController extends CharacterController {
 		else if (accelY >= ACCELEROMETER_THRESHOLD)
 			walkingDirection = Direction.Left;
 	}
+
 
 }

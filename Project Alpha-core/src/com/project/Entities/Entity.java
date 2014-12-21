@@ -2,6 +2,7 @@ package com.project.Entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -49,14 +50,8 @@ public abstract class Entity extends Sprite {
 		mapHeight = collisionLayer.getHeight() * collisionLayer.getTileHeight();
 	}
 	
-	public void render(SpriteBatch b){
-		float x = getX(), y = getY();
-		setX((int)x);
-		setX((int)y);
+	public void render(Batch b){
 		super.draw(b);
-		
-		setX(x);
-		setY(y);
 	}
 	
 	public boolean isOutOfBoundsX(float x, float width) {
@@ -69,10 +64,10 @@ public abstract class Entity extends Sprite {
 	
 	public abstract void update(float delta);
 	
-	public boolean collisionXLeft(float x, float y) {
+	public boolean collisionXLeft(float x, float y, float height) {
 		/////left tiles
 		if(isBlocked(x, y + 2) ||
-			isBlocked(x, y + getHeight() - 2) ||
+			isBlocked(x, y + height - 2) ||
 			(x < 0)
 			)
 		{
@@ -81,21 +76,21 @@ public abstract class Entity extends Sprite {
 		return false;
 	}
 		
-	public boolean collisionXRight(float x, float y){
+	public boolean collisionXRight(float x, float y, float width, float height){
 		/////right tiles
-		if(isBlocked(x + getWidth(), y + 2) ||
-			isBlocked(x + getWidth(), y + getHeight() - 2) ||
-			(x + getWidth() > mapWidth))
+		if(isBlocked(x + width, y + 2) ||
+			isBlocked(x + width, y + height - 2) ||
+			(x + width > mapWidth))
 			{
 					return true;
 			}
 		return false;
 	}
 	
-	public boolean collisionYDown(float x, float y){
+	public boolean collisionYDown(float x, float y, float width){
 		/////bottom tiles
 		if(isBlocked(x + 0.1f, y) ||
-			isBlocked(x - 0.1f + getWidth(), y) ||
+			isBlocked(x - 0.1f + width, y) ||
 			y < 0)
 		{
 			return true;
@@ -104,11 +99,11 @@ public abstract class Entity extends Sprite {
 		return false;
 	}
 	
-	public boolean collisionYUp(float x, float y){
+	public boolean collisionYUp(float x, float y, float width, float height){
 		/////up tiles
-		if(isBlocked(x , y + getHeight()) ||
+		if(isBlocked(x , y + height) ||
 			//isBlocked(x + getWidth() / 2, y + getHeight()) ||
-			isBlocked(x + getWidth(), y + getHeight()))
+			isBlocked(x + width, y + height))
 		{
 			return true;
 		}

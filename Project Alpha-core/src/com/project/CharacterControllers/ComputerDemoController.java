@@ -1,5 +1,6 @@
 package com.project.CharacterControllers;
 
+import java.awt.Point;
 import java.util.Random;
 
 public class ComputerDemoController extends CharacterController {
@@ -76,4 +77,6 @@ public class ComputerDemoController extends CharacterController {
 		
 		//System.out.println("Update isJumping=" + character.isJumping() + " canMoveRight=" + character.canMoveRight() + " canMoveLeft=" + character.canMoveLeft() + " walkingDirection=" + walkDirection);
 	}
+
+	
 }

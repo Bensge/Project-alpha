@@ -3,6 +3,7 @@ package com.project.CharacterControllers;
 public abstract class CharacterController
 {
 	protected Character character;
+	public int mouseX, mouseY;
 	
 	public enum Direction {
 		None,
@@ -18,4 +19,5 @@ public abstract class CharacterController
 	public abstract boolean shouldJump();
 	public abstract Direction walkDirection();
 	public abstract void update();
+
 }

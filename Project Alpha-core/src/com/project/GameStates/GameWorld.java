@@ -67,7 +67,7 @@ public class GameWorld extends GameState {
 		renderer = new OrthogonalTiledMapRenderer(map);
 		
 		//Player
-		player = new Player(24 * 16, 39 * 16, map);
+		player = new Player(24 * 16, 39 * 16, map, camera);
 		
 		//FPS
 		fpsFont = Constants.menlo32Font;
@@ -131,6 +131,7 @@ public class GameWorld extends GameState {
 		cY = Math.min(cY, layer.getHeight() * layer.getTileHeight() - camera.viewportHeight / 2);
 		
 		camera.position.set((int)cX, (int)cY, 0);
+		//System.out.println("camera-x: " + camera.position.x);
 		camera.update();
 		renderer.setView(camera);
 		
@@ -183,7 +184,7 @@ public class GameWorld extends GameState {
 		
 		batch.begin();
 		
-		player.draw(batch);
+		player.render(batch);
 		
 		batch.end();
 		

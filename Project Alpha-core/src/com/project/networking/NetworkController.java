@@ -7,7 +7,6 @@ import javax.jmdns.ServiceEvent;
 import javax.jmdns.ServiceInfo;
 import javax.jmdns.ServiceListener;
 
-
 public class NetworkController {
 	
 	private boolean isHostingSetUp;
@@ -17,6 +16,18 @@ public class NetworkController {
 	
 	private JmDNS dns = null;
 	
+	private static NetworkController instance = null;
+	public static NetworkController sharedInstance()
+	{
+		if (instance == null)
+			instance = new NetworkController();
+		
+		return instance;
+	}
+	
+	/*
+	 * Small convenience method
+	 * */
 	
 	public MultiplayerServer serverWithEvent(ServiceEvent event)
 	{

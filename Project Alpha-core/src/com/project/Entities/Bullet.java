@@ -17,12 +17,21 @@ public class Bullet extends Sprite{
 		super(new Texture(Gdx.files.internal("img/rocket.png")));
 		
 		setBounds(originX, originY, 8, 8);
-		System.out.println(targetX + ", " + targetY + ", " + originX + ", "+ originY );
 		speed = 300;
 		
-		//targetY = Gdx.graphics.getHeight() - targetY;
-		
-		System.out.println(targetX + ", " + targetY);
+		/* How it works
+		*
+		*	1. find out alpha
+		*	- tan(alpha) = a/b
+		*
+		*	2. cos(alpha) = x/v	
+		*	- v = speed 
+		*	- y = x * v
+		*	- x = cos(alpha) * v
+		*
+		*	3. I bet you didn't get what I'm telling you
+		*
+		*/
 		
 		direction = new Vector2();
 		
@@ -34,27 +43,18 @@ public class Bullet extends Sprite{
 		
 		float a = (targetY - originY);
 		
-		System.out.println("a: " + a + ", b: " + b);
-		
 		float alpha = (float) (Math.atan((a / b)));
-		
-		System.out.println("alpha: " + alpha);
-		System.out.println("Cos(alpha): " + Math.toDegrees(Math.cos(alpha)));
-		
+
 		direction.x = (float) (Math.cos(alpha) * speed);
 		direction.y = (float) (direction.x * Math.tan(alpha));
 		
 		if(isXNegative){
 			direction.x = -direction.x;
-			//direction.y = -direction.y;
 		}
-		
-		System.out.println("x: "+ direction.x + ", y: " + direction.y);
-		
+	
 	}
 	
 	public void update(float delta){
-		//System.out.println(getX() + ", " + getY());
 		
 		setX(getX() + direction.x * delta);
 		setY(getY() + direction.y * delta);

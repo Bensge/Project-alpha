@@ -8,6 +8,17 @@ import javax.jmdns.ServiceInfo;
 import javax.jmdns.ServiceListener;
 */
 
+
+
+
+
+import javax.jmdns.JmDNS;
+import javax.jmdns.ServiceEvent;
+import javax.jmdns.ServiceInfo;
+import javax.jmdns.ServiceListener;
+
+import com.project.networking.ServerLookup.NetworkDiscoveryListener;
+
 public class NetworkController {
 	
 	private boolean isHostingSetUp;
@@ -15,10 +26,10 @@ public class NetworkController {
 	
 	private NetworkDiscoveryListener listener = null;
 	
-	//private JmDNS dns = null;
+	private JmDNS dns = null;
 	
 	
-	/*public MultiplayerServer serverWithEvent(ServiceEvent event)
+	public MultiplayerServer serverWithEvent(ServiceEvent event)
 	{
 		MultiplayerServer s = new MultiplayerServer();
 		s.address = event.getInfo().getHostAddress();
@@ -95,5 +106,5 @@ public class NetworkController {
 		}
 		
 		return isDiscoverySetUp;
-	}*/
+	}
 }

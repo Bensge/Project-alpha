@@ -1,11 +1,15 @@
 package com.project.networking;
 
 import java.io.IOException;
+import java.net.InetAddress;
 
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceEvent;
 import javax.jmdns.ServiceInfo;
 import javax.jmdns.ServiceListener;
+
+import com.badlogic.gdx.Application.ApplicationType;
+import com.badlogic.gdx.Gdx;
 
 public class NetworkController {
 	
@@ -42,7 +46,12 @@ public class NetworkController {
 	private boolean setUpDNS()
 	{
 		try {
-			dns = JmDNS.create();
+			InetAddress address = null;
+			if (Gdx.app.getType() == ApplicationType.iOS)
+			{
+				 address = InetAddress.getByName("127.0.0.1");
+			}
+			dns = JmDNS.create(address);
 			return true;
 		} catch (IOException e1) {
 			e1.printStackTrace();

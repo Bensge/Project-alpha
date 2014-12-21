@@ -17,18 +17,17 @@ public class MultiplayerController implements Runnable, NetworkCallback{
 	private Socket socket;
 	private PrintWriter writer;
 	private BufferedReader in;
-	private Scanner s;
 	private InetSocketAddress address;
 	private SocketHints hints;
 	private boolean connected = false;
 	private char[] input = new char[1];
 
-	public MultiplayerController(String addr, int port){
-		System.out.println("lol");
-	    s = new Scanner(System.in);
-	    address = new InetSocketAddress(addr, port);
+	public MultiplayerController(String addr, int port)
+	{
+		address = new InetSocketAddress(addr, port);
 	    
 	    hints = new SocketHints();
+	    hints.tcpNoDelay = true;
 	    socket = Gdx.net.newClientSocket(Protocol.TCP, address.getAddress().toString(), address.getPort(), hints);
 	    start();
 	    
@@ -46,27 +45,23 @@ public class MultiplayerController implements Runnable, NetworkCallback{
 		
 	}
 
-	
-	  public void start(){
-	    try {
-	      //socket.connect(address);
+		public void start(){
+			try {
+				connected = socket.isConnected();
+				socket.getOutputStream().write( "hua".getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	  
-	      connected = socket.isConnected();
-	      socket.getOutputStream().write( "hua".getBytes());
-	    } catch (IOException e) {
-	      
-	      e.printStackTrace();
-	    }
-	  }
-	  
-	  public void sendText(String msg){
-	    //for text
+		public void sendText(String msg){
+			//for text
 	    
-	    try{
-	      socket.getOutputStream().write(msg.getBytes());
-	      }
-	      catch(Exception e){}
-	    System.out.println("sent: " + msg);
+			try	{
+				socket.getOutputStream().write(msg.getBytes());
+			}
+			catch(Exception e){}
+			System.out.println("sent: " + msg);
 	  }
 	  
 	  public String receive(){
@@ -81,7 +76,7 @@ public class MultiplayerController implements Runnable, NetworkCallback{
 	    while(connected){
 	      //String f = receive();
 	      
-	      sendText(s.next());
+	      sendText("lolololololol");
 	      connected = socket.isConnected();
 	    }
 	    

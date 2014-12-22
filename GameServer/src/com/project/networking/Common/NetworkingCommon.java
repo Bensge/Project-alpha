@@ -1,6 +1,6 @@
-package Common;
+package com.project.networking.Common;
 
-public class MessengerCommon
+public class NetworkingCommon
 {
 	  public static final int OBJECT_SHELL_SIZE   = 8;
 	  public static final int OBJREF_SIZE         = 4;

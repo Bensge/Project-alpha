@@ -1,6 +1,6 @@
-package Common;
+package com.project.networking.Common;
 
-public class LoginPacket extends ChatPacket{
+public class LoginPacket extends Packet{
 	public static int packetID = 1;
 	
 	public String name;

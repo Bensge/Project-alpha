@@ -1,6 +1,6 @@
-package Common;
+package com.project.networking.Common;
 
-public class MessageSendPacket extends ChatPacket {
+public class MessageSendPacket extends Packet {
 	public static int packetID = 2;
 	
 	public String text;

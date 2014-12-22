@@ -1,87 +1,68 @@
 package com.project.networking;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.InetSocketAddress;
-import java.util.Scanner;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net.Protocol;
 import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.net.SocketHints;
+import com.badlogic.gdx.utils.Disposable;
+import com.project.networking.Common.LoginPacket;
+import com.project.networking.Common.Packet;
+import com.project.networking.Workers.ReadingWorker;
+import com.project.networking.Workers.WritingWorker;
 
-public class MultiplayerController implements Runnable, NetworkCallback{
-
+public class MultiplayerController implements Disposable, NetworkCallback
+{
+	
 	private Socket socket;
-	private PrintWriter writer;
-	private BufferedReader in;
 	private InetSocketAddress address;
-	private SocketHints hints;
-	private boolean connected = false;
-	private char[] input = new char[1];
-
-	public MultiplayerController(String addr, int port)
+	
+	private WritingWorker writingWorker;
+	private ReadingWorker readingWorker;
+	
+	private String userName;
+	
+	private NetworkCallback listener;
+	
+	
+	
+	public MultiplayerController(String addr, int port, String userName, NetworkCallback listener)
 	{
 		address = new InetSocketAddress(addr, port);
-	    
-	    hints = new SocketHints();
-	    hints.tcpNoDelay = true;
-	    socket = Gdx.net.newClientSocket(Protocol.TCP, address.getAddress().toString(), address.getPort(), hints);
-	    start();
-	    
-	    System.out.println("Connected to:" + socket.getRemoteAddress());
-	    
-	      
-	    
-	    in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-	    
-	    run();
-	  }
-	
-	@Override
-	public void receivedPacket(Packet p) {
+		this.userName = userName;
+		this.listener = listener;
+
+		SocketHints hints = new SocketHints();
+		hints.tcpNoDelay = true;
+		socket = Gdx.net.newClientSocket(Protocol.TCP, address.getAddress().toString(), address.getPort(), hints);
 		
+		writingWorker = new WritingWorker(socket);
+		readingWorker = new ReadingWorker(socket, this);
+
+		System.out.println("Connected to:" + socket.getRemoteAddress());
 	}
 
-		public void start(){
-			try {
-				connected = socket.isConnected();
-				socket.getOutputStream().write( "hua".getBytes());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+	public void receivedPacket(Packet p)
+	{
+		if (this.listener != null)
+		{
+			this.listener.receivedPacket(p);
 		}
-	  
-		public void sendText(String msg){
-			//for text
-	    
-			try	{
-				socket.getOutputStream().write(msg.getBytes());
-			}
-			catch(Exception e){}
-			System.out.println("sent: " + msg);
-	  }
-	  
-	  public String receive(){
-	    String ret = "";
-	    
-	    
-	    return null;
-	  }
-	  
-	  @Override
-	  public void run() {
-	    while(connected){
-	      //String f = receive();
-	      
-	      sendText("lolololololol");
-	      connected = socket.isConnected();
-	    }
-	    
-	    try{
-	      in.close();
-	      }catch(Exception e ){}
-	  }
+	}
+	
+	public void login()
+	{
+		//Handshake
+		LoginPacket loginPacket = new LoginPacket();
+		loginPacket.name = userName;
+		
+		writingWorker.dispatchPacketSend(loginPacket);
+	}
+
+	@Override
+	public void dispose()
+	{
+		readingWorker.terminate();
+		socket.dispose();
+	}
 }

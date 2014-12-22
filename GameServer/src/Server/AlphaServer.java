@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import java.awt.EventQueue;
 
 import ClientConnection.Client;
-import Common.ChatPacket;
-import Common.LoginPacket;
-import Common.MessageReceivePacket;
-import Common.MessageSendPacket;
-import Common.UserActionPacket;
-import Common.MessengerCommon;
-import Common.UserActionPacket.Action;
+import com.project.networking.Common.Packet;
+import com.project.networking.Common.LoginPacket;
+import com.project.networking.Common.MessageReceivePacket;
+import com.project.networking.Common.MessageSendPacket;
+import com.project.networking.Common.UserActionPacket;
+import com.project.networking.Common.NetworkingCommon;
+import com.project.networking.Common.UserActionPacket.Action;
 
 public class AlphaServer {
 
@@ -51,7 +51,7 @@ public class AlphaServer {
 	}
 
 	/* NOT SO CONSTANT CONSTANTS */
-	private int port = MessengerCommon.SCHOOL_PORT;
+	private int port = NetworkingCommon.SCHOOL_PORT;
 
 	/* IVARS */
 	private ServerSocket socket;
@@ -63,7 +63,7 @@ public class AlphaServer {
 	/* METHODS */
 	public AlphaServer() throws Exception {
 		// Hello
-		port = MessengerCommon.DEFAULT_PORT;
+		port = NetworkingCommon.DEFAULT_PORT;
 		System.out.println("AlphaServer by Justus & Benno");
 		System.out.println("+----------------------------+");
 		System.out.println("|           PREMIUM          |");
@@ -142,14 +142,14 @@ public class AlphaServer {
 		sendPacketToClientsBut(client, packet);
 	}
 
-	public void processMessage(Client sender, ChatPacket packet) {
+	public void processMessage(Client sender, Packet packet) {
 		System.out.println("Processing message...");
 
-		ChatPacket newPacket = null;
+		Packet newPacket = null;
 		if (packet instanceof MessageSendPacket) {
 			MessageReceivePacket p = new MessageReceivePacket();
 			p.text = ((MessageSendPacket) packet).text;
-			p.timestamp = MessengerCommon.currentUnixTime();
+			p.timestamp = NetworkingCommon.currentUnixTime();
 			p.sender = sender.getName();
 			newPacket = p;
 		} else if (packet instanceof LoginPacket) {
@@ -181,7 +181,7 @@ public class AlphaServer {
 			sendPacketToClientsBut(sender, newPacket);
 	}
 
-	public void sendPacketToClientsBut(Client sender, ChatPacket newPacket) {
+	public void sendPacketToClientsBut(Client sender, Packet newPacket) {
 		for (Client client : clients) {
 			if (client != sender) {
 				client.send(newPacket);

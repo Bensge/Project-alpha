@@ -1,6 +1,7 @@
 package ClientConnection;
 
 import Common.*;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
@@ -8,10 +9,13 @@ import java.util.List;
 
 import javax.swing.SwingWorker;
 
+import com.project.networking.Common.Packet;
+import com.project.networking.Common.NetworkingCommon;
+
 import Server.AlphaServer;
 
 
-public class ClientReadingWorker extends SwingWorker<Void, ChatPacket> {
+public class ClientReadingWorker extends SwingWorker<Void, Packet> {
 
 	private InputStream in;
 	public OutputStream out;
@@ -27,7 +31,7 @@ public class ClientReadingWorker extends SwingWorker<Void, ChatPacket> {
 	@Override
 	protected Void doInBackground() throws Exception
 	{
-		byte[] prePacket = new byte[MessengerCommon.INT_FIELD_SIZE * 2];
+		byte[] prePacket = new byte[NetworkingCommon.INT_FIELD_SIZE * 2];
 		
 	    System.out.println("Listening to client messages!");
 	    System.out.println("Now ready!");
@@ -45,7 +49,7 @@ public class ClientReadingWorker extends SwingWorker<Void, ChatPacket> {
 	        	break;
 	        }
 	        
-	        int packetType = MessengerCommon.intFromBuffer(prePacket, 0);
+	        int packetType = NetworkingCommon.intFromBuffer(prePacket, 0);
 	        
 	        if (packetType == 0)
 	        {
@@ -57,7 +61,7 @@ public class ClientReadingWorker extends SwingWorker<Void, ChatPacket> {
 	        
 	        System.out.println("Packet type: " + packetType);
 	        
-	        int packetSize = MessengerCommon.intFromBuffer(prePacket, 4);
+	        int packetSize = NetworkingCommon.intFromBuffer(prePacket, 4);
 	        System.out.println("Packet size: " + packetSize);
 	        
 	        byte[] packetBuffer = new byte[packetSize];
@@ -81,7 +85,7 @@ public class ClientReadingWorker extends SwingWorker<Void, ChatPacket> {
 			        }
 		        }
 	        }
-	        ChatPacket packet = ChatPacket.parseDataPacket(prePacket, packetBuffer);
+	        Packet packet = Packet.parseDataPacket(prePacket, packetBuffer);
 	        
 	        publish(packet);
 	    }
@@ -90,9 +94,9 @@ public class ClientReadingWorker extends SwingWorker<Void, ChatPacket> {
 	}
 	
 	@Override
-	protected void process(List<ChatPacket> chunks) {
+	protected void process(List<Packet> chunks) {
 		// TODO Auto-generated method stub
-		for (ChatPacket p : chunks)
+		for (Packet p : chunks)
 		{
 			server.processMessage(this.client, p);
 		}

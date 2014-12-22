@@ -1,4 +1,4 @@
-package Common;
+package com.project.networking.Common;
 
 public class MessageReceivePacket extends MessageSendPacket {
 	public static int packetID = 3;
@@ -15,7 +15,7 @@ public class MessageReceivePacket extends MessageSendPacket {
 	{
 		MessageReceivePacket packet = new MessageReceivePacket();
 		packet.sender = "Server";
-		packet.timestamp = MessengerCommon.currentUnixTime();
+		packet.timestamp = NetworkingCommon.currentUnixTime();
 		packet.text = message;
 		return packet;
 	}
@@ -32,10 +32,10 @@ public class MessageReceivePacket extends MessageSendPacket {
 		
 		byte[] data = new byte[this.length];
 		
-		MessengerCommon.writeIntToBuffer(timestamp, data, 0);
-		MessengerCommon.writeIntToBuffer(senderLength, data, 4);
-		MessengerCommon.writeBytesToBuffer(senderBytes, data, 8);
-		MessengerCommon.writeBytesToBuffer(textBytes, data, 8 + senderLength);
+		NetworkingCommon.writeIntToBuffer(timestamp, data, 0);
+		NetworkingCommon.writeIntToBuffer(senderLength, data, 4);
+		NetworkingCommon.writeBytesToBuffer(senderBytes, data, 8);
+		NetworkingCommon.writeBytesToBuffer(textBytes, data, 8 + senderLength);
 		
 		return data;
 	}

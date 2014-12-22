@@ -1,14 +1,14 @@
-package Common;
+package com.project.networking.Common;
 
 
-public class ChatPacket {
+public class Packet {
 	public static int packetID = 0;
 	
 	public int length;
 	public int type;
 	
 	
-	public ChatPacket()
+	public Packet()
 	{
 		try {
 			type = this.getClass().getField("packetID").getInt(this);
@@ -55,8 +55,8 @@ public class ChatPacket {
 			System.out.println("You forgot to call generateDataPacket() before calling generatePrePacket() on " + this.toString());
 		}
 		byte[] b = new byte[8];
-		MessengerCommon.writeIntToBuffer(type, b, 0);
-		MessengerCommon.writeIntToBuffer(length, b, 4);
+		NetworkingCommon.writeIntToBuffer(type, b, 0);
+		NetworkingCommon.writeIntToBuffer(length, b, 4);
 		return b;
 	}
 	
@@ -68,12 +68,12 @@ public class ChatPacket {
 	 */
 	
 	
-	public static ChatPacket parseDataPacket(byte[] prePacket, byte[] bulkPacket)
+	public static Packet parseDataPacket(byte[] prePacket, byte[] bulkPacket)
 	{
-		int packetType = MessengerCommon.intFromBuffer(prePacket, 0);
-		int packetSize = MessengerCommon.intFromBuffer(prePacket, 4);
+		int packetType = NetworkingCommon.intFromBuffer(prePacket, 0);
+		int packetSize = NetworkingCommon.intFromBuffer(prePacket, 4);
 		
-		ChatPacket packet = null;
+		Packet packet = null;
 		
 		System.out.println("Parsing packet of type (" + packetType + ") and length (" + packetSize + ")");
 		
@@ -90,9 +90,9 @@ public class ChatPacket {
 			MessageReceivePacket p = new MessageReceivePacket();
 			
 			//Timestamp
-			p.timestamp = MessengerCommon.intFromBuffer(bulkPacket, 0);
+			p.timestamp = NetworkingCommon.intFromBuffer(bulkPacket, 0);
 			//Sender
-			int senderLength = MessengerCommon.intFromBuffer(bulkPacket, 4);
+			int senderLength = NetworkingCommon.intFromBuffer(bulkPacket, 4);
 			// String constructor (byte[], offset, length)
 			p.sender = new String(bulkPacket, 8, senderLength);
 			//Text

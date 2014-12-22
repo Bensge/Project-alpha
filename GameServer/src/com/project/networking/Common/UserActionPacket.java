@@ -1,6 +1,6 @@
-package Common;
+package com.project.networking.Common;
 
-public class UserActionPacket extends ChatPacket {
+public class UserActionPacket extends Packet {
 	
 	public static int packetID = 6;
 	
@@ -44,8 +44,8 @@ public class UserActionPacket extends ChatPacket {
 		
 		packet[0] = ac;
 		packet[1] = isC;
-		MessengerCommon.writeIntToBuffer(userLength, packet, 2);
-		MessengerCommon.writeBytesToBuffer(usr, packet, 2+4);
+		NetworkingCommon.writeIntToBuffer(userLength, packet, 2);
+		NetworkingCommon.writeBytesToBuffer(usr, packet, 2+4);
 		
 		return packet;
 	}

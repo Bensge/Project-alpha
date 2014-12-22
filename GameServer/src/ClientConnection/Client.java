@@ -1,6 +1,7 @@
 package ClientConnection;
 
-import Common.ChatPacket;
+import com.project.networking.Common.Packet;
+
 
 
 public class Client {
@@ -40,7 +41,7 @@ public class Client {
 		reader = clientReadingWorker;
 	}
 	
-	public void send(ChatPacket packet)
+	public void send(Packet packet)
 	{ 
 		setWriter(new ClientWritingWorker(getReader().out, packet));
 		getWriter().execute();

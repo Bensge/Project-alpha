@@ -1,18 +1,18 @@
 package ClientConnection;
-import Common.ChatPacket;
-import Common.MessengerCommon;
 
 import java.io.OutputStream;
 
 import javax.swing.SwingWorker;
 
+import com.project.networking.Common.Packet;
+
 
 public class ClientWritingWorker extends SwingWorker<Void, Void> {
 
 	private OutputStream out;
-	private ChatPacket packet;
+	private Packet packet;
 	
-	public ClientWritingWorker(OutputStream out, ChatPacket p) {
+	public ClientWritingWorker(OutputStream out, Packet p) {
 		this.out = out;
 		this.packet = p;
 	}

@@ -1,5 +1,6 @@
 package com.project.Entities;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -7,20 +8,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.project.CharacterControllers.Character;
 import com.project.CharacterControllers.CharacterController;
 import com.project.CharacterControllers.CharacterController.Direction;
 import com.project.CharacterControllers.UserDesktopController;
+import com.project.constants.Constants;
 
 public class Player extends Entity implements Character {
 
 	private float oldX, oldY;
 	public CharacterController controller;
-	private ArrayList<Bullet> bullets;
+	private ArrayList<Projectile> projectiles;
 	private OrthographicCamera camera;
-	private float shootingCooldown = 0.1f, shootingDelta;
+	private float bulletCooldown = 0.1f, bulletDelta, rocketCooldown = 3, rocketDelta;
 	private boolean heroMode;
 	
 	/*
@@ -45,8 +49,9 @@ public class Player extends Entity implements Character {
 		jump = 450;
 		
 		heroMode = false;
-		bullets = new ArrayList<Bullet>();
+		projectiles = new ArrayList<Projectile>();
 		
+		life = 100;
 	}
 	
 	@Override
@@ -59,7 +64,6 @@ public class Player extends Entity implements Character {
 		//Get old values
 		oldX = getX();
 		oldY = getY();
-		System.out.println(heroMode);
 		
 		if(!heroMode){
 		//Handle gravity
@@ -146,32 +150,51 @@ public class Player extends Entity implements Character {
 		controller.update();
 		if(controller instanceof UserDesktopController){
 		//shooting handle
-			shootingDelta += delta;
+		bulletDelta += delta;
+		rocketDelta += delta;
+		
+		float mouseX = controller.mouseX + (camera.position.x - camera.viewportWidth / 2);
+		float mouseY = (Gdx.graphics.getHeight() - controller.mouseY) + (camera.position.y - camera.viewportHeight / 2);
 			
-		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && shootingDelta > shootingCooldown){
-			float mouseX = controller.mouseX + (camera.position.x - camera.viewportWidth / 2);
-			float mouseY = (Gdx.graphics.getHeight() - controller.mouseY) + (camera.position.y - camera.viewportHeight / 2);
-			
-			bullets.add(new Bullet("img/rocket.png", mouseX, mouseY, getX(), getY()));
-			shootingDelta = 0;
+		//bullet handling	
+		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && bulletDelta > bulletCooldown){
+			projectiles.add(new Bullet("img/rocket.png", mouseX, mouseY, getX(), getY()));
+			bulletDelta = 0;
 			//a = false;
 		}
+		//rocket handling
+		if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && rocketDelta > rocketCooldown){
+			projectiles.add(new Rocket("img/rocket.png", mouseX, mouseY, getX(), getY()));
+			rocketDelta = 0;
+		}
 		
-		//check if bullets collided
-		Iterator<Bullet> i = bullets.iterator();
+		//check if projectiles collided
+		Iterator<Projectile> i = projectiles.iterator();
 		while(i.hasNext()){
-			Bullet b = i.next();
+			Projectile b = i.next();
 			
 			b.update(delta);
 			
 			if(isOutOfBoundsX(b.getX(), b.getWidth()) || isOutOfBoundsY(b.getY(), b.getHeight())){
-				i.remove();
+				
+				if(b.getRadius() != 0){
+					if(Constants.circleIntersectsRectangle(new Point((int)b.getX(), (int)b.getY()), b.getRadius(),
+							new Point((int)getX(), (int)getY()), getWidth(), getHeight()))
+						System.out.println("hit");
 				//System.out.println("bullet removed");
+				}
+				i.remove();
 			}
 			else if(collisionXLeft(b.getX(), b.getY(), b.getWidth()) || collisionXRight(b.getX(), b.getY(), b.getWidth(), b.getHeight()) || 
 					collisionYDown(b.getX(), b.getY(), b.getHeight())|| collisionYUp(b.getX(), b.getY(), b.getWidth(), b.getHeight())) {
-				i.remove();
+				
+				if(b.getRadius() != 0){
+					if(Constants.circleIntersectsRectangle(new Point((int)b.getX(), (int)b.getY()), b.getRadius(),
+							new Point((int)getX(), (int)getY()), getWidth(), getHeight()))
+						System.out.println("hit very much");	
 				//System.out.println("bullet removed");
+				}
+				i.remove();
 			}
 		}
 		}
@@ -185,13 +208,13 @@ public class Player extends Entity implements Character {
 	@Override
 	public void render(Batch b) {
 		controller.update();
-		/*if(controller instanceof UserDesktopController){
-			b.draw(getTexture(), controller.mouseX, controller.mouseY);
-			System.out.println("x: " + controller.mouseX + ", Y: " + controller.mouseY);	
-		}*/
+		if(controller instanceof UserDesktopController){
+			//b.draw(crosshair, controller.mouseX, Gdx.graphics.getHeight() - controller.mouseY);
+			//System.out.println("x: " + controller.mouseX + ", Y: " + controller.mouseY);	
+		}
 		super.render(b);
-		for(Bullet bullet : bullets)
-			bullet.render(b);
+		for(Projectile p : projectiles)
+			p.render(b);
 	}
 	/*
 	 * Character interface

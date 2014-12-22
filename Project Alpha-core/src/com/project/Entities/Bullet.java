@@ -1,66 +1,18 @@
 package com.project.Entities;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector2;
+public class Bullet extends Projectile{
 
-public class Bullet extends Sprite{
-
-	private Vector2 direction;
-	private float speed, factor;
-	private float originY;
-	private boolean isXNegative = false;
+	private final static float speed = 500;
+	private final static float explosionRadius = 0;
 	
 	public Bullet(String s, float targetX, float targetY, float originX, float originY){
-		super(new Texture(Gdx.files.internal("img/rocket.png")));
+		super(s, targetX, targetY, originX, originY, speed, explosionRadius);
 		
-		setBounds(originX, originY, 8, 8);
-		speed = 300;
-		
-		/* How it works
-		*
-		*	1. find out alpha
-		*	- tan(alpha) = a/b
-		*
-		*	2. cos(alpha) = x/v	
-		*	- v = speed 
-		*	- y = x * v
-		*	- x = cos(alpha) * v
-		*
-		*	3. I bet you didn't get what I'm telling you
-		*
-		*/
-		
-		direction = new Vector2();
-		
-		float b = (targetX - originX);
-		if(b < 0){
-			isXNegative = true;
-			b = Math.abs(b);
-		}	
-		
-		float a = (targetY - originY);
-		
-		float alpha = (float) (Math.atan((a / b)));
-
-		direction.x = (float) (Math.cos(alpha) * speed);
-		direction.y = (float) (direction.x * Math.tan(alpha));
-		
-		if(isXNegative){
-			direction.x = -direction.x;
-		}
-	
+		setSize(8, 8);
 	}
 	
-	public void update(float delta){
-		
-		setX(getX() + direction.x * delta);
-		setY(getY() + direction.y * delta);
-	}
-
-	public void render(Batch b){
-		super.draw(b);
+	@Override
+	public int getRadius() {
+		return (int) explosionRadius;
 	}
 }

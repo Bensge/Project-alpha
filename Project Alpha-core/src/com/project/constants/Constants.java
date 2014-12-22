@@ -1,5 +1,7 @@
 package com.project.constants;
 
+import java.awt.Point;
+
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -27,4 +29,35 @@ public class Constants
 		menlo50Font = new BitmapFont(Gdx.files.internal("fonts/Menlo-100.fnt"),Gdx.files.internal("fonts/Menlo.png"), false);
 		menlo50Font.setScale(0.5f);
 	}
+	
+	
+	public static boolean circleIntersectsRectangle(Point circle, float radius, Point rectangle, float width, float height){
+		//1. kreis in Rechteck
+		if(circle.x >= rectangle.x && circle.x <= rectangle.x + width &&
+			circle.y >= rectangle.y && circle.y >= rectangle.y + height)
+			return true;
+		
+		//2. eckke berührt kreis
+		if(pythagoras(circle, rectangle) <= radius ||
+			pythagoras(circle, new Point(rectangle.x, (int) (rectangle.y + height))) <= radius ||
+			pythagoras(circle, new Point((int) (rectangle.x + width), rectangle.y)) <= radius ||
+			pythagoras(circle, new Point((int) (rectangle.x + width), (int) (rectangle.y + height))) <= radius)
+			return true;
+		
+		//3.seite berührt Kreis
+		if(Math.abs(circle.y - (rectangle.y + height)) < radius && circle.x <= rectangle.x + width && circle.x >= rectangle.x ||
+			Math.abs(rectangle.y - circle.y) < radius && circle.x <= rectangle.x + width && circle.x >= rectangle.x ||	
+			Math.abs(rectangle.x - circle.x) < radius && circle.y <= rectangle.y + height && circle.y >= rectangle.y ||	
+			Math.abs((rectangle.x + width) - circle.x) < radius && circle.y <= rectangle.y + height && circle.y >= rectangle.y)
+		return true;	
+			
+		return false;
+	}
+	
+	
+	private static float pythagoras(Point a, Point b){
+		//satz des pythagoras
+		return (float) Math.sqrt((b.y - a.y)*(b.y - a.y) + (b.x - a.x)*(b.x - a.x));
+	}
+	
 }

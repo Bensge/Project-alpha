@@ -22,7 +22,7 @@ public abstract class Entity extends Sprite {
 	protected boolean canJump, collisionX, collisionY;
 	protected float mapWidth, mapHeight;
 	protected Vector2 velocity;
-	protected int damage;
+	protected int life;
 	
 	public Entity(TiledMap map) {
 		this.map = map;
@@ -40,7 +40,7 @@ public abstract class Entity extends Sprite {
 	}
 	
 	private void init(){
-		damage = 0;
+		life = 100;
 		velocity = new Vector2();
 		
 		canJump = false;

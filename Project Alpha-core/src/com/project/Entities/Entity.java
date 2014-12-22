@@ -39,6 +39,10 @@ public abstract class Entity extends Sprite {
 		init();
 	}
 	
+	public Entity(Texture texture) {
+		super(texture);
+	}
+
 	private void init(){
 		life = 100;
 		velocity = new Vector2();

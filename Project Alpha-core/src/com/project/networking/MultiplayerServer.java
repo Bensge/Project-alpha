@@ -15,8 +15,9 @@ public class MultiplayerServer
 		super();
 		address = event.getInfo().getHostAddresses()[0];
 		port = event.getInfo().getPort();
-		name = event.getInfo().getNiceTextString();
-		adminName = "Unknown";
+		name = event.getInfo().getName();
+		adminName = event.getInfo().getPropertyString("adminName");
+		System.out.println("Admin name: " + adminName);
 		key = event.getInfo().getKey();
 	}
 	

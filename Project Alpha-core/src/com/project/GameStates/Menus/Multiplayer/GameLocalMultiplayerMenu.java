@@ -14,9 +14,11 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.project.GameStates.GameStateManager;
+import com.project.GameStates.GameWorld;
 import com.project.GameStates.Menus.GameMenu;
 import com.project.UI.LoadingIndicator;
 import com.project.constants.Constants;
+import com.project.networking.MultiplayerController;
 import com.project.networking.MultiplayerServer;
 import com.project.networking.ServerLookup.NetworkController;
 import com.project.networking.ServerLookup.NetworkDiscoveryListener;
@@ -83,10 +85,14 @@ public class GameLocalMultiplayerMenu extends GameMenu implements NetworkDiscove
 	private void selectedServer(MultiplayerServer server)
 	{
 		System.out.println("Need to connect to server!!!" + server.toString());
+		
+		MultiplayerController controller = new MultiplayerController(server.address, server.port, "Benno", (GameWorld)manager.getBackgroundState());
+		controller.login();
 	}
 	
 	@Override
-	public void dispose() {
+	public void dispose()
+	{
 		super.dispose();
 		
 		NetworkController.sharedInstance().setUpListeningWithListener(null);

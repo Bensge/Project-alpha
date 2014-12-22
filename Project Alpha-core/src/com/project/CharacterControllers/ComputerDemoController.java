@@ -49,7 +49,6 @@ public class ComputerDemoController extends CharacterController {
 			walkDirection = random.nextBoolean() ? Direction.Left : Direction.Right;
 		}
 		
-		System.out.println("Recalculated direction = " + walkDirection + " jumpOnce = " + jumpOnce);
 	}
 
 	@Override

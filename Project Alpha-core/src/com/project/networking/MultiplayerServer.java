@@ -13,7 +13,7 @@ public class MultiplayerServer
 	public MultiplayerServer(ServiceEvent event)
 	{
 		super();
-		address = event.getInfo().getHostAddress();
+		address = event.getInfo().getHostAddresses()[0];
 		port = event.getInfo().getPort();
 		name = event.getInfo().getNiceTextString();
 		adminName = "Unknown";

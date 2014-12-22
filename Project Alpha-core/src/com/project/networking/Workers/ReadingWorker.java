@@ -38,6 +38,7 @@ public class ReadingWorker
 		{
 			public void run()
 			{
+				System.out.println("Now receiving from server!");
 				//Buffer of fixed length that is always needed when receiving a packet, thus cached and only created once.
 				byte[] prePacket = new byte[NetworkingCommon.INT_FIELD_SIZE * 2];
 				

@@ -155,10 +155,9 @@ public class AlphaServer {
 		} else if (packet instanceof LoginPacket) {
 			// get name of packet
 			sender.setName(((LoginPacket) packet).name);
-
+			
 			// Send client connect confirmation
-			MessageReceivePacket confirmationPacket = MessageReceivePacket
-					.serverMessagePacket("You joined!");
+			MessageReceivePacket confirmationPacket = MessageReceivePacket.serverMessagePacket("You joined!");
 			sender.send(confirmationPacket);
 
 			for (Client client : clients) {

@@ -41,6 +41,21 @@ public class NetworkingCommon
 		  buffer[offset + 3] = (byte) (i >> 24);
 	  }
 	  
+	  public static float floatFromBuffer(byte[] buffer, int offset)
+	  {
+		  return Float.intBitsToFloat(intFromBuffer(buffer, offset));
+	  }
+	  
+	  public static byte[] bufferFromFloat(float i)
+	  {
+		  return bufferFromInt(Float.floatToIntBits(i));
+	  }
+	  
+	  public static void writeFloatToBuffer(float i, byte[] buffer, int offset)
+	  {
+		  writeIntToBuffer(Float.floatToIntBits(i), buffer, offset);
+	  }
+	  
 	  public static void writeBytesToBuffer(byte[] bytes, byte[] buffer, int offset)
 	  {
 		  for (int i = 0; i < bytes.length; i++)

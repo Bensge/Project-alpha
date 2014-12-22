@@ -6,9 +6,10 @@ public class Rocket extends Projectile {
 	private final static float explosionRadius = 50;
 	
 	public Rocket(String s, float targetX, float targetY, float originX,
-			float originY) {
-		super(s, targetX, targetY, originX, originY, speed, explosionRadius);
+			float originY, Player owner) {
+		super(s, targetX, targetY, originX, originY, speed, explosionRadius, owner);
 		
+		damage = 34;
 		setSize(16, 16);
 	}
 

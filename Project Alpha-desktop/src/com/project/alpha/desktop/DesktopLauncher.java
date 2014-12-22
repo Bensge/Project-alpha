@@ -13,7 +13,7 @@ public class DesktopLauncher {
 		config.resizable = false;
 		config.width = 800;
 		config.height = 600;
-		config.fullscreen = true;
+		//config.fullscreen = true;
 		
 		Main m = new Main();
 		

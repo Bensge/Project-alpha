@@ -22,10 +22,10 @@ public class Player extends Entity implements Character {
 
 	private float oldX, oldY;
 	public CharacterController controller;
-	private ArrayList<Projectile> projectiles;
 	private OrthographicCamera camera;
 	private float bulletCooldown = 0.1f, bulletDelta, rocketCooldown = 3, rocketDelta;
 	private boolean heroMode;
+	private EnemyManager enemyManager;
 	
 	/*
 	 * Booleans for the Character interface
@@ -49,9 +49,9 @@ public class Player extends Entity implements Character {
 		jump = 450;
 		
 		heroMode = false;
-		projectiles = new ArrayList<Projectile>();
-		
 		life = 100;
+		
+		enemyManager = new EnemyManager(this);
 	}
 	
 	@Override
@@ -149,59 +149,37 @@ public class Player extends Entity implements Character {
 		
 		controller.update();
 		if(controller instanceof UserDesktopController){
-		//shooting handle
-		bulletDelta += delta;
-		rocketDelta += delta;
-		
-		float mouseX = controller.mouseX + (camera.position.x - camera.viewportWidth / 2);
-		float mouseY = (Gdx.graphics.getHeight() - controller.mouseY) + (camera.position.y - camera.viewportHeight / 2);
-			
-		//bullet handling	
-		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && bulletDelta > bulletCooldown){
-			projectiles.add(new Bullet("img/rocket.png", mouseX, mouseY, getX(), getY()));
-			bulletDelta = 0;
-			//a = false;
-		}
-		//rocket handling
-		if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && rocketDelta > rocketCooldown){
-			projectiles.add(new Rocket("img/rocket.png", mouseX, mouseY, getX(), getY()));
-			rocketDelta = 0;
-		}
-		
-		//check if projectiles collided
-		Iterator<Projectile> i = projectiles.iterator();
-		while(i.hasNext()){
-			Projectile b = i.next();
-			
-			b.update(delta);
-			
-			if(isOutOfBoundsX(b.getX(), b.getWidth()) || isOutOfBoundsY(b.getY(), b.getHeight())){
+			//shooting handle
+			bulletDelta += delta;
+			rocketDelta += delta;
+			//jeder berechnet ob er selbst getroffen wird
+			float mouseX = controller.mouseX + (camera.position.x - camera.viewportWidth / 2);
+			float mouseY = (Gdx.graphics.getHeight() - controller.mouseY) + (camera.position.y - camera.viewportHeight / 2);
 				
-				if(b.getRadius() != 0){
-					if(Constants.circleIntersectsRectangle(new Point((int)b.getX(), (int)b.getY()), b.getRadius(),
-							new Point((int)getX(), (int)getY()), getWidth(), getHeight()))
-						System.out.println("hit");
-				//System.out.println("bullet removed");
-				}
-				i.remove();
+			//bullet handling	
+			if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && bulletDelta > bulletCooldown){
+				enemyManager.sendNewBullet(new Bullet("img/rocket.png", mouseX, mouseY, getX(), getY(), this));
+				bulletDelta = 0;
+				System.out.println("new bullet");
 			}
-			else if(collisionXLeft(b.getX(), b.getY(), b.getWidth()) || collisionXRight(b.getX(), b.getY(), b.getWidth(), b.getHeight()) || 
-					collisionYDown(b.getX(), b.getY(), b.getHeight())|| collisionYUp(b.getX(), b.getY(), b.getWidth(), b.getHeight())) {
+			//rocket handling
+			if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && rocketDelta > rocketCooldown){
 				
-				if(b.getRadius() != 0){
-					if(Constants.circleIntersectsRectangle(new Point((int)b.getX(), (int)b.getY()), b.getRadius(),
-							new Point((int)getX(), (int)getY()), getWidth(), getHeight()))
-						System.out.println("hit very much");	
-				//System.out.println("bullet removed");
+				enemyManager.sendNewBullet(new Rocket("img/rocket.png", mouseX, mouseY, getX(), getY(), this));
+				rocketDelta = 0;
+				System.out.println("new rocket");
+				
 				}
-				i.remove();
-			}
 		}
-		}
+		
+		enemyManager.update(delta);
 	}
 	
 	private void decreaseXVelocity() {
 		velocity.x /= 1.2f;
+	}
+	public void decreaseLife(int amount){
+		life -= amount;
 	}
 
 	
@@ -213,8 +191,7 @@ public class Player extends Entity implements Character {
 			//System.out.println("x: " + controller.mouseX + ", Y: " + controller.mouseY);	
 		}
 		super.render(b);
-		for(Projectile p : projectiles)
-			p.render(b);
+		enemyManager.render(b);
 	}
 	/*
 	 * Character interface

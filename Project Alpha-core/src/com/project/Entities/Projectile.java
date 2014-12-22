@@ -1,7 +1,5 @@
 package com.project.Entities;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -10,14 +8,18 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Projectile extends Sprite{
 	private Vector2 direction;
+	private Player owner;
 	private boolean isXNegative = false;
 	private float eRadius;
+	protected float damage;
 	
-	public Projectile(String s, float targetX, float targetY, float originX, float originY, float speed, float explosionRadius){
+	public Projectile(String s, float targetX, float targetY, float originX, float originY, float speed, float explosionRadius, Player owner){
 		super(new Texture(Gdx.files.internal(s)));
 		
+		this.owner = owner;
 		this.eRadius = explosionRadius;
 		
+		damage = 0;
 		setBounds(originX, originY, 8, 8);
 		speed = 500;
 		
@@ -66,5 +68,16 @@ public class Projectile extends Sprite{
 	
 	public int getRadius() {
 		return 0;
+	}
+	
+	public float getDamage(){
+		return damage;
+	}
+	
+	public Vector2 getDirection(){
+		return direction;
+	}
+	public Player getOwner(){
+		return owner;
 	}
 }

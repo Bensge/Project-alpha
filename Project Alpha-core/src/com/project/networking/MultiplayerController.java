@@ -28,13 +28,11 @@ public class MultiplayerController implements Disposable, NetworkCallback
 	
 	public MultiplayerController(String addr, int port, String userName, NetworkCallback listener)
 	{
-		address = new InetSocketAddress(addr, port);
 		this.userName = userName;
 		this.listener = listener;
 
 		SocketHints hints = new SocketHints();
-		hints.tcpNoDelay = true;
-		socket = Gdx.net.newClientSocket(Protocol.TCP, address.getAddress().toString(), address.getPort(), hints);
+		socket = Gdx.net.newClientSocket(Protocol.TCP, addr, port, hints);
 		
 		writingWorker = new WritingWorker(socket);
 		readingWorker = new ReadingWorker(socket, this);
@@ -52,6 +50,8 @@ public class MultiplayerController implements Disposable, NetworkCallback
 	
 	public void login()
 	{
+		readingWorker.listen();
+		
 		//Handshake
 		LoginPacket loginPacket = new LoginPacket();
 		loginPacket.name = userName;

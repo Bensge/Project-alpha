@@ -1,16 +1,19 @@
 package Server;
 
 import java.io.IOException;
-
 import java.net.*;
 
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 import java.awt.EventQueue;
 
 import ClientConnection.Client;
+
 import com.project.networking.Common.Packet;
 import com.project.networking.Common.LoginPacket;
 import com.project.networking.Common.MessageReceivePacket;
@@ -46,6 +49,7 @@ public class AlphaServer {
 
 		while (true) {
 			// This is stupid. Stupid, stupid, stupid!
+			// Keeps the main thread running, otherwise the whole program might terminate in weird circumstances
 			Thread.sleep(1000);
 		}
 	}
@@ -57,6 +61,9 @@ public class AlphaServer {
 	private ServerSocket socket;
 	private ArrayList<Client> clients = new ArrayList<Client>();
 	private JmDNS dnsServer = null;
+	
+	private String serverName = null;
+	private String adminName = null;
 
 	/* HELPER */
 
@@ -68,6 +75,16 @@ public class AlphaServer {
 		System.out.println("+----------------------------+");
 		System.out.println("|           PREMIUM          |");
 		System.out.println("+----------------------------+\n");
+		
+		Scanner scanner = new Scanner(System.in);
+		
+		System.out.println("Please enter the server name:");
+		serverName = scanner.nextLine();
+		
+		System.out.println("Admin name (for privileged permissions):");
+		adminName = scanner.nextLine();
+		
+		scanner.close();
 
 		startUp();
 		listen();
@@ -97,8 +114,11 @@ public class AlphaServer {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		ServiceInfo info = ServiceInfo.create("projectalpha", "PAServer", port,
-				"GG Server");
+		ServiceInfo info = ServiceInfo.create("projectalpha", serverName, port,
+				"");
+		Map<String, String> infoMap = new HashMap<String, String>();
+		infoMap.put("adminName", adminName);
+		info.setText(infoMap);
 		try {
 			dnsServer.registerService(info);
 		} catch (IOException e) {
@@ -142,7 +162,8 @@ public class AlphaServer {
 		sendPacketToClientsBut(client, packet);
 	}
 
-	public void processMessage(Client sender, Packet packet) {
+	public void processMessage(Client sender, Packet packet)
+	{
 		System.out.println("Processing message...");
 
 		Packet newPacket = null;
@@ -155,10 +176,9 @@ public class AlphaServer {
 		} else if (packet instanceof LoginPacket) {
 			// get name of packet
 			sender.setName(((LoginPacket) packet).name);
-
+			
 			// Send client connect confirmation
-			MessageReceivePacket confirmationPacket = MessageReceivePacket
-					.serverMessagePacket("You joined!");
+			MessageReceivePacket confirmationPacket = MessageReceivePacket.serverMessagePacket("You joined!");
 			sender.send(confirmationPacket);
 
 			for (Client client : clients) {

@@ -25,8 +25,10 @@ import com.project.CharacterControllers.UserDesktopController;
 import com.project.CharacterControllers.UserMobileController;
 import com.project.Entities.Player;
 import com.project.constants.Constants;
+import com.project.networking.NetworkCallback;
+import com.project.networking.Common.Packet;
 
-public class GameWorld extends GameState {
+public class GameWorld extends GameState implements NetworkCallback {
 	
 	private OrthographicCamera camera;
 	private OrthogonalTiledMapRenderer renderer;
@@ -199,6 +201,12 @@ public class GameWorld extends GameState {
 	@Override
 	public void dispose() {
 		//The game world is never disposed, idiot!
+	}
+
+	@Override
+	public void receivedPacket(Packet p)
+	{
+		System.out.println("received Packet of class:" + p.getClass().getClass() + " P=" + p);
 	}
 
 }

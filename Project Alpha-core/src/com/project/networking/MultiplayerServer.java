@@ -1,10 +1,25 @@
 package com.project.networking;
 
-public class MultiplayerServer {
+import javax.jmdns.ServiceEvent;
+
+public class MultiplayerServer
+{
 	public String address;
 	public String name;
 	public String adminName;
 	public String key;
+	public int port;
+	
+	public MultiplayerServer(ServiceEvent event)
+	{
+		super();
+		address = event.getInfo().getHostAddresses()[0];
+		port = event.getInfo().getPort();
+		name = event.getInfo().getName();
+		adminName = event.getInfo().getPropertyString("adminName");
+		System.out.println("Admin name: " + adminName);
+		key = event.getInfo().getKey();
+	}
 	
 	@Override
 	public boolean equals(Object obj)

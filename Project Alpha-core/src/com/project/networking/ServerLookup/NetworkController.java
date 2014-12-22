@@ -40,21 +40,6 @@ public class NetworkController {
 		serverCache = new Array<>(2);
 	}
 	
-	/*
-	 * Small convenience method
-	 * */
-	
-	private MultiplayerServer serverWithEvent(ServiceEvent event)
-	{
-		MultiplayerServer s = new MultiplayerServer();
-		s.address = event.getInfo().getHostAddress();
-		s.name = event.getInfo().getNiceTextString();
-		s.adminName = "Unknown";
-		s.key = event.getInfo().getKey();
-		
-		return s;
-	}
-	
 	private boolean setUpDNS()
 	{
 		try {
@@ -125,7 +110,7 @@ public class NetworkController {
 				{
 					System.out.println("Service removed: " + event.toString());
 					
-					MultiplayerServer server = serverWithEvent(event);
+					MultiplayerServer server = new MultiplayerServer(event);
 					serverCache.removeValue(server, false);
 					getListener().lostServer(server);
 				}
@@ -135,7 +120,7 @@ public class NetworkController {
 				{
 					System.out.println("Service resolved: " + event.toString());
 					
-					MultiplayerServer server = serverWithEvent(event);
+					MultiplayerServer server = new MultiplayerServer(event);
 					serverCache.add(server);
 					getListener().foundServer(server);
 				}

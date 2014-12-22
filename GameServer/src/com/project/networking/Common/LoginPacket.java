@@ -1,6 +1,7 @@
 package com.project.networking.Common;
 
-public class LoginPacket extends Packet{
+public class LoginPacket extends Packet
+{
 	public static int packetID = 1;
 	
 	public String name;

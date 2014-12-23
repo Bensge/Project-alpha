@@ -70,8 +70,8 @@ public class EnemyManager {
 	}
 
 	public void render(Batch b){
-		for(Player player : player)
-			player.render(b);
+		for(Player play : player)
+			play.render(b);
 		for(Projectile p : projectiles)
 			p.render(b);
 	}

@@ -96,3 +96,17 @@ GameServer/.project
 GameServer/.classpath
 
 GameServer/.classpath
+
+.project
+
+gradle/wrapper/gradle-wrapper.jar
+
+gradle/wrapper/gradle-wrapper.properties
+
+gradlew
+
+gradlew.bat
+
+Project Alpha-core/src/com/project/networking/Common
+
+*.gradle

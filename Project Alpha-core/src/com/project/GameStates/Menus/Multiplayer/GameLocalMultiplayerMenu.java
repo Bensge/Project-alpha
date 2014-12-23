@@ -22,8 +22,6 @@ import com.project.networking.MultiplayerController;
 import com.project.networking.MultiplayerServer;
 import com.project.networking.ServerLookup.NetworkController;
 import com.project.networking.ServerLookup.NetworkDiscoveryListener;
-import com.sun.corba.se.impl.activation.ServerMain;
-import com.sun.istack.internal.FinalArrayList;
 
 public class GameLocalMultiplayerMenu extends GameMenu implements NetworkDiscoveryListener {
 	

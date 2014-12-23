@@ -1,12 +1,13 @@
 apply plugin: "java"
 
-sourceCompatibility = 1.6
+sourceCompatibility = 1.7
 sourceSets.main.java.srcDirs = [ "src/" ]
 
 project.ext.mainClassName = "com.project.alpha.desktop.DesktopLauncher"
 project.ext.assetsDir = new File("../android/assets");
 
 task run(dependsOn: classes, type: JavaExec) {
+    jvmArgs '-Dorg.lwjgl.opengl.Display.enableHighDPI=true'
     main = project.mainClassName
     classpath = sourceSets.main.runtimeClasspath
     standardInput = System.in

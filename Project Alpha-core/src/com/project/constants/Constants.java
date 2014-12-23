@@ -37,14 +37,14 @@ public class Constants
 			circle.y >= rectangle.y && circle.y >= rectangle.y + height)
 			return true;
 		
-		//2. eckke berührt kreis
+		//2. eckke beruehrt kreis
 		if(pythagoras(circle, rectangle) <= radius ||
 			pythagoras(circle, new Point(rectangle.x, (int) (rectangle.y + height))) <= radius ||
 			pythagoras(circle, new Point((int) (rectangle.x + width), rectangle.y)) <= radius ||
 			pythagoras(circle, new Point((int) (rectangle.x + width), (int) (rectangle.y + height))) <= radius)
 			return true;
 		
-		//3.seite berührt Kreis
+		//3.seite beruehrt Kreis
 		if(Math.abs(circle.y - (rectangle.y + height)) < radius && circle.x <= rectangle.x + width && circle.x >= rectangle.x ||
 			Math.abs(rectangle.y - circle.y) < radius && circle.x <= rectangle.x + width && circle.x >= rectangle.x ||	
 			Math.abs(rectangle.x - circle.x) < radius && circle.y <= rectangle.y + height && circle.y >= rectangle.y ||	

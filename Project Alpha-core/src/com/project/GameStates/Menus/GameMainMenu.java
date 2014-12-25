@@ -31,6 +31,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.project.GameStates.GameState;
 import com.project.GameStates.GameStateManager;
 import com.project.GameStates.Menus.Multiplayer.GameMultiplayerMenu;
+import com.project.GameStates.Menus.Settings.SettingsMenu;
 import com.project.constants.Constants;
 import com.project.main.Transition;
 
@@ -76,6 +77,13 @@ public class GameMainMenu extends GameMenu {
 	    table.row();
 	    
 	    button = new TextButton("Settings", style);
+		button.addListener(new ChangeListener()
+		{
+			public void changed(ChangeEvent event, Actor actor)
+			{
+				pushMenu(SettingsMenu.class);
+			}
+		});
 	    table.row().pad(20);
 	    table.add(button);
 	    table.row();

@@ -19,18 +19,24 @@ public class SocketAcceptWorker extends SwingWorker<Void, ClientReadingWorker> {
 
 	private ServerSocket socket;
 	private AlphaServer server;
+
+	private boolean shouldTerminate;
 	
 	public SocketAcceptWorker(ServerSocket socket, AlphaServer server) {
 		this.socket = socket;
 		this.server = server;
 	}
-	
 
+	public void terminate()
+	{
+		shouldTerminate = true;
+	}
 
 	@Override
-	protected Void doInBackground() throws Exception {
+	protected Void doInBackground() throws Exception
+	{
 		System.out.println("Hi from SocketAcceptWriter!");
-		while (true)
+		while (!shouldTerminate)
 		{
 			try
 			{
@@ -53,7 +59,8 @@ public class SocketAcceptWorker extends SwingWorker<Void, ClientReadingWorker> {
 			}
 			
 		}
-		
+		System.out.println("SocketAcceptWriter: bailing out");
+		return null;
 	}
 	
 	@Override

@@ -61,6 +61,7 @@ public class AlphaServer {
 	private ServerSocket socket;
 	private ArrayList<Client> clients = new ArrayList<Client>();
 	private JmDNS dnsServer = null;
+	private SocketAcceptWorker acceptWorker;
 	
 	private String serverName = null;
 	private String adminName = null;
@@ -133,6 +134,7 @@ public class AlphaServer {
 	private void tearDown() {
 		// Close socket
 		try {
+			acceptWorker.terminate();
 			socket.close();
 			dnsServer.unregisterAllServices();
 			System.out.println("Unregistered services, waiting...");
@@ -144,7 +146,7 @@ public class AlphaServer {
 	}
 
 	private void listen() throws Exception {
-		SocketAcceptWorker acceptWorker = new SocketAcceptWorker(socket, this);
+		acceptWorker = new SocketAcceptWorker(socket, this);
 		acceptWorker.execute();
 	}
 

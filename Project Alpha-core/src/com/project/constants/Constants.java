@@ -6,12 +6,15 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class Constants
 {
 	//Constants
 	public final static BitmapFont menlo32Font;
 	public final static BitmapFont menlo50Font;
+
+	public final static Skin uiSkin;
 	
 	public static float SCREEN_SCALING_FACTOR = 1;
 	
@@ -28,6 +31,9 @@ public class Constants
 		
 		menlo50Font = new BitmapFont(Gdx.files.internal("fonts/Menlo-100.fnt"),Gdx.files.internal("fonts/Menlo.png"), false);
 		menlo50Font.setScale(0.5f);
+
+		uiSkin = new Skin(Gdx.files.internal("skin/uiskin.json"));
+		uiSkin.add("default-font", menlo32Font);
 	}
 	
 	

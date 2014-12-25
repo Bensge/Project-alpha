@@ -11,17 +11,23 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.project.GameStates.GameStateManager;
 import com.project.GameStates.GameWorld;
 import com.project.GameStates.Menus.GameMenu;
+import com.project.Preferences.AppPreferences;
+import com.project.UI.Alert;
 import com.project.UI.LoadingIndicator;
 import com.project.constants.Constants;
 import com.project.networking.MultiplayerController;
+import com.project.networking.MultiplayerGameSessionController;
 import com.project.networking.MultiplayerServer;
 import com.project.networking.ServerLookup.NetworkController;
 import com.project.networking.ServerLookup.NetworkDiscoveryListener;
+
+import java.util.Scanner;
 
 public class GameLocalMultiplayerMenu extends GameMenu implements NetworkDiscoveryListener {
 	
@@ -83,11 +89,20 @@ public class GameLocalMultiplayerMenu extends GameMenu implements NetworkDiscove
 	private void selectedServer(MultiplayerServer server)
 	{
 		System.out.println("Need to connect to server!!!" + server.toString());
-		
-		MultiplayerController controller = new MultiplayerController(server.address, server.port, "Benno", (GameWorld)manager.getBackgroundState());
-		controller.login();
+
+		MultiplayerGameSessionController clr = MultiplayerGameSessionController.sharedInstance();
+		try {
+			clr.startMultiplayerSession(server.address, server.port, AppPreferences.sharedInstance().getUserName());
+			manager.setRenderBackgroundStateExclusively(true);
+		}
+		catch (GdxRuntimeException e)
+		{
+			System.out.println("Connecting failed with error" + e.getMessage() + "\n" + e);
+			new Alert("Error connecting to server", e.getMessage()).show(stage);
+		}
 	}
-	
+
+
 	@Override
 	public void dispose()
 	{

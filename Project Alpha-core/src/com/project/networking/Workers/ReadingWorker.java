@@ -5,18 +5,18 @@ import java.util.Arrays;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.net.Socket;
-import com.project.networking.NetworkCallback;
+import com.project.networking.PacketReceivedCallback;
 import com.project.networking.Common.NetworkingCommon;
 import com.project.networking.Common.Packet;
 
 public class ReadingWorker
 {
 	private InputStream stream;
-	private NetworkCallback listener;
+	private PacketReceivedCallback listener;
 	private boolean isListening;
 	private boolean shouldTerminate;
 	
-	public ReadingWorker(Socket socket, NetworkCallback listener)
+	public ReadingWorker(Socket socket, PacketReceivedCallback listener)
 	{
 		this.stream = socket.getInputStream();
 		this.listener = listener;

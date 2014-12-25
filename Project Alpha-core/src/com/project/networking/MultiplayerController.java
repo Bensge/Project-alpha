@@ -6,12 +6,13 @@ import com.badlogic.gdx.Net.Protocol;
 import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.net.SocketHints;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.project.networking.Common.LoginPacket;
 import com.project.networking.Common.Packet;
 import com.project.networking.Workers.ReadingWorker;
 import com.project.networking.Workers.WritingWorker;
 
-public class MultiplayerController implements Disposable, NetworkCallback
+public class MultiplayerController implements Disposable, PacketReceivedCallback
 {
 	
 	private Socket socket;
@@ -22,18 +23,20 @@ public class MultiplayerController implements Disposable, NetworkCallback
 	
 	private String userName;
 	
-	private NetworkCallback listener;
+	private PacketReceivedCallback listener;
 	
 	
 	
-	public MultiplayerController(String addr, int port, String userName, NetworkCallback listener)
+	public MultiplayerController(String addr, int port, String userName, PacketReceivedCallback listener) throws GdxRuntimeException
 	{
 		this.userName = userName;
 		this.listener = listener;
 
 		SocketHints hints = new SocketHints();
+		hints.tcpNoDelay = true;
+
 		socket = Gdx.net.newClientSocket(Protocol.TCP, addr, port, hints);
-		
+
 		writingWorker = new WritingWorker(socket);
 		readingWorker = new ReadingWorker(socket, this);
 
@@ -46,6 +49,11 @@ public class MultiplayerController implements Disposable, NetworkCallback
 		{
 			this.listener.receivedPacket(p);
 		}
+	}
+
+	public void sendPacket(Packet p)
+	{
+		writingWorker.dispatchPacketSend(p);
 	}
 	
 	public void login()

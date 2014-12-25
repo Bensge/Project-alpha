@@ -25,10 +25,11 @@ import com.project.CharacterControllers.UserDesktopController;
 import com.project.CharacterControllers.UserMobileController;
 import com.project.Entities.Player;
 import com.project.constants.Constants;
-import com.project.networking.NetworkCallback;
+import com.project.networking.PacketReceivedCallback;
 import com.project.networking.Common.Packet;
 
-public class GameWorld extends GameState implements NetworkCallback {
+public class GameWorld extends GameState implements PacketReceivedCallback
+{
 	
 	private OrthographicCamera camera;
 	private OrthogonalTiledMapRenderer renderer;
@@ -159,13 +160,13 @@ public class GameWorld extends GameState implements NetworkCallback {
 		Method getBatchMethod = null;
 		try
 		{
-			getBatchMethod = ClassReflection.getMethod(renderer.getClass(), "getBatch", new Class[0]);
+			getBatchMethod = ClassReflection.getMethod(renderer.getClass(), "getBatch");
 		}
 		catch (ReflectionException exc)
 		{
 			try
 			{
-				getBatchMethod = ClassReflection.getMethod(renderer.getClass(), "getSpriteBatch", new Class[0]);
+				getBatchMethod = ClassReflection.getMethod(renderer.getClass(), "getSpriteBatch");
 			}
 			catch (ReflectionException e)
 			{

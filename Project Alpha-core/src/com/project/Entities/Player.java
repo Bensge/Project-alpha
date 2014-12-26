@@ -1,22 +1,16 @@
 package com.project.Entities;
 
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.project.CharacterControllers.Character;
 import com.project.CharacterControllers.CharacterController;
+import com.project.CharacterControllers.UserMobileController;
 import com.project.CharacterControllers.CharacterController.Direction;
 import com.project.CharacterControllers.UserDesktopController;
-import com.project.constants.Constants;
 
 public class Player extends Entity implements Character {
 
@@ -148,33 +142,47 @@ public class Player extends Entity implements Character {
 			
 		
 		controller.update();
+		
 		if(controller instanceof UserDesktopController){
-			//shooting handle
-			bulletDelta += delta;
-			rocketDelta += delta;
-			//jeder berechnet ob er selbst getroffen wird
-			float mouseX = controller.mouseX + (camera.position.x - camera.viewportWidth / 2);
-			float mouseY = (Gdx.graphics.getHeight() - controller.mouseY) + (camera.position.y - camera.viewportHeight / 2);
-				
-			//bullet handling	
-			if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && bulletDelta > bulletCooldown){
-				enemyManager.sendNewBullet(new Bullet("img/rocket.png", mouseX, mouseY, getX(), getY(), this));
-				bulletDelta = 0;
-				System.out.println("new bullet");
-			}
-			//rocket handling
-			if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && rocketDelta > rocketCooldown){
-				
-				enemyManager.sendNewBullet(new Rocket("img/rocket.png", mouseX, mouseY, getX(), getY(), this));
-				rocketDelta = 0;
-				System.out.println("new rocket");
-				
-				}
+			desktopInputHandling(delta);
+		}
+		else if(controller instanceof UserMobileController){
+			mobileInputHandling(delta);
 		}
 		
 		enemyManager.update(delta);
 	}
+
+	/* Input handling methods */
+	private void desktopInputHandling(float delta) {
+		//shooting handle
+		
+		bulletDelta += delta;
+		rocketDelta += delta;
+
+		float mouseX = controller.mouseX + (camera.position.x - camera.viewportWidth / 2);
+		float mouseY = (Gdx.graphics.getHeight() - controller.mouseY) + (camera.position.y - camera.viewportHeight / 2);
+			
+		//bullet handling	
+		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && bulletDelta > bulletCooldown){
+			enemyManager.sendNewBullet(new Bullet("img/rocket.png", mouseX, mouseY, getX() + getWidth() / 2, getY() + getHeight() / 2, this));
+			bulletDelta = 0;
+			System.out.println("new bullet");
+		}
+		//rocket handling
+		if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && rocketDelta > rocketCooldown){
+			enemyManager.sendNewBullet(new Rocket("img/rocket.png", mouseX, mouseY, getX(), getY(), this));
+			rocketDelta = 0;
+			System.out.println("new rocket");
+			
+			}
+	}
 	
+	private void mobileInputHandling(float delta) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private void decreaseXVelocity() {
 		velocity.x /= 1.2f;
 	}

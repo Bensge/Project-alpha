@@ -4,7 +4,11 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.BitmapFontData;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.project.constants.Constants;
 
 public class EnemyManager {
@@ -12,12 +16,14 @@ public class EnemyManager {
 	private Player target;
 	private ArrayList<Player> player;
 	private ArrayList<Projectile> projectiles;
+	private ArrayList<ParticleEffect> rocketEffects;
 	
 	public EnemyManager(Player target){
 		this.target = target;
 		
 		player = new ArrayList<Player>();
 		projectiles = new ArrayList<Projectile>();
+		rocketEffects = new ArrayList<ParticleEffect>();
 	}
 	
 	
@@ -44,7 +50,9 @@ public class EnemyManager {
 				
 				
 				//if player is in explosionRadius
-				if(p.getRadius() != 0 && !(p.getOwner().equals(target))){
+				if(p instanceof Rocket){
+					newRocketEffect((int) p.getX(), (int) p.getY());
+					
 					if(Constants.circleIntersectsRectangle(new Point((int)p.getX(), (int)p.getY()), p.getRadius(),
 							new Point((int)p.getX(), (int)p.getY()), p.getWidth(), p.getHeight())){
 						System.out.println("wall hit");
@@ -65,8 +73,17 @@ public class EnemyManager {
 				target.decreaseLife((int) p.getDamage());
 				
 				it.remove();
-			}
+			}	
 		}
+		
+		//handle particles
+		for(ParticleEffect effect : rocketEffects){
+			
+			effect.update(delta);
+			//if(effect.isComplete())
+				//rocketEffects.remove(effect);
+		}
+
 	}
 
 	public void render(Batch b){
@@ -74,6 +91,9 @@ public class EnemyManager {
 			play.render(b);
 		for(Projectile p : projectiles)
 			p.render(b);
+		for(ParticleEffect particle : rocketEffects)
+			particle.draw(b);
+		
 	}
 
 	private void hit(Projectile p) {
@@ -86,5 +106,18 @@ public class EnemyManager {
 	public void sendNewBullet(Projectile p){
 		addProjectile(p);
 		//send information bout new bullet here
+	}
+	
+	private void newRocketEffect(int x, int y) {
+		
+		ParticleEffect e = new ParticleEffect();
+		e.load(Gdx.files.internal("effect/tapB.p"), Gdx.files.internal("effect"));
+		e.scaleEffect(0.33f);
+		e.setDuration(1000);
+		e.setPosition(x, y);
+		e.allowCompletion();
+		e.start();
+		
+		rocketEffects.add(e);
 	}
 }

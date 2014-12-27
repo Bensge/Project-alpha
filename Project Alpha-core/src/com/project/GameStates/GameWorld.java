@@ -24,6 +24,8 @@ import com.project.CharacterControllers.ComputerDemoController;
 import com.project.CharacterControllers.UserDesktopController;
 import com.project.CharacterControllers.UserMobileController;
 import com.project.Entities.Player;
+import com.project.Overlays.MultiplayerActionFeedOverlay;
+import com.project.Overlays.OverlayContainer;
 import com.project.constants.Constants;
 import com.project.networking.PacketReceivedCallback;
 import com.project.networking.Common.Packet;
@@ -49,6 +51,9 @@ public class GameWorld extends GameState implements PacketReceivedCallback
 	//Parallax effect
 	private SpriteBatch backgroundBatch;
 	private Sprite backgroundSprite;
+
+	//Overlays
+	private OverlayContainer overlayContainer;
 
 	public GameWorld(GameStateManager manager) {
 		super(manager);
@@ -83,6 +88,11 @@ public class GameWorld extends GameState implements PacketReceivedCallback
 		backgroundSprite = new Sprite(new TextureRegion(new Texture(Gdx.files.internal("img/parallax_background.jpg")),1260,800,900,700));
 		if (!(SCALING_FACTOR > 0.99f && SCALING_FACTOR < 1.01f))
 			backgroundSprite.scale(SCALING_FACTOR);
+
+		//Overlays
+		overlayContainer = new OverlayContainer();
+		MultiplayerActionFeedOverlay feedOverlay = new MultiplayerActionFeedOverlay();
+		overlayContainer.addOverlay(feedOverlay);
 	}
 	
 	public void setIsInBackground(boolean background)
@@ -197,6 +207,9 @@ public class GameWorld extends GameState implements PacketReceivedCallback
 		TextBounds bounds = fpsFont.getBounds(str);
 		fpsFont.draw(fpsBatch,str,Gdx.graphics.getWidth() - bounds.width - fpsPadding, Gdx.graphics.getHeight() - fpsPadding);
 		fpsBatch.end();
+
+		//Overlays
+		overlayContainer.draw();
 	}
 
 	@Override

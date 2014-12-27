@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 public class Constants
 {
 	//Constants
+	public final static BitmapFont menlo10Font;
 	public final static BitmapFont menlo32Font;
 	public final static BitmapFont menlo50Font;
 
@@ -31,6 +32,9 @@ public class Constants
 		
 		menlo50Font = new BitmapFont(Gdx.files.internal("fonts/Menlo-100.fnt"),Gdx.files.internal("fonts/Menlo.png"), false);
 		menlo50Font.setScale(0.5f);
+
+		menlo10Font = new BitmapFont(Gdx.files.internal("fonts/Menlo-20.fnt"),Gdx.files.internal("fonts/Menlo.png"), false);
+		menlo10Font.setScale(0.5f);
 
 		uiSkin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 		uiSkin.add("default-font", menlo32Font);

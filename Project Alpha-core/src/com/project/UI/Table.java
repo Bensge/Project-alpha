@@ -62,6 +62,14 @@ public class Table extends com.badlogic.gdx.scenes.scene2d.ui.Table
 				add(a);
 		}
 	}
+
+	public void removeRow(int index)
+	{
+		Array<Cell> cells = getCells();
+		Cell cell = cells.get(index);
+		removeActor(cell.getActor());
+		cells.removeIndex(index);
+	}
 	
 	public void insertServer(int index, MultiplayerServer server, TextButtonStyle style, ChangeListener listener)
 	{

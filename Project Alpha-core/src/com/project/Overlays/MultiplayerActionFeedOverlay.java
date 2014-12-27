@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
-import com.project.Overlays.OverlayViewport.ScreenCorner;
 import com.project.UI.Table;
 import com.project.networking.Common.MessageReceivePacket;
 import com.project.networking.Common.Packet;

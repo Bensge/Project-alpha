@@ -92,7 +92,7 @@ public class GameLocalMultiplayerMenu extends GameMenu implements NetworkDiscove
 
 		MultiplayerGameSessionController clr = MultiplayerGameSessionController.sharedInstance();
 		try {
-			clr.startMultiplayerSession(server.address, server.port, AppPreferences.sharedInstance().getUserName());
+			clr.startMultiplayerSession(server);
 			manager.setRenderBackgroundStateExclusively(true);
 		}
 		catch (GdxRuntimeException e)

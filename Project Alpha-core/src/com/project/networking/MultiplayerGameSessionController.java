@@ -1,8 +1,10 @@
 package com.project.networking;
 
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.project.Preferences.AppPreferences;
 import com.project.networking.Common.Packet;
 
 
@@ -23,11 +25,37 @@ public class MultiplayerGameSessionController implements PacketReceivedCallback,
 
 
     private MultiplayerController controller;
-    private ObjectMap<Class<? extends Packet>, MultiplayerListener> listeners;
+    private ObjectMap<Class<? extends Packet>, Array<MultiplayerListener>> listeners;
 
     public MultiplayerGameSessionController()
     {
         listeners = new ObjectMap<>();
+    }
+
+    /*
+    * +----------------+
+    * |  Private APIs  |
+    * +----------------+
+     */
+
+    private Array<MultiplayerListener> listenersForPacketType(Class<? extends Packet> type)
+    {
+        //Packet type null means this method will return all listeners
+        if (type == null) {
+            Array<MultiplayerListener> allListeners = new Array<>();
+            for (Array<MultiplayerListener> list : listeners.values())
+            {
+                for (MultiplayerListener listener : list)
+                {
+                    allListeners.add(listener);
+                }
+            }
+            return allListeners;
+        }
+        else
+        {
+            return listeners.get(type);
+        }
     }
 
     /*
@@ -38,26 +66,41 @@ public class MultiplayerGameSessionController implements PacketReceivedCallback,
 
 
     /*
-    * Registers a packet listener for callbacks when a specific packet type (=class) is received. Only one listener per packet class is
-    * Currently possible, because of the usage of a simple ObjectMap.
+    * Registers a packet listener for callbacks when a specific packet type (=class) is received.
+    * Multiple listeners per packet class are supported
      */
 
     public void registerListener(Class<? extends Packet> packetClass, MultiplayerListener listener)
     {
-        listeners.put(packetClass,listener);
+        //Get list of listeners for this class
+        Array<MultiplayerListener> list = listeners.get(packetClass);
+        if (list == null)
+            list = new Array<MultiplayerListener>(2);
+        //Insert listener
+        list.add(listener);
+        //Put array back into map
+        listeners.put(packetClass,list);
     }
 
-    public void unregisterListener(Class<? extends Packet> packetClass)
+    public void unregisterListener(Class<? extends Packet> packetClass, MultiplayerListener listener)
     {
-        listeners.remove(packetClass);
+        //Get list of listeners for this class
+        Array<MultiplayerListener> list = listeners.get(packetClass);
+        if (list != null) {
+            list.removeValue(listener,true);
+        }
     }
 
     /*
     * Session APIs
      */
 
-    public void startMultiplayerSession(String addr, int port, String userName) throws GdxRuntimeException
+    public void startMultiplayerSession(MultiplayerServer server) throws GdxRuntimeException
     {
+        String userName = AppPreferences.sharedInstance().getUserName();
+        String addr = server.address;
+        int port = server.port;
+
         if (controller != null) {
             System.out.println("Starting a new multiplayer session while another session is still active is invalid");
             controller.dispose();
@@ -66,10 +109,20 @@ public class MultiplayerGameSessionController implements PacketReceivedCallback,
         //This method call may throw a GdxRuntimeException
         controller = new MultiplayerController(addr,port,userName,this);
         controller.login();
+
+        //Let listeners know about new session
+        for (MultiplayerListener listener : listenersForPacketType(null)) {
+            listener.multiplayerSessionStarted(server);
+        }
     }
 
     public void endMultiplayerSession()
     {
+        //Let listeners know about new session
+        for (MultiplayerListener listener : listenersForPacketType(null)) {
+            listener.multiplayerSessionEnded();
+        }
+
         controller.dispose();
         controller = null;
     }
@@ -85,9 +138,11 @@ public class MultiplayerGameSessionController implements PacketReceivedCallback,
     {
         Class packetClass = p.getClass();
 
-        MultiplayerListener listener = listeners.get(packetClass);
-        if (listener != null)
-            listener.receivedPacket(p);
+        Array<MultiplayerListener> list = listeners.get(packetClass);
+        if (list != null) {
+            for (MultiplayerListener listener : list)
+                listener.receivedPacket(p);
+        }
 
     }
 

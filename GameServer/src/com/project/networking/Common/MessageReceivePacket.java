@@ -39,4 +39,9 @@ public class MessageReceivePacket extends MessageSendPacket {
 		
 		return data;
 	}
+
+	public String niceTextString()
+	{
+		return sender + ": " + text;
+	}
 }

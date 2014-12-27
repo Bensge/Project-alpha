@@ -54,4 +54,9 @@ public class UserActionPacket extends Packet {
 	{
 		return this.getClass().toString() + " (" + this.user + " did action:" + this.action + " isCurrent: " + this.isCurrent + " )";
 	}
+
+	public String niceTextString()
+	{
+		return user + " " + (action == Action.Leave ? "left" : "joined");
+	}
 }

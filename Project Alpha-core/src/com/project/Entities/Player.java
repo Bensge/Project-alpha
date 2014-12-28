@@ -11,6 +11,8 @@ import com.project.CharacterControllers.CharacterController;
 import com.project.CharacterControllers.UserMobileController;
 import com.project.CharacterControllers.CharacterController.Direction;
 import com.project.CharacterControllers.UserDesktopController;
+import com.project.networking.Common.PlayerUpdatePacket;
+import com.project.networking.MultiplayerGameSessionController;
 
 public class Player extends Entity implements Character {
 
@@ -20,6 +22,7 @@ public class Player extends Entity implements Character {
 	private float bulletCooldown = 0.1f, bulletDelta, rocketCooldown = 3, rocketDelta;
 	private boolean heroMode;
 	private EnemyManager enemyManager;
+	private long lastSendTime = 0;
 	
 	/*
 	 * Booleans for the Character interface
@@ -148,6 +151,15 @@ public class Player extends Entity implements Character {
 		}
 		else if(controller instanceof UserMobileController){
 			mobileInputHandling(delta);
+		}
+
+		long time;
+		if ((time = System.nanoTime()) - lastSendTime > 1000 * 1000 * 1000 / 5 && MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive()) {
+			lastSendTime = time;
+			PlayerUpdatePacket packet = new PlayerUpdatePacket();
+			packet.locationX = (int)getX();
+			packet.locationY = (int)getY();
+			MultiplayerGameSessionController.sharedInstance().sendPacket(packet);
 		}
 		
 		enemyManager.update(delta);

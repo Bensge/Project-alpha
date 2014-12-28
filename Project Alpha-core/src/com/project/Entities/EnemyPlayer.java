@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class EnemyPlayer extends Entity{
 
@@ -11,8 +12,8 @@ public class EnemyPlayer extends Entity{
 	private byte id;
 	
 	public EnemyPlayer(Point position, String name, byte id){
-		super(new Texture("img/player.png"));
-		
+		super(new Texture("img/player.png"),32,42);
+		this.id = id;
 		this.name = name;
 		setBounds(position.x, position.y, getWidth(), getHeight());
 	}

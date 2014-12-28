@@ -26,6 +26,7 @@ public class MultiplayerGameSessionController implements PacketReceivedCallback,
 
     private MultiplayerController controller;
     private ObjectMap<Class<? extends Packet>, Array<MultiplayerListener>> listeners;
+    private boolean gameSessionActive;
 
     public MultiplayerGameSessionController()
     {
@@ -102,6 +103,11 @@ public class MultiplayerGameSessionController implements PacketReceivedCallback,
     * Session APIs
      */
 
+    public boolean isMultiplayerSessionActive()
+    {
+        return gameSessionActive;
+    }
+
     public void startMultiplayerSession(MultiplayerServer server) throws GdxRuntimeException
     {
         String userName = AppPreferences.sharedInstance().getUserName();
@@ -121,6 +127,7 @@ public class MultiplayerGameSessionController implements PacketReceivedCallback,
         for (MultiplayerListener listener : listenersForPacketType(null)) {
             listener.multiplayerSessionStarted(server);
         }
+        gameSessionActive = true;
     }
 
     public void endMultiplayerSession()
@@ -129,6 +136,7 @@ public class MultiplayerGameSessionController implements PacketReceivedCallback,
         for (MultiplayerListener listener : listenersForPacketType(null)) {
             listener.multiplayerSessionEnded();
         }
+        gameSessionActive = false;
 
         controller.dispose();
         controller = null;

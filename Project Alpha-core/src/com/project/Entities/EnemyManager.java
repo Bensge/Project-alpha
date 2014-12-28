@@ -156,10 +156,12 @@ public class EnemyManager implements MultiplayerListener
 		for (Entity e : players) {
 			if (e instanceof EnemyPlayer) {
 				EnemyPlayer p = (EnemyPlayer)e;
+				System.out.println("Found player with id" + (int)p.getID());
 				if (p.getID() == id)
 					return p;
 			}
 		}
+		System.out.println("Didn't find player with id:" + (int)id);
 		return null;
 	}
 
@@ -186,6 +188,7 @@ public class EnemyManager implements MultiplayerListener
 		{
 			PlayerUpdatePacket packet = (PlayerUpdatePacket)p;
 			EnemyPlayer player = playerWithID(packet.userID);
+			player.update(packet.locationX, packet.locationY);
 		}
 	}
 }

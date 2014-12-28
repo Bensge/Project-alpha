@@ -54,9 +54,7 @@ public class MultiplayerActionFeedOverlay extends Overlay implements Multiplayer
         {
             public void run()
             {
-                System.out.println("attempting to remove cell");
                 int index = table.getCells().indexOf(dismissCell,true);
-                System.out.println("index=" + index);
                 if (index != -1)
                     table.removeRow(index);
             }

@@ -14,12 +14,7 @@ import java.awt.EventQueue;
 
 import ClientConnection.Client;
 
-import com.project.networking.Common.Packet;
-import com.project.networking.Common.LoginPacket;
-import com.project.networking.Common.MessageReceivePacket;
-import com.project.networking.Common.MessageSendPacket;
-import com.project.networking.Common.UserActionPacket;
-import com.project.networking.Common.NetworkingCommon;
+import com.project.networking.Common.*;
 import com.project.networking.Common.UserActionPacket.Action;
 
 public class AlphaServer {
@@ -201,6 +196,13 @@ public class AlphaServer {
 			UserActionPacket p = new UserActionPacket(clients.get(sender).byteValue(), sender.getName(),
 					Action.Join, true);
 			newPacket = p;
+		}
+		else if (packet instanceof PlayerUpdatePacket || packet instanceof ProjectilePacket) {
+			if (packet instanceof PlayerUpdatePacket) {
+				((PlayerUpdatePacket) packet).userID = clients.get(sender).byteValue();
+			}
+			//Forward update packets right away
+			newPacket = packet;
 		}
 
 		if (newPacket != null)

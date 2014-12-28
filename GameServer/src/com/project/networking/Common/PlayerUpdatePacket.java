@@ -7,7 +7,7 @@ public class PlayerUpdatePacket extends Packet
 {
     public static int packetID = 8;
 
-    public int playerID;
+    public byte userID;
 
     public int locationX;
     public int locationY;
@@ -15,11 +15,11 @@ public class PlayerUpdatePacket extends Packet
 
     public byte[] generateDataPacket()
     {
-        byte[] data = new byte[4 * 3];
+        byte[] data = new byte[1 + 2*4];
 
-        NetworkingCommon.writeIntToBuffer(playerID,data,0);
-        NetworkingCommon.writeIntToBuffer(locationX,data,4);
-        NetworkingCommon.writeIntToBuffer(locationY,data,8);
+        data[0] = userID;
+        NetworkingCommon.writeIntToBuffer(locationX,data,1);
+        NetworkingCommon.writeIntToBuffer(locationY,data,5);
 
         this.length = data.length;
         return data;

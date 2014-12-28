@@ -142,9 +142,9 @@ public class Packet {
 		{
 			PlayerUpdatePacket p = new PlayerUpdatePacket();
 
-			p.playerID = NetworkingCommon.intFromBuffer(bulkPacket, 0);
-			p.playerID = NetworkingCommon.intFromBuffer(bulkPacket, 4);
-			p.playerID = NetworkingCommon.intFromBuffer(bulkPacket, 8);
+			p.userID = bulkPacket[0];
+			p.locationX = NetworkingCommon.intFromBuffer(bulkPacket, 1);
+			p.locationY = NetworkingCommon.intFromBuffer(bulkPacket, 5);
 
 			packet = p;
 		}

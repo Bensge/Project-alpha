@@ -10,20 +10,32 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.BitmapFontData;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.project.constants.Constants;
+import com.project.networking.Common.Packet;
+import com.project.networking.Common.PlayerUpdatePacket;
+import com.project.networking.Common.ProjectilePacket;
+import com.project.networking.Common.UserActionPacket;
+import com.project.networking.MultiplayerGameSessionController;
+import com.project.networking.MultiplayerListener;
+import com.project.networking.MultiplayerServer;
 
-public class EnemyManager {
+public class EnemyManager implements MultiplayerListener
+{
 
 	private Player target;
-	private ArrayList<Player> player;
+	private ArrayList<Player> players;
 	private ArrayList<Projectile> projectiles;
 	private ArrayList<ParticleEffect> rocketEffects;
 	
 	public EnemyManager(Player target){
 		this.target = target;
 		
-		player = new ArrayList<Player>();
+		players = new ArrayList<Player>();
 		projectiles = new ArrayList<Projectile>();
 		rocketEffects = new ArrayList<ParticleEffect>();
+
+		MultiplayerGameSessionController.sharedInstance().registerListener(UserActionPacket.class,this);
+		MultiplayerGameSessionController.sharedInstance().registerListener(ProjectilePacket.class,this);
+		MultiplayerGameSessionController.sharedInstance().registerListener(PlayerUpdatePacket.class,this);
 	}
 	
 	
@@ -32,7 +44,7 @@ public class EnemyManager {
 	}
 	
 	public void addPlayer(Player p){
-		player.add(p);
+		players.add(p);
 	}
 	
 	public void update(float delta) {
@@ -87,8 +99,8 @@ public class EnemyManager {
 	}
 
 	public void render(Batch b){
-		for(Player play : player)
-			play.render(b);
+		for(Player player : players)
+			player.render(b);
 		for(Projectile p : projectiles)
 			p.render(b);
 		for(ParticleEffect particle : rocketEffects)
@@ -119,5 +131,22 @@ public class EnemyManager {
 		e.start();
 		
 		rocketEffects.add(e);
+	}
+
+	@Override
+	public void multiplayerSessionStarted(MultiplayerServer server)
+	{
+
+	}
+
+	@Override
+	public void multiplayerSessionEnded()
+	{
+		players.clear();
+	}
+
+	@Override
+	public void receivedPacket(Packet p)
+	{
 	}
 }

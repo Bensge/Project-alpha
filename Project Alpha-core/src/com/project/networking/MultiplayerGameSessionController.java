@@ -47,7 +47,9 @@ public class MultiplayerGameSessionController implements PacketReceivedCallback,
             {
                 for (MultiplayerListener listener : list)
                 {
-                    allListeners.add(listener);
+                    //Avoid duplicates entries
+                    if (!allListeners.contains(listener,true))
+                        allListeners.add(listener);
                 }
             }
             return allListeners;
@@ -89,6 +91,11 @@ public class MultiplayerGameSessionController implements PacketReceivedCallback,
         if (list != null) {
             list.removeValue(listener,true);
         }
+    }
+
+    public void sendPacket(Packet p)
+    {
+        controller.sendPacket(p);
     }
 
     /*
@@ -136,7 +143,7 @@ public class MultiplayerGameSessionController implements PacketReceivedCallback,
     @Override
     public void receivedPacket(Packet p)
     {
-        Class packetClass = p.getClass();
+        Class<? extends Packet> packetClass = p.getClass();
 
         Array<MultiplayerListener> list = listeners.get(packetClass);
         if (list != null) {

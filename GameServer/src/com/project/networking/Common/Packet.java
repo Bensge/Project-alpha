@@ -138,6 +138,16 @@ public class Packet {
 			
 			packet = p;
 		}
+		else if (packetType == PlayerUpdatePacket.packetID)
+		{
+			PlayerUpdatePacket p = new PlayerUpdatePacket();
+
+			p.playerID = NetworkingCommon.intFromBuffer(bulkPacket, 0);
+			p.playerID = NetworkingCommon.intFromBuffer(bulkPacket, 4);
+			p.playerID = NetworkingCommon.intFromBuffer(bulkPacket, 8);
+
+			packet = p;
+		}
 		
 		return packet;
 	}

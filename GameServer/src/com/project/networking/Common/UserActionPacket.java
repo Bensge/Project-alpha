@@ -8,8 +8,9 @@ public class UserActionPacket extends Packet {
 		Join,
 		Leave
 	};
-	
-	public String user;
+
+	public byte userID;
+	public String userName;
 	public Action action;
 	public boolean isCurrent;
 	
@@ -18,9 +19,10 @@ public class UserActionPacket extends Packet {
 		
 	}
 	
-	public UserActionPacket(String user, Action action, boolean isCurrent)
+	public UserActionPacket(byte userID, String userName, Action action, boolean isCurrent)
 	{
-		this.user = user;
+		this.userID = userID;
+		this.userName = userName;
 		this.action = action;
 		this.isCurrent = isCurrent;
 	}
@@ -35,28 +37,29 @@ public class UserActionPacket extends Packet {
 		byte ac = (byte)act;
 		byte isC = (byte)(this.isCurrent ? 1 : 0);
 		
-		byte[] usr = user.getBytes();
+		byte[] usr = userName.getBytes();
 		int userLength = usr.length;
-		
-		int totalLength = 2 + 4 + userLength;
+
+		//Length of 3 bytes (userID, action, isCurrent) + length of user name string
+		int totalLength = 3 + userLength;
 		byte[] packet = new byte[totalLength];
 		this.length = totalLength;
-		
-		packet[0] = ac;
-		packet[1] = isC;
-		NetworkingCommon.writeIntToBuffer(userLength, packet, 2);
-		NetworkingCommon.writeBytesToBuffer(usr, packet, 2+4);
+
+		packet[0] = userID;
+		packet[1] = ac;
+		packet[2] = isC;
+		NetworkingCommon.writeBytesToBuffer(usr, packet, 3);
 		
 		return packet;
 	}
 	
 	public String toString()
 	{
-		return this.getClass().toString() + " (" + this.user + " did action:" + this.action + " isCurrent: " + this.isCurrent + " )";
+		return this.getClass().toString() + " (" + this.userName + " [" + userID + "] " + " did action:" + this.action + " isCurrent: " + this.isCurrent + " )";
 	}
 
 	public String niceTextString()
 	{
-		return user + " " + (action == Action.Leave ? "left" : "joined");
+		return userName + " " + (action == Action.Leave ? "left" : "joined");
 	}
 }

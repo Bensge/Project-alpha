@@ -112,15 +112,18 @@ public class Packet {
 		else if (packetType == UserActionPacket.packetID)
 		{
 			UserActionPacket p = new UserActionPacket();
-			
-			byte action = bulkPacket[0];
+
+			byte userID = bulkPacket[0];
+			p.userID = userID;
+
+			byte action = bulkPacket[1];
 			p.action = UserActionPacket.Action.values()[(int)action];
 			
-			boolean isC = bulkPacket[1] != 0;
+			boolean isC = bulkPacket[2] != 0;
 			p.isCurrent = isC;
 			
-			String user = new String(bulkPacket, 6, bulkPacket.length - 6);
-			p.user = user;
+			String user = new String(bulkPacket, 3, bulkPacket.length - 3);
+			p.userName = user;
 			
 			packet = p;
 		}

@@ -24,9 +24,9 @@ import com.project.networking.Common.UserActionPacket.Action;
 
 public class AlphaServer {
 
-	public static final int MESSAGE_PACKET_ID = 0;
-
 	public static AlphaServer instance = null;
+
+
 
 	public static void main(String[] args) throws Exception {
 		EventQueue.invokeLater(new Runnable() {
@@ -59,7 +59,10 @@ public class AlphaServer {
 
 	/* IVARS */
 	private ServerSocket socket;
-	private ArrayList<Client> clients = new ArrayList<Client>();
+	//A map containing clients as keys, and integers (client IDs) as values. Crazy world!
+	private Map<Client,Byte> clients = new HashMap<>();
+	//Why -128 and not 0? Because bytes are always signed in java. It hurts...
+	private byte userIDCounter = -128;
 	private JmDNS dnsServer = null;
 	private SocketAcceptWorker acceptWorker;
 	
@@ -150,23 +153,24 @@ public class AlphaServer {
 		acceptWorker.execute();
 	}
 
-	public void registerClient(Client client) {
-		clients.add(client);
+	public void registerClient(Client client)
+	{
+		clients.put(client,new Byte(userIDCounter++));
 	}
 
-	public void unregisterClient(Client client) {
-		clients.remove(client);
-
+	public void unregisterClient(Client client)
+	{
+		//The client map has the client as keys and not objects for this very reason. We can remove clients
+		// with one single call, instead of having to iterate over the whole map to find the key of the client value
+		Byte clientID = clients.remove(client);
 		// Notify other clients
-		UserActionPacket packet = new UserActionPacket(client.getName(),
-				Action.Leave, true);
-
+		UserActionPacket packet = new UserActionPacket(clientID.byteValue(),client.getName(), Action.Leave, true);
 		sendPacketToClientsBut(client, packet);
 	}
 
 	public void processMessage(Client sender, Packet packet)
 	{
-		System.out.println("Processing message...");
+		System.out.println("Processing message of class: " + packet.getClass().getName());
 
 		Packet newPacket = null;
 		if (packet instanceof MessageSendPacket) {
@@ -183,18 +187,18 @@ public class AlphaServer {
 			MessageReceivePacket confirmationPacket = MessageReceivePacket.serverMessagePacket("You joined!");
 			sender.send(confirmationPacket);
 
-			for (Client client : clients) {
+			for (Client client : clients.keySet()) {
 				if (client == sender)
 					continue;
 				// Let newly joined sender know which other clients are
 				// connected
-				UserActionPacket user = new UserActionPacket(client.getName(),
+				UserActionPacket user = new UserActionPacket(clients.get(client).byteValue(), client.getName(),
 						Action.Join, false);
 				sender.send(user);
 			}
 
 			// Notify other clients
-			UserActionPacket p = new UserActionPacket(sender.getName(),
+			UserActionPacket p = new UserActionPacket(clients.get(sender).byteValue(), sender.getName(),
 					Action.Join, true);
 			newPacket = p;
 		}
@@ -204,14 +208,10 @@ public class AlphaServer {
 	}
 
 	public void sendPacketToClientsBut(Client sender, Packet newPacket) {
-		for (Client client : clients) {
+		for (Client client : clients.keySet()) {
 			if (client != sender) {
 				client.send(newPacket);
 			}
 		}
-	}
-
-	public ArrayList<Client> getClients() {
-		return clients;
 	}
 }

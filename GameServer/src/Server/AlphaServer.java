@@ -125,7 +125,7 @@ public class AlphaServer {
 			e.printStackTrace();
 		}
 
-		System.out.println("Set up DNS server: " + info.toString());
+		System.out.println("Set up multicast DNS server.");
 
 	}
 

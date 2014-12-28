@@ -62,7 +62,7 @@ public class ReadingWorker
 			        
 			        if (result == -1)
 			        {
-			        	System.out.println("Server disconnected!!!!!!");
+			        	System.out.println("Server disconnected!");
 			        	//It's been great talking to you, Client!
 			        	break;
 			        }
@@ -76,10 +76,8 @@ public class ReadingWorker
 			        	continue;
 			        }
 			        
-			        System.out.println("Packet type: " + packetType);
 			        int packetSize = NetworkingCommon.intFromBuffer(prePacket, 4);
-			        System.out.println("Packet size: " + packetSize);
-			        
+
 			        byte[] packetBuffer = new byte[packetSize];
 			        
 			        result = 0;

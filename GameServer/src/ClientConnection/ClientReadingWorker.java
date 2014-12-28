@@ -31,8 +31,7 @@ public class ClientReadingWorker extends SwingWorker<Void, Packet> {
 	{
 		byte[] prePacket = new byte[NetworkingCommon.INT_FIELD_SIZE * 2];
 		
-	    System.out.println("Listening to client messages!");
-	    System.out.println("Now ready!");
+	    System.out.println("Listening to client messages");
 	    while (true)
 	    {
 	    	//Clean out prePacket for the case that it's filled with the old package.
@@ -54,13 +53,14 @@ public class ClientReadingWorker extends SwingWorker<Void, Packet> {
 	        	//Got invalid packet
 	        	continue;
 	        }
-	        
-	        System.out.println("Received Pre-Packet!" + prePacket);
-	        
-	        System.out.println("Packet type: " + packetType);
-	        
+
+
+//	        System.out.println("Received Pre-Packet!" + prePacket);
+//
+//	        System.out.println("Packet type: " + packetType);
+
 	        int packetSize = NetworkingCommon.intFromBuffer(prePacket, 4);
-	        System.out.println("Packet size: " + packetSize);
+//	        System.out.println("Packet size: " + packetSize);
 	        
 	        byte[] packetBuffer = new byte[packetSize];
 	        

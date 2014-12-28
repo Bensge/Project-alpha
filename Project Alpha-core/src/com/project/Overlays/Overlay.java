@@ -31,8 +31,6 @@ public class Overlay extends Group
         setWidth(overlayWidth);
         setHeight(overlayHeight);
 
-        debugAll();
-
         int width = Gdx.graphics.getWidth();
         int height = Gdx.graphics.getHeight();
 

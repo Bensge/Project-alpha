@@ -75,7 +75,7 @@ public class Packet {
 		
 		Packet packet = null;
 		
-		System.out.println("Parsing packet of type (" + packetType + ") and length (" + packetSize + ")");
+		//System.out.println("Parsing packet of type (" + packetType + ") and length (" + packetSize + ")");
 		
 		if (packetType == MessageSendPacket.packetID)
 		{

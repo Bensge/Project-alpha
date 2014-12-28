@@ -156,7 +156,6 @@ public class EnemyManager implements MultiplayerListener
 		for (Entity e : players) {
 			if (e instanceof EnemyPlayer) {
 				EnemyPlayer p = (EnemyPlayer)e;
-				System.out.println("Found player with id" + (int)p.getID());
 				if (p.getID() == id)
 					return p;
 			}

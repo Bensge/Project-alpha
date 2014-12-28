@@ -8,12 +8,18 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 public class EnemyPlayer extends Entity{
 
 	private String name;
+	private byte id;
 	
-	public EnemyPlayer(Point position, String name){
+	public EnemyPlayer(Point position, String name, byte id){
 		super(new Texture("img/player.png"));
 		
 		this.name = name;
 		setBounds(position.x, position.y, getWidth(), getHeight());
+	}
+
+	public byte getID()
+	{
+		return id;
 	}
 	
 	public void update(float x, float y){

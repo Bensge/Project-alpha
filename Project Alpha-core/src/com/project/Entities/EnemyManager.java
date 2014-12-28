@@ -20,16 +20,15 @@ import com.project.networking.MultiplayerServer;
 
 public class EnemyManager implements MultiplayerListener
 {
-
 	private Player target;
-	private ArrayList<Player> players;
+	private ArrayList<Entity> players;
 	private ArrayList<Projectile> projectiles;
 	private ArrayList<ParticleEffect> rocketEffects;
 	
 	public EnemyManager(Player target){
 		this.target = target;
 		
-		players = new ArrayList<Player>();
+		players = new ArrayList<>();
 		projectiles = new ArrayList<Projectile>();
 		rocketEffects = new ArrayList<ParticleEffect>();
 
@@ -43,8 +42,15 @@ public class EnemyManager implements MultiplayerListener
 		projectiles.add(b);
 	}
 	
-	public void addPlayer(Player p){
+	public void addPlayer(Entity p){
 		players.add(p);
+	}
+
+	public void removePlayer(Entity p)
+	{
+		if (!players.remove(p)) {
+			System.out.println("Failed to remove player. Didn't hold player!");
+		}
 	}
 	
 	public void update(float delta) {
@@ -99,7 +105,7 @@ public class EnemyManager implements MultiplayerListener
 	}
 
 	public void render(Batch b){
-		for(Player player : players)
+		for(Entity player : players)
 			player.render(b);
 		for(Projectile p : projectiles)
 			p.render(b);
@@ -145,8 +151,41 @@ public class EnemyManager implements MultiplayerListener
 		players.clear();
 	}
 
+	private EnemyPlayer playerWithID(byte id)
+	{
+		for (Entity e : players) {
+			if (e instanceof EnemyPlayer) {
+				EnemyPlayer p = (EnemyPlayer)e;
+				if (p.getID() == id)
+					return p;
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public void receivedPacket(Packet p)
 	{
+		if (p instanceof UserActionPacket)
+		{
+			UserActionPacket packet = (UserActionPacket)p;
+			if (packet.action == UserActionPacket.Action.Join)
+			{
+				EnemyPlayer player = new EnemyPlayer(new Point(0, 0), packet.userName, packet.userID);
+				addPlayer(player);
+				System.out.println("Added player");
+			}
+			else if (packet.action == UserActionPacket.Action.Leave)
+			{
+				EnemyPlayer player = playerWithID(packet.userID);
+				removePlayer(player);
+				System.out.println("Removed player");
+			}
+		}
+		else if (p instanceof PlayerUpdatePacket)
+		{
+			PlayerUpdatePacket packet = (PlayerUpdatePacket)p;
+			EnemyPlayer player = playerWithID(packet.userID);
+		}
 	}
 }

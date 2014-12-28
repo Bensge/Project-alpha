@@ -19,8 +19,6 @@ public class Client {
 		this.name = name;
 	}
 
-
-
 	public Client(ClientReadingWorker reader){
 		this.reader = reader;
 	}
@@ -42,10 +40,12 @@ public class Client {
 	}
 	
 	public void send(Packet packet)
-	{ 
-		setWriter(new ClientWritingWorker(getReader().out, packet));
-		getWriter().execute();
-		System.out.println("Sending message soon...");
+	{
+		if (writer == null) {
+			writer = new ClientWritingWorker(getReader().out);
+		}
+
+		writer.dispatchPacketSend(packet);
 	}
 	
 }

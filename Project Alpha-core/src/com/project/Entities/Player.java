@@ -154,7 +154,7 @@ public class Player extends Entity implements Character {
 		}
 
 		long time;
-		if ((time = System.nanoTime()) - lastSendTime > 1000 * 1000 * 1000 / 5 && MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive()) {
+		if ((time = System.nanoTime()) - lastSendTime > 1000 * 1000 * 1000 / 15 && MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive()) {
 			lastSendTime = time;
 			PlayerUpdatePacket packet = new PlayerUpdatePacket();
 			packet.locationX = (int)getX();
@@ -179,15 +179,12 @@ public class Player extends Entity implements Character {
 		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && bulletDelta > bulletCooldown){
 			enemyManager.sendNewBullet(new Bullet("img/rocket.png", mouseX, mouseY, getX() + getWidth() / 2, getY() + getHeight() / 2, this));
 			bulletDelta = 0;
-			System.out.println("new bullet");
 		}
 		//rocket handling
 		if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && rocketDelta > rocketCooldown){
 			enemyManager.sendNewBullet(new Rocket("img/rocket.png", mouseX, mouseY, getX(), getY(), this));
 			rocketDelta = 0;
-			System.out.println("new rocket");
-			
-			}
+		}
 	}
 	
 	private void mobileInputHandling(float delta) {

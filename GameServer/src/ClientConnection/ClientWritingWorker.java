@@ -7,29 +7,40 @@ import javax.swing.SwingWorker;
 import com.project.networking.Common.Packet;
 
 
-public class ClientWritingWorker extends SwingWorker<Void, Void> {
-
+public class ClientWritingWorker
+{
 	private OutputStream out;
-	private Packet packet;
-	
-	public ClientWritingWorker(OutputStream out, Packet p) {
+
+	public ClientWritingWorker(OutputStream out) {
 		this.out = out;
-		this.packet = p;
 	}
-	
-	@Override
-	protected Void doInBackground() throws Exception {
-		try {
-			byte[] messagePacket = packet.generateDataPacket();
-			byte[] prePacket = packet.generatePrePacket();
-			System.out.println(messagePacket==null);
-			out.write(prePacket);
-			out.write(messagePacket);
-			System.out.println("Sent message to client");
-		} catch (Exception e){
-			e.printStackTrace();
-			System.out.println("Error sending message to client:" + e.toString() + " me: " + this);
-		}
-		return null;
+
+	public void dispatchPacketSend(Packet packet)
+	{
+		//This method will return almost instantly, the actual sending process will be done asynchronously
+		final ClientWritingWorker worker = this;
+		final byte[] data = packet.generateDataPacket();
+		final byte[] preData = packet.generatePrePacket();
+
+		new Thread()
+		{
+			public void run()
+			{
+				try
+				{
+					//We synchronize the sending process with the writing worker,
+					//which has the effect that writing to the socket will always only happen from one thread at a time.
+					synchronized (worker) {
+						out.write(preData);
+						out.write(data);
+					}
+				}
+				catch (Exception e)
+				{
+					System.out.println("Error writing to outputStream: " + e.toString());
+					e.printStackTrace();
+				}
+			}
+		}.run();
 	}
 }

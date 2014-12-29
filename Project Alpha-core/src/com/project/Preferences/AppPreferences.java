@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
 /**
- * Created by bennokrauss on 24.12.14.
+ * Created by bennokrauss (and justus(mimimi)) on 24.12.14.
  */
 public class AppPreferences
 {
@@ -33,7 +33,7 @@ public class AppPreferences
     * |  Settings Getters & Setters  |
     * +------------------------------+
      */
-
+    private final String lastIP = "";
     private final String userNameKey = "userName";
 
     public String getUserName()
@@ -45,5 +45,14 @@ public class AppPreferences
     {
         prefs.putString(userNameKey, name);
         prefs.flush();
+    }
+    
+    public void setLastIP(String ip){
+    	prefs.putString(lastIP, ip);
+    	prefs.flush();
+    }
+    
+    public String getLastIP(){
+    	return prefs.getString(lastIP);
     }
 }

@@ -1,6 +1,5 @@
 package com.project.GameStates.Menus.Settings;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.project.GameStates.GameStateManager;
@@ -9,7 +8,7 @@ import com.project.Preferences.AppPreferences;
 import com.project.constants.Constants;
 
 /**
- * Created by bennokrauss on 24.12.14.
+ * Created by bennokrauss (and justus(mimimi)) on 24.12.14.
  */
 public class SettingsMenu extends GameMenu
 {

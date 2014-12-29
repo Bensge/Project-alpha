@@ -19,6 +19,10 @@ public class GameRemoteMultiplayerMenu extends GameMenu {
 
 		TextField field = new TextField("", Constants.uiSkin);
 		field.setMessageText("address:port");
+		
+		String lastIP = AppPreferences.sharedInstance().getLastIP();
+		if(lastIP != "")
+			field.setText(lastIP);
 
 		field.setTextFieldListener(new TextField.TextFieldListener()
 		{
@@ -69,6 +73,9 @@ public class GameRemoteMultiplayerMenu extends GameMenu {
 			server.port = Integer.parseInt(address.substring(index + 1, address.length()));
 
 			clr.startMultiplayerSession(server);
+			
+			AppPreferences.sharedInstance().setLastIP(address);
+			
 			manager.setRenderBackgroundStateExclusively(true);
 		}
 		catch (GdxRuntimeException e)

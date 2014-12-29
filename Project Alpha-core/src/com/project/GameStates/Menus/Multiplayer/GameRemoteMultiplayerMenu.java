@@ -25,15 +25,15 @@ public class GameRemoteMultiplayerMenu extends GameMenu {
 			@Override
 			public void keyTyped(TextField textField, char c)
 			{
-				if (c == '\r' || c == '\n') {
-					String text = textField.getText();
-					if (text.length() > 0)
-						connect(text);
-					else {
-						//Dismiss focus manually
-						stage.setKeyboardFocus(null);
-					}
+			if (c == '\r' || c == '\n') {
+				String text = textField.getText();
+				if (text.length() > 0)
+					connect(text);
+				else {
+					//Dismiss focus manually
+					stage.setKeyboardFocus(null);
 				}
+			}
 			}
 		});
 

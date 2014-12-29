@@ -62,7 +62,7 @@ public class EnemyManager implements MultiplayerListener
 			p.update(delta);
 			
 			//projectile collision with walls
-			if(target.isOutOfBoundsX(p.getX(), p.getWidth()) || target.isOutOfBoundsY(p.getY(), p.getHeight()) ||
+			if(target.isOutOfBoundsX(p.getX(), p.getWidth()) || target.isOutOfBoundsYDown(p.getY(), p.getHeight()) ||
 				target.collisionXLeft(p.getX(), p.getY(), p.getWidth()) || target.collisionXRight(p.getX(), p.getY(), p.getWidth(), p.getHeight()) || 
 				target.collisionYDown(p.getX(), p.getY(), p.getHeight())|| target.collisionYUp(p.getX(), p.getY(), p.getWidth(), p.getHeight())){
 				
@@ -211,6 +211,7 @@ public class EnemyManager implements MultiplayerListener
 			case 1:
 				addProjectile(new Rocket("img/rocket.png", packet.targetX, packet.targetY, packet.originX, packet.originY,
 					playerWithID(packet.userID)));
+				default:
 				break;
 			}
 			

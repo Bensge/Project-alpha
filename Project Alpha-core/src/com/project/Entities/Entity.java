@@ -70,6 +70,10 @@ public abstract class Entity extends Sprite {
 		return (y < 0 || y + height > mapHeight);
 	}
 	
+	public boolean isOutOfBoundsYDown(float y, float height){
+		return y < 0;
+	}
+	
 	public abstract void update(float delta);
 	
 	public boolean collisionXLeft(float x, float y, float height) {

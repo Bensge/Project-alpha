@@ -158,7 +158,7 @@ public class Player extends Entity implements Character {
 		long time;
 		if ((time = System.nanoTime()) - lastSendTime > 1000 * 1000 * 1000 / Constants.TICKRATE && 
 				MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive() &&
-				oldX != getX() && oldY != getY() || (firstTime && MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive())) {
+				(oldX != getX() || oldY != getY() || firstTime) && MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive()) {
 			lastSendTime = time;
 			PlayerUpdatePacket packet = new PlayerUpdatePacket();
 			packet.locationX = (int)getX();
@@ -226,7 +226,7 @@ public class Player extends Entity implements Character {
 		controller.update();
 		if(controller instanceof UserDesktopController){
 			//b.draw(crosshair, controller.mouseX, Gdx.graphics.getHeight() - controller.mouseY);
-			//System.out.println("x: " + controller.mouseX + ", Y: " + controller.mouseY);	
+			//System.out.println("x: " + controller.mouseX + ", Y: " + controller.mouseY);
 		}
 		super.render(b);
 		enemyManager.render(b);

@@ -84,7 +84,7 @@ public class EnemyManager implements MultiplayerListener
 			}
 			
 			//if it hits the player
-			if(p.getBoundingRectangle().overlaps(target.getBoundingRectangle()) && !(p.getOwner().equals(target))){
+			if (p.getBoundingRectangle().overlaps(target.getBoundingRectangle()) && !(p.getOwner().equals(target))){
 				System.out.println("I was hit!");				
 				
 				hit(p);

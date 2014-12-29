@@ -197,10 +197,15 @@ public class AlphaServer {
 					Action.Join, true);
 			newPacket = p;
 		}
-		else if (packet instanceof PlayerUpdatePacket || packet instanceof ProjectilePacket) {
-			if (packet instanceof PlayerUpdatePacket) {
-				((PlayerUpdatePacket) packet).userID = clients.get(sender).byteValue();
-			}
+		//Forward all these packages
+		else if (packet instanceof PlayerUpdatePacket || packet instanceof ProjectilePacket)
+		{
+			//Set userID for these packages
+			//Loooooooooooooooool JVM looooooool
+			if (packet instanceof  PlayerUpdatePacket)
+				((PlayerUpdatePacket) packet).userID = clients.get(sender);
+			else
+				((ProjectilePacket) packet).userID = clients.get(sender);
 			//Forward update packets right away
 			newPacket = packet;
 		}

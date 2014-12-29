@@ -20,7 +20,7 @@ public class Player extends Entity implements Character {
 	private float oldX, oldY;
 	public CharacterController controller;
 	private OrthographicCamera camera;
-	private float bulletCooldown = 0.1f, bulletDelta, rocketCooldown = 3, rocketDelta;
+	private float bulletCooldown = 0.1f, bulletDelta, rocketCooldown = 3, rocketDelta = 3;
 	private boolean heroMode, firstTime = true;
 	private EnemyManager enemyManager;
 	private long lastSendTime = 0;

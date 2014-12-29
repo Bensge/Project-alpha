@@ -23,6 +23,8 @@ public class GameRemoteMultiplayerMenu extends GameMenu {
 		String lastIP = AppPreferences.sharedInstance().getLastIP();
 		if(lastIP != "")
 			field.setText(lastIP);
+		
+		stage.setKeyboardFocus(field);
 
 		field.setTextFieldListener(new TextField.TextFieldListener()
 		{

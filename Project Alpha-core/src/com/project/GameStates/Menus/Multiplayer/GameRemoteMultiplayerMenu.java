@@ -17,7 +17,8 @@ public class GameRemoteMultiplayerMenu extends GameMenu {
 		super(manager);
 
 
-		TextField field = new TextField("address:port", Constants.uiSkin);
+		TextField field = new TextField("", Constants.uiSkin);
+		field.setMessageText("address:port");
 
 		field.setTextFieldListener(new TextField.TextFieldListener()
 		{
@@ -25,7 +26,13 @@ public class GameRemoteMultiplayerMenu extends GameMenu {
 			public void keyTyped(TextField textField, char c)
 			{
 				if (c == '\r' || c == '\n') {
-					connect(textField.getText());
+					String text = textField.getText();
+					if (text.length() > 0)
+						connect(text);
+					else {
+						//Dismiss focus manually
+						stage.setKeyboardFocus(null);
+					}
 				}
 			}
 		});

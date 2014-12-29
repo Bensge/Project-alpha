@@ -25,8 +25,9 @@ public class SettingsMenu extends GameMenu
             public void keyTyped(TextField textField, char c)
             {
                 if (c == '\r' || c == '\n') {
-                    System.out.println("Saving string:" + textField.getText());
                     AppPreferences.sharedInstance().setUserName(textField.getText());
+                    //Dismiss focus
+                    stage.setKeyboardFocus(null);
                 }
             }
         });

@@ -2,8 +2,8 @@ package com.project.Entities;
 
 public class Rocket extends Projectile {
 
-	private final static float speed = 50;
-	private final static float explosionRadius = 50;
+	public final static float speed = 50;
+	public final static float explosionRadius = 50;
 	
 	public Rocket(String s, float targetX, float targetY, float originX,
 			float originY, Player owner) {

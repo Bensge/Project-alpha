@@ -123,6 +123,15 @@ public class EnemyManager implements MultiplayerListener
 	
 	public void sendNewBullet(Projectile p){
 		addProjectile(p);
+		
+		//send bullet information
+		ProjectilePacket packet = new ProjectilePacket();
+		packet.originX = p.getX();
+		packet.originY = p.getY();
+		packet.targetX = p.targetX;
+		packet.targetY = p.targetY;
+		
+		MultiplayerGameSessionController.sharedInstance().sendPacket(packet);
 		//send information bout new bullet here
 	}
 	
@@ -188,6 +197,12 @@ public class EnemyManager implements MultiplayerListener
 			PlayerUpdatePacket packet = (PlayerUpdatePacket)p;
 			EnemyPlayer player = playerWithID(packet.userID);
 			player.update(packet.locationX, packet.locationY);
+		}
+		else if(p instanceof ProjectilePacket)
+		{
+			ProjectilePacket packet = (ProjectilePacket)p;
+			addProjectile(new Projectile("img/rocket.png", packet.targetX, packet.targetY, packet.originX, packet.originY,
+					Bullet.speed, Bullet.explosionRadius, playerWithID(packet.userID)));
 		}
 	}
 }

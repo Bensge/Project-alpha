@@ -8,14 +8,17 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Projectile extends Sprite{
 	private Vector2 direction;
-	private Player owner;
+	private Entity owner;
 	private boolean isXNegative = false;
 	private float eRadius;
 	protected float damage;
+	public float targetX, targetY;
 	
-	public Projectile(String s, float targetX, float targetY, float originX, float originY, float speed, float explosionRadius, Player owner){
+	public Projectile(String s, float targetX, float targetY, float originX, float originY, float speed, float explosionRadius, Entity owner){
 		super(new Texture(Gdx.files.internal(s)));
 		
+		this.targetX = targetX;
+		this.targetY = targetY;
 		this.owner = owner;
 		this.eRadius = explosionRadius;
 		
@@ -55,6 +58,9 @@ public class Projectile extends Sprite{
 		if(isXNegative){
 			direction.x = -direction.x;
 		}
+		
+		System.out.println(direction.x + ": direction.x");
+		System.out.println(direction.y + ": direction.y");
 	}
 	
 	public void update(float delta){
@@ -77,7 +83,7 @@ public class Projectile extends Sprite{
 	public Vector2 getDirection(){
 		return direction;
 	}
-	public Player getOwner(){
+	public Entity getOwner(){
 		return owner;
 	}
 }

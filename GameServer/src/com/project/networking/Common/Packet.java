@@ -133,8 +133,9 @@ public class Packet {
 			
 			p.originX = NetworkingCommon.floatFromBuffer(bulkPacket, 0*4);
 			p.originY = NetworkingCommon.floatFromBuffer(bulkPacket, 1*4);
-			p.directionX = NetworkingCommon.floatFromBuffer(bulkPacket, 2*4);
-			p.directionY = NetworkingCommon.floatFromBuffer(bulkPacket, 3*4);
+			p.targetX = NetworkingCommon.floatFromBuffer(bulkPacket, 2*4);
+			p.targetY = NetworkingCommon.floatFromBuffer(bulkPacket, 3*4);
+			p.userID = bulkPacket[4*4];
 			
 			packet = p;
 		}

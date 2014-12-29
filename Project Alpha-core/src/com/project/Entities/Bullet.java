@@ -2,8 +2,8 @@ package com.project.Entities;
 
 public class Bullet extends Projectile{
 
-	private final static float speed = 500;
-	private final static float explosionRadius = 0;
+	public final static float speed = 500;
+	public final static float explosionRadius = 0;
 	
 	public Bullet(String s, float targetX, float targetY, float originX, float originY, Player owner){
 		super(s, targetX, targetY, originX, originY, speed, explosionRadius, owner);

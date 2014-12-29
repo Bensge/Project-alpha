@@ -220,7 +220,7 @@ public class GameWorld extends GameState implements PacketReceivedCallback
 	@Override
 	public void receivedPacket(Packet p)
 	{
-		System.out.println("received Packet of class:" + p.getClass().getClass() + " P=" + p);
+		//System.out.println("received Packet of class:" + p.getClass().getClass() + " P=" + p);
 	}
 
 }

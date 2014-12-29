@@ -165,7 +165,7 @@ public class AlphaServer {
 
 	public void processMessage(Client sender, Packet packet)
 	{
-		System.out.println("Processing message of class: " + packet.getClass().getName());
+		//System.out.println("Processing message of class: " + packet.getClass().getName());
 
 		Packet newPacket = null;
 		if (packet instanceof MessageSendPacket) {

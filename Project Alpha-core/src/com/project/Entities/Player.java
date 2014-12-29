@@ -11,7 +11,9 @@ import com.project.CharacterControllers.CharacterController;
 import com.project.CharacterControllers.UserMobileController;
 import com.project.CharacterControllers.CharacterController.Direction;
 import com.project.CharacterControllers.UserDesktopController;
+import com.project.constants.Constants;
 import com.project.networking.Common.PlayerUpdatePacket;
+import com.project.networking.Common.ProjectilePacket;
 import com.project.networking.MultiplayerGameSessionController;
 
 public class Player extends Entity implements Character {
@@ -20,7 +22,7 @@ public class Player extends Entity implements Character {
 	public CharacterController controller;
 	private OrthographicCamera camera;
 	private float bulletCooldown = 0.1f, bulletDelta, rocketCooldown = 3, rocketDelta;
-	private boolean heroMode;
+	private boolean heroMode, firstTime = true;
 	private EnemyManager enemyManager;
 	private long lastSendTime = 0;
 	
@@ -153,16 +155,23 @@ public class Player extends Entity implements Character {
 			mobileInputHandling(delta);
 		}
 
+		//player position is sent here
 		long time;
-		if ((time = System.nanoTime()) - lastSendTime > 1000 * 1000 * 1000 / 15 && MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive()) {
+		if ((time = System.nanoTime()) - lastSendTime > 1000 * 1000 * 1000 / Constants.TICKRATE && 
+				MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive() &&
+				oldX != getX() && oldY != getY() || (firstTime && MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive())) {
 			lastSendTime = time;
 			PlayerUpdatePacket packet = new PlayerUpdatePacket();
 			packet.locationX = (int)getX();
 			packet.locationY = (int)getY();
 			MultiplayerGameSessionController.sharedInstance().sendPacket(packet);
+			
+			firstTime = false;
 		}
 		
 		enemyManager.update(delta);
+		
+		
 	}
 
 	/* Input handling methods */
@@ -177,8 +186,11 @@ public class Player extends Entity implements Character {
 			
 		//bullet handling	
 		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && bulletDelta > bulletCooldown){
-			enemyManager.sendNewBullet(new Bullet("img/rocket.png", mouseX, mouseY, getX() + getWidth() / 2, getY() + getHeight() / 2, this));
+			float XDirection =  getX() + getWidth() / 2;
+			float YDirection =  getY() + getHeight() / 2;
+			enemyManager.sendNewBullet(new Bullet("img/rocket.png", mouseX, mouseY, XDirection, YDirection, this));
 			bulletDelta = 0;
+			
 		}
 		//rocket handling
 		if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && rocketDelta > rocketCooldown){

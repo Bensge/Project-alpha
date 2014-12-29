@@ -9,7 +9,7 @@ public class MultiplayerServer
 	public String adminName;
 	public String key;
 	public int port;
-	
+
 	public MultiplayerServer(ServiceEvent event)
 	{
 		super();
@@ -20,7 +20,12 @@ public class MultiplayerServer
 		System.out.println("Admin name: " + adminName);
 		key = event.getInfo().getKey();
 	}
-	
+
+	public MultiplayerServer()
+	{
+
+	}
+
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -29,10 +34,10 @@ public class MultiplayerServer
 		if (obj instanceof MultiplayerServer)
 		{
 			MultiplayerServer server = (MultiplayerServer)obj;
-			
+
 			return server.key.equals(key);
 		}
-		
+
 		return false;
 	}
 

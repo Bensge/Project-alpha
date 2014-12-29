@@ -3,8 +3,6 @@ package com.project.Overlays;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
 import com.project.UI.Table;
 import com.project.networking.Common.MessageReceivePacket;
 import com.project.networking.Common.Packet;
@@ -13,6 +11,9 @@ import com.project.networking.MultiplayerGameSessionController;
 import com.project.networking.MultiplayerListener;
 import com.project.networking.MultiplayerServer;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Created by bennokrauss on 25.12.14.
  */
@@ -20,6 +21,7 @@ public class MultiplayerActionFeedOverlay extends Overlay implements Multiplayer
 {
     private Table table;
     private Timer dismissTimer;
+    private int cellsToBeRemoved = 0;
 
     private final int MAX_TABLE_ENTRIES = 3;
 
@@ -46,19 +48,23 @@ public class MultiplayerActionFeedOverlay extends Overlay implements Multiplayer
         table.row().pad(10);
         final Cell dismissCell = table.add(l);
 
-        while (table.getCells().size > MAX_TABLE_ENTRIES)
+        while (table.getCells().size > MAX_TABLE_ENTRIES) {
             table.removeRow(0);
+            cellsToBeRemoved--;
+        }
 
         //Dismiss entry after 5 seconds
-        dismissTimer.scheduleTask(new Task()
+        cellsToBeRemoved++;
+        dismissTimer.schedule(new TimerTask()
         {
             public void run()
             {
-                int index = table.getCells().indexOf(dismissCell,true);
-                if (index != -1)
-                    table.removeRow(index);
+                if (cellsToBeRemoved > 0) {
+                    table.removeRow(0);
+                    cellsToBeRemoved--;
+                }
             }
-        }, 5);
+        }, 5 * 1000);
     }
 
     @Override
@@ -76,8 +82,6 @@ public class MultiplayerActionFeedOverlay extends Overlay implements Multiplayer
     @Override
     public void receivedPacket(Packet p)
     {
-        System.out.println("receivedPacket" + p.toString());
-
         if (p instanceof UserActionPacket) {
             UserActionPacket packet = (UserActionPacket)p;
             if (packet.isCurrent)

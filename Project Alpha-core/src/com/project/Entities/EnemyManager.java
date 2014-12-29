@@ -211,8 +211,13 @@ public class EnemyManager implements MultiplayerListener
 		else if (p instanceof PlayerUpdatePacket)
 		{
 			PlayerUpdatePacket packet = (PlayerUpdatePacket)p;
+
 			EnemyPlayer player = (EnemyPlayer) playerWithID(packet.userID);
-			player.update(packet.locationX, packet.locationY);
+			if (player != null)
+				player.update(packet.locationX, packet.locationY);
+			else
+				System.out.println("!!!!!!!!!!!!!!!!!");
+
 		}
 		else if(p instanceof ProjectilePacket)
 		{

@@ -23,11 +23,11 @@ public class SettingsMenu extends GameMenu
             @Override
             public void keyTyped(TextField textField, char c)
             {
-                if (c == '\r' || c == '\n') {
-                    AppPreferences.sharedInstance().setUserName(textField.getText());
-                    //Dismiss focus
-                    stage.setKeyboardFocus(null);
-                }
+            if (c == '\r' || c == '\n') {
+                AppPreferences.sharedInstance().setUserName(textField.getText());
+                //Dismiss focus
+                stage.setKeyboardFocus(null);
+            }
             }
         });
 

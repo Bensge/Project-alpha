@@ -63,12 +63,26 @@ public class Table extends com.badlogic.gdx.scenes.scene2d.ui.Table
 		}
 	}
 
+	private boolean isRecursive = false;
 	public void removeRow(int index)
 	{
+		if (!isRecursive)
+			System.out.println("removeIndex::: " + index);
+		boolean shouldReset = !isRecursive;
+		isRecursive = true;
 		Array<Cell> cells = getCells();
 		Cell cell = cells.get(index);
 		removeActor(cell.getActor());
+		if (index + 1 < cells.size) {
+			Cell cellBelow = cells.get(index+1);
+			Actor a = cellBelow.getActor();
+			float padding = cellBelow.getPadTop();
+			removeRow(index+1);
+			row().pad(padding);
+			add(a);
+		}
 		cells.removeIndex(index);
+		isRecursive = false;
 	}
 	
 	public void insertServer(int index, MultiplayerServer server, TextButtonStyle style, ChangeListener listener)

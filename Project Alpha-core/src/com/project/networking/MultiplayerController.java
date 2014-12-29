@@ -12,7 +12,7 @@ import com.project.networking.Common.Packet;
 import com.project.networking.Workers.ReadingWorker;
 import com.project.networking.Workers.WritingWorker;
 
-public class MultiplayerController implements Disposable, PacketReceivedCallback
+class MultiplayerController implements Disposable, PacketReceivedCallback
 {
 	
 	private Socket socket;

@@ -13,7 +13,6 @@ import com.project.CharacterControllers.CharacterController.Direction;
 import com.project.CharacterControllers.UserDesktopController;
 import com.project.constants.Constants;
 import com.project.networking.Common.PlayerUpdatePacket;
-import com.project.networking.Common.ProjectilePacket;
 import com.project.networking.MultiplayerGameSessionController;
 
 public class Player extends Entity implements Character {
@@ -188,13 +187,13 @@ public class Player extends Entity implements Character {
 		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && bulletDelta > bulletCooldown){
 			float XDirection =  getX() + getWidth() / 2;
 			float YDirection =  getY() + getHeight() / 2;
-			enemyManager.sendNewBullet(new Bullet("img/rocket.png", mouseX, mouseY, XDirection, YDirection, this));
+			enemyManager.sendNewBullet(new Bullet("img/rocket.png", mouseX, mouseY, XDirection, YDirection, this), Constants.BULLET_TYPE);
 			bulletDelta = 0;
 			
 		}
 		//rocket handling
 		if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && rocketDelta > rocketCooldown){
-			enemyManager.sendNewBullet(new Rocket("img/rocket.png", mouseX, mouseY, getX(), getY(), this));
+			enemyManager.sendNewBullet(new Rocket("img/rocket.png", mouseX, mouseY, getX(), getY(), this), Constants.ROCKET_TYPE);
 			rocketDelta = 0;
 		}
 	}

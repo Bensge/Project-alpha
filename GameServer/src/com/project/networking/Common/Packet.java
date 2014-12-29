@@ -136,6 +136,7 @@ public class Packet {
 			p.targetX = NetworkingCommon.floatFromBuffer(bulkPacket, 2*4);
 			p.targetY = NetworkingCommon.floatFromBuffer(bulkPacket, 3*4);
 			p.userID = bulkPacket[4*4];
+			p.projectileType = bulkPacket[4*4 + 1];
 			
 			packet = p;
 		}

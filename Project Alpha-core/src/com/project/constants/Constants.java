@@ -16,6 +16,9 @@ public class Constants
 	public final static BitmapFont menlo10Font;
 	public final static BitmapFont menlo32Font;
 	public final static BitmapFont menlo50Font;
+	
+	public final static byte BULLET_TYPE = 0;
+	public final static byte ROCKET_TYPE = 1;
 
 	public final static Skin uiSkin;
 	

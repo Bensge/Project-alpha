@@ -31,7 +31,7 @@ public class Player extends Entity implements Character {
 	private boolean canMoveLeft, canMoveRight, hasGroundLeft, hasGroundRight, isJumping, canShoot;
 	
 	public Player(int x, int y, TiledMap map, OrthographicCamera camera) {
-		super("img/enemy.png", map);
+		super("img/Bullet.png", map);
 		
 		this.camera = camera;
 		
@@ -169,8 +169,6 @@ public class Player extends Entity implements Character {
 		}
 		
 		enemyManager.update(delta);
-		
-		
 	}
 
 	/* Input handling methods */
@@ -187,7 +185,7 @@ public class Player extends Entity implements Character {
 		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && bulletDelta > bulletCooldown){
 			float XDirection =  getX() + getWidth() / 2;
 			float YDirection =  getY() + getHeight() / 2;
-			Bullet b = new Bullet("img/rocket.png", mouseX, mouseY, XDirection, YDirection, this);
+			Bullet b = new Bullet("img/rocket.png", mouseX, mouseY, XDirection, YDirection, (byte) -1, true);
 			
 			if(MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive())
 				enemyManager.sendNewBullet(b, Constants.BULLET_TYPE);
@@ -198,7 +196,7 @@ public class Player extends Entity implements Character {
 		}
 		//rocket handling
 		if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && rocketDelta > rocketCooldown){
-			Rocket r = new Rocket("img/rocket.png", mouseX, mouseY, getX(), getY(), this);
+			Rocket r = new Rocket("img/rocket.png", mouseX, mouseY, getX(), getY(), (byte) -1, true);
 			
 			if(MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive())
 				enemyManager.sendNewBullet(r, Constants.ROCKET_TYPE);
@@ -218,8 +216,15 @@ public class Player extends Entity implements Character {
 	}
 	public void decreaseLife(int amount){
 		life -= amount;
+		System.out.println("HIT!!! \nRemaining Life: " + life);
 	}
 
+	public boolean IAmDead(){
+		boolean b = (life <= 0) ? true : false;
+		System.out.println(b);
+		System.out.println("mimimimi");
+		return b;
+	}
 	
 	@Override
 	public void render(Batch b) {
@@ -266,5 +271,4 @@ public class Player extends Entity implements Character {
 	public boolean canShoot() {
 		return canShoot;
 	}
-
 }

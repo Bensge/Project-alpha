@@ -150,6 +150,14 @@ public class Packet {
 
 			packet = p;
 		}
+		else if (packetType == DamagePacket.packetID)
+		{
+			DamagePacket p = new DamagePacket();
+			
+			p.targetID = bulkPacket[0];
+			p.hunterID = bulkPacket[1];
+			p.damage = bulkPacket[2];
+		}
 		
 		return packet;
 	}

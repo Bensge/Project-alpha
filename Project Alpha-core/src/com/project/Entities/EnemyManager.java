@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.BitmapFontData;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.project.constants.Constants;
+import com.project.networking.Common.DamagePacket;
 import com.project.networking.Common.Packet;
 import com.project.networking.Common.PlayerUpdatePacket;
 import com.project.networking.Common.ProjectilePacket;
@@ -71,9 +72,9 @@ public class EnemyManager implements MultiplayerListener
 				if(p instanceof Rocket){
 					newRocketEffect((int) p.getX(), (int) p.getY());
 					
-					if(Constants.circleIntersectsRectangle(new Point((int)p.getX(), (int)p.getY()), p.getRadius(),
+					if(!p.getIsMyOwn() && Constants.circleIntersectsRectangle(new Point((int)p.getX(), (int)p.getY()), p.getRadius(),
 							new Point((int)p.getX(), (int)p.getY()), p.getWidth(), p.getHeight())){
-						System.out.println("wall hit");
+						System.out.println("it hit you bam bam");
 						//do damage
 						hit(p);
 					}
@@ -84,7 +85,7 @@ public class EnemyManager implements MultiplayerListener
 			}
 			
 			//if it hits the player
-			if (p.getBoundingRectangle().overlaps(target.getBoundingRectangle()) && !(p.getOwner().equals(target))){
+			if (p.getBoundingRectangle().overlaps(target.getBoundingRectangle()) && !p.getIsMyOwn()){
 				System.out.println("I was hit!");				
 				
 				hit(p);
@@ -116,7 +117,9 @@ public class EnemyManager implements MultiplayerListener
 
 	private void hit(Projectile p) {
 		//send hit to server here
-		
+		DamagePacket packet  = new DamagePacket();
+		packet.targetID = p.getOwnerID();
+		packet.damage = p.getDamage();
 		target.decreaseLife((int) p.getDamage());
 		
 	}
@@ -206,17 +209,28 @@ public class EnemyManager implements MultiplayerListener
 			switch(packet.projectileType){
 			case 0:
 				addProjectile(new Bullet("img/rocket.png", packet.targetX, packet.targetY, packet.originX, packet.originY,
-					 playerWithID(packet.userID)));
+					 packet.userID, false));
 				break;
 			case 1:
 				addProjectile(new Rocket("img/rocket.png", packet.targetX, packet.targetY, packet.originX, packet.originY,
-					playerWithID(packet.userID)));
+					packet.userID, false));
 				default:
 				break;
 			}
 			
 			/*addProjectile(new Projectile("img/rocket.png", packet.targetX, packet.targetY, packet.originX, packet.originY,
 					Bullet.speed, Bullet.explosionRadius, playerWithID(packet.userID)));*/
+		}
+		else if(p instanceof DamagePacket)
+		{
+			DamagePacket packet = (DamagePacket)p;
+			
+			target.decreaseLife(packet.damage);
+			
+			if(target.IAmDead()){
+				System.out.println(playerWithID(packet.hunterID) + " killed you. NOOOOOOOooOOOB");
+				
+			}
 		}
 	}
 }

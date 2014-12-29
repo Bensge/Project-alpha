@@ -6,8 +6,8 @@ public class Rocket extends Projectile {
 	public final static float explosionRadius = 50;
 	
 	public Rocket(String s, float targetX, float targetY, float originX,
-			float originY, Entity owner) {
-		super(s, targetX, targetY, originX, originY, speed, explosionRadius, owner);
+			float originY, byte ownerID, boolean isMyOwn) {
+		super(s, targetX, targetY, originX, originY, speed, explosionRadius, ownerID, isMyOwn);
 		
 		damage = 34;
 		setSize(16, 16);

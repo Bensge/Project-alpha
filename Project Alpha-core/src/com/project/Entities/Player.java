@@ -11,6 +11,7 @@ import com.project.CharacterControllers.CharacterController;
 import com.project.CharacterControllers.UserMobileController;
 import com.project.CharacterControllers.CharacterController.Direction;
 import com.project.CharacterControllers.UserDesktopController;
+import com.project.Preferences.AppPreferences;
 import com.project.constants.Constants;
 import com.project.networking.Common.PlayerUpdatePacket;
 import com.project.networking.MultiplayerGameSessionController;
@@ -31,9 +32,10 @@ public class Player extends Entity implements Character {
 	private boolean canMoveLeft, canMoveRight, hasGroundLeft, hasGroundRight, isJumping, canShoot;
 	
 	public Player(int x, int y, TiledMap map, OrthographicCamera camera) {
-		super("img/Bullet.png", map);
+		super("img/Enemy.png", map);
 		
 		this.camera = camera;
+		this.name = "YOU";
 		
 		gravity = 1000;
 		XSpeed = 10;
@@ -220,10 +222,7 @@ public class Player extends Entity implements Character {
 	}
 
 	public boolean IAmDead(){
-		boolean b = (life <= 0) ? true : false;
-		System.out.println(b);
-		System.out.println("mimimimi");
-		return b;
+		return life <= 0;
 	}
 	
 	@Override

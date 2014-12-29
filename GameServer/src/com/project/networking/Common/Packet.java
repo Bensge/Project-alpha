@@ -156,7 +156,7 @@ public class Packet {
 			
 			p.targetID = bulkPacket[0];
 			p.hunterID = bulkPacket[1];
-			p.damage = bulkPacket[2];
+			p.restLife = bulkPacket[2];
 		}
 		
 		return packet;

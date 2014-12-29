@@ -22,7 +22,6 @@ public class AlphaServer {
 	public static AlphaServer instance = null;
 
 
-
 	public static void main(String[] args) throws Exception {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -198,13 +197,13 @@ public class AlphaServer {
 			newPacket = p;
 		}
 		//Forward all these packages
-		else if (packet instanceof PlayerUpdatePacket || packet instanceof ProjectilePacket)
+		else if (packet instanceof PlayerUpdatePacket || packet instanceof ProjectilePacket || packet instanceof DamagePacket)
 		{
 			//Set userID for these packages
 			//Loooooooooooooooool JVM looooooool
 			if (packet instanceof  PlayerUpdatePacket)
 				((PlayerUpdatePacket) packet).userID = clients.get(sender);
-			else
+			else if(packet instanceof ProjectilePacket)
 				((ProjectilePacket) packet).userID = clients.get(sender);
 			//Forward update packets right away
 			newPacket = packet;

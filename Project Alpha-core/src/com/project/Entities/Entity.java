@@ -17,6 +17,7 @@ public abstract class Entity extends Sprite {
 	protected TiledMap		  map;
 	
 	protected final String blockKey = "blocked";
+	public String name;
 	
 	protected float gravity, XSpeed, jump, maxSpeed;
 	protected boolean canJump, collisionX, collisionY;

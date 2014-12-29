@@ -17,7 +17,7 @@ public class EnemyPlayer extends Entity
 		lifeRenderer = new ShapeRenderer();
 	}
 
-	private String name;
+	
 	private float nameLength;
 	private byte id;
 
@@ -61,4 +61,12 @@ public class EnemyPlayer extends Entity
 
 	@Override
 	public void update(float delta) {	}
+	
+	public int getLife(){
+		return life;
+	}
+	
+	public String getName(){
+		return name;
+	}
 }

@@ -54,6 +54,7 @@ public class EnemyManager implements MultiplayerListener
 		}
 	}
 	
+	//jeder guckt selbst ob er getroffen ist
 	public void update(float delta) {
 		Iterator<Projectile> it = projectiles.iterator();
 		
@@ -72,8 +73,8 @@ public class EnemyManager implements MultiplayerListener
 				if(p instanceof Rocket){
 					newRocketEffect((int) p.getX(), (int) p.getY());
 					
-					if(!p.getIsMyOwn() && Constants.circleIntersectsRectangle(new Point((int)p.getX(), (int)p.getY()), p.getRadius(),
-							new Point((int)p.getX(), (int)p.getY()), p.getWidth(), p.getHeight())){
+					if(Constants.circleIntersectsRectangle(new Point((int)p.getX(), (int)p.getY()), p.getRadius(),
+							new Point((int)target.getX(), (int)target.getY()), target.getWidth(), target.getHeight())){
 						System.out.println("it hit you bam bam");
 						//do damage
 						hit(p);
@@ -89,7 +90,7 @@ public class EnemyManager implements MultiplayerListener
 				System.out.println("I was hit!");				
 				
 				hit(p);
-				target.decreaseLife((int) p.getDamage());
+				//target.decreaseLife((int) p.getDamage());
 				
 				it.remove();
 			}	
@@ -118,10 +119,16 @@ public class EnemyManager implements MultiplayerListener
 	private void hit(Projectile p) {
 		//send hit to server here
 		DamagePacket packet  = new DamagePacket();
-		packet.targetID = p.getOwnerID();
-		packet.damage = p.getDamage();
-		target.decreaseLife((int) p.getDamage());
+		packet.hunterID = p.getOwnerID();
+		packet.restLife = (byte) (100 - p.getDamage());
 		
+		target.decreaseLife((int) p.getDamage());
+		if(target.IAmDead()){
+			System.out.println(playerWithID(packet.hunterID).name + " killed you. NOOOOOOOooOOOB");
+		}
+		
+		if(MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive())
+			MultiplayerGameSessionController.sharedInstance().sendPacket(packet);
 	}
 	
 	public void sendNewBullet(Projectile p, byte projectileType){
@@ -164,7 +171,7 @@ public class EnemyManager implements MultiplayerListener
 		players.clear();
 	}
 
-	private EnemyPlayer playerWithID(byte id)
+	private Entity playerWithID(byte id)
 	{
 		for (Entity e : players) {
 			if (e instanceof EnemyPlayer) {
@@ -172,9 +179,14 @@ public class EnemyManager implements MultiplayerListener
 				if (p.getID() == id)
 					return p;
 			}
+			else if(e instanceof Player){
+				Player p = (Player) e;
+				return p;
+			}
 		}
-		System.out.println("Didn't find player with id:" + (int)id);
-		return null;
+		
+		return target;
+	
 	}
 
 	@Override
@@ -191,7 +203,7 @@ public class EnemyManager implements MultiplayerListener
 			}
 			else if (packet.action == UserActionPacket.Action.Leave)
 			{
-				EnemyPlayer player = playerWithID(packet.userID);
+				EnemyPlayer player = (EnemyPlayer) playerWithID(packet.userID);
 				removePlayer(player);
 				System.out.println("Removed player");
 			}
@@ -199,7 +211,7 @@ public class EnemyManager implements MultiplayerListener
 		else if (p instanceof PlayerUpdatePacket)
 		{
 			PlayerUpdatePacket packet = (PlayerUpdatePacket)p;
-			EnemyPlayer player = playerWithID(packet.userID);
+			EnemyPlayer player = (EnemyPlayer) playerWithID(packet.userID);
 			player.update(packet.locationX, packet.locationY);
 		}
 		else if(p instanceof ProjectilePacket)
@@ -218,19 +230,18 @@ public class EnemyManager implements MultiplayerListener
 				break;
 			}
 			
-			/*addProjectile(new Projectile("img/rocket.png", packet.targetX, packet.targetY, packet.originX, packet.originY,
-					Bullet.speed, Bullet.explosionRadius, playerWithID(packet.userID)));*/
 		}
+		
 		else if(p instanceof DamagePacket)
 		{
+			//jemand meldet dass jemand jemanden getroffen hat
 			DamagePacket packet = (DamagePacket)p;
 			
-			target.decreaseLife(packet.damage);
+			Entity hasHit = playerWithID(packet.hunterID);
+			Entity wasHit = playerWithID(packet.targetID);
 			
-			if(target.IAmDead()){
-				System.out.println(playerWithID(packet.hunterID) + " killed you. NOOOOOOOooOOOB");
-				
-			}
+			System.out.println(hasHit.name + "hit " + wasHit.name + " with " + (wasHit.life - (100 - packet.restLife)) + " damage");
+			
 		}
 	}
 }

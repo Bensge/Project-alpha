@@ -21,7 +21,7 @@ public class GameRemoteMultiplayerMenu extends GameMenu {
 		field.setMessageText("address:port");
 		
 		String lastIP = AppPreferences.sharedInstance().getLastIP();
-		if(lastIP != "")
+		if(lastIP.length() > 0)
 			field.setText(lastIP);
 		
 		stage.setKeyboardFocus(field);
@@ -31,15 +31,13 @@ public class GameRemoteMultiplayerMenu extends GameMenu {
 			@Override
 			public void keyTyped(TextField textField, char c)
 			{
-			if (c == '\r' || c == '\n') {
-				String text = textField.getText();
-				if (text.length() > 0)
-					connect(text);
-				else {
+				if (c == '\r' || c == '\n') {
+					String text = textField.getText();
+					if (text.length() > 0)
+						connect(text);
 					//Dismiss focus manually
 					stage.setKeyboardFocus(null);
 				}
-			}
 			}
 		});
 

@@ -38,6 +38,9 @@ public class SocketAcceptWorker extends SwingWorker<Void, ClientReadingWorker> {
 			try
 			{
 				Socket client = socket.accept();
+				//Dat netcode doe
+				client.setTcpNoDelay(true);
+
 				if (client != null)
 				{
 					InputStream in = client.getInputStream();

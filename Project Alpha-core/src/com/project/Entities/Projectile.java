@@ -59,8 +59,6 @@ public class Projectile extends Sprite{
 			direction.x = -direction.x;
 		}
 		
-		System.out.println(direction.x + ": direction.x");
-		System.out.println(direction.y + ": direction.y");
 	}
 	
 	public void update(float delta){

@@ -187,13 +187,23 @@ public class Player extends Entity implements Character {
 		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && bulletDelta > bulletCooldown){
 			float XDirection =  getX() + getWidth() / 2;
 			float YDirection =  getY() + getHeight() / 2;
-			enemyManager.sendNewBullet(new Bullet("img/rocket.png", mouseX, mouseY, XDirection, YDirection, this), Constants.BULLET_TYPE);
+			Bullet b = new Bullet("img/rocket.png", mouseX, mouseY, XDirection, YDirection, this);
+			
+			if(MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive())
+				enemyManager.sendNewBullet(b, Constants.BULLET_TYPE);
+			else
+				enemyManager.addProjectile(b);
 			bulletDelta = 0;
 			
 		}
 		//rocket handling
 		if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && rocketDelta > rocketCooldown){
-			enemyManager.sendNewBullet(new Rocket("img/rocket.png", mouseX, mouseY, getX(), getY(), this), Constants.ROCKET_TYPE);
+			Rocket r = new Rocket("img/rocket.png", mouseX, mouseY, getX(), getY(), this);
+			
+			if(MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive())
+				enemyManager.sendNewBullet(r, Constants.ROCKET_TYPE);
+			else
+				enemyManager.addProjectile(r);
 			rocketDelta = 0;
 		}
 	}

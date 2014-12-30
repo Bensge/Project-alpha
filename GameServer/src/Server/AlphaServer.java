@@ -6,10 +6,7 @@ import java.net.*;
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.awt.EventQueue;
 
 import ClientConnection.Client;
@@ -22,12 +19,13 @@ public class AlphaServer {
 	public static AlphaServer instance = null;
 
 
-	public static void main(String[] args) throws Exception {
+	public static void main(final String[] args) throws Exception {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					instance = new AlphaServer();
+					boolean useMulticast = ! (args.length > 0 && args[0].equals("--no-multicast"));
+					instance = new AlphaServer(useMulticast);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -63,10 +61,13 @@ public class AlphaServer {
 	private String serverName = null;
 	private String adminName = null;
 
+	private boolean useMulticast;
+
 	/* HELPER */
 
 	/* METHODS */
-	public AlphaServer() throws Exception {
+	public AlphaServer(boolean useMulticast) throws Exception {
+		this.useMulticast = useMulticast;
 		// Hello
 		port = NetworkingCommon.DEFAULT_PORT;
 		System.out.println("AlphaServer by Justus & Benno");
@@ -75,10 +76,11 @@ public class AlphaServer {
 		System.out.println("+----------------------------+\n");
 		
 		Scanner scanner = new Scanner(System.in);
-		
-		System.out.println("Please enter the server name:");
-		serverName = scanner.nextLine();
-		
+
+		if (useMulticast) {
+			System.out.println("Please enter the server name:");
+			serverName = scanner.nextLine();
+		}
 		System.out.println("Admin name (for privileged permissions):");
 		adminName = scanner.nextLine();
 		
@@ -106,25 +108,27 @@ public class AlphaServer {
 					+ e.toString());
 		}
 
-		try {
-			dnsServer = JmDNS.create();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		ServiceInfo info = ServiceInfo.create("projectalpha", serverName, port,
-				"");
-		Map<String, String> infoMap = new HashMap<String, String>();
-		infoMap.put("adminName", adminName);
-		info.setText(infoMap);
-		try {
-			dnsServer.registerService(info);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		if (useMulticast) {
+			try {
+				dnsServer = JmDNS.create();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			ServiceInfo info = ServiceInfo.create("projectalpha", serverName, port,
+					"");
+			Map<String, String> infoMap = new HashMap<String, String>();
+			infoMap.put("adminName", adminName);
+			info.setText(infoMap);
+			try {
+				dnsServer.registerService(info);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-		System.out.println("Set up multicast DNS server.");
+			System.out.println("Set up multicast DNS server.");
+		}
 
 	}
 
@@ -133,11 +137,13 @@ public class AlphaServer {
 		try {
 			acceptWorker.terminate();
 			socket.close();
-			dnsServer.unregisterAllServices();
-			System.out.println("Unregistered services, waiting...");
-			Thread.sleep(10 * 1000);
-			dnsServer.close();
-			Thread.sleep(2 * 1000);
+			if (useMulticast) {
+				dnsServer.unregisterAllServices();
+				System.out.println("Unregistered services, waiting...");
+				Thread.sleep(10 * 1000);
+				dnsServer.close();
+				Thread.sleep(2 * 1000);
+			}
 		} catch (Exception e) {
 		}
 	}

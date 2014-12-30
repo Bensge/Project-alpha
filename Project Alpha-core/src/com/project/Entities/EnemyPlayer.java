@@ -41,22 +41,22 @@ public class EnemyPlayer extends Entity
 	public void render(Batch b){
 		super.render(b);
 
-		nameFont.draw(b,name,getX() + getWidth()/2 - nameLength/2,getY() + getHeight() + nameFont.getLineHeight() + 14);
+		nameFont.draw(b,name,getX() + getWidth()/2 - nameLength/2,getY() + getHeight() + nameFont.getLineHeight() + 7);
 
-		/*
+		b.end();
 		//Draw life bar
 		lifeRenderer.setProjectionMatrix(b.getProjectionMatrix());
 
 		lifeRenderer.begin(ShapeRenderer.ShapeType.Line);
 		lifeRenderer.setColor(1, 1, 1, 1);
-		lifeRenderer.rect(getX(), getY() + getHeight() + 2, getWidth(), 5);
+		lifeRenderer.rect(getX() + getWidth()/2 - nameLength/2, getY() + getHeight() + 5, nameLength * (float)life / 100.f, 3);
 		lifeRenderer.end();
 
 		lifeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 		lifeRenderer.setColor(1, 1, 1, 1);
-		lifeRenderer.rect(getX(), getY() + getHeight() + 2, getWidth() * (float)life / 100.f, 5);
+		lifeRenderer.rect(getX() + getWidth()/2 - nameLength/2, getY() + getHeight() + 5, nameLength * (float)life / 100.f, 3);
 		lifeRenderer.end();
-		*/
+		b.begin();
 	}
 
 	@Override

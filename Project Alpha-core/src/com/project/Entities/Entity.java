@@ -42,6 +42,7 @@ public abstract class Entity extends Sprite {
 	
 	public Entity(Texture texture) {
 		super(texture);
+		life = 100;
 	}
 	public Entity(Texture texture, int width, int height)
 	{

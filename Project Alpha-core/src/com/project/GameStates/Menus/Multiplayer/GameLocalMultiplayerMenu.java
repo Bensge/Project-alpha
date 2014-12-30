@@ -2,32 +2,21 @@ package com.project.GameStates.Menus.Multiplayer;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
 import com.project.GameStates.GameStateManager;
-import com.project.GameStates.GameWorld;
 import com.project.GameStates.Menus.GameMenu;
-import com.project.Preferences.AppPreferences;
 import com.project.UI.Alert;
 import com.project.UI.LoadingIndicator;
 import com.project.constants.Constants;
-import com.project.networking.MultiplayerController;
 import com.project.networking.MultiplayerGameSessionController;
 import com.project.networking.MultiplayerServer;
 import com.project.networking.ServerLookup.NetworkController;
 import com.project.networking.ServerLookup.NetworkDiscoveryListener;
-
-import java.util.Scanner;
 
 public class GameLocalMultiplayerMenu extends GameMenu implements NetworkDiscoveryListener {
 	

@@ -160,7 +160,9 @@ public class EnemyManager implements MultiplayerListener
 
 			if (MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive())
 			{
-				System.out.println(playerWithID(packet.hunterID).name + " killed you. NOOOOOOOooOOOB");
+				String hunterName = playerWithID(packet.hunterID) == null ? AppPreferences.sharedInstance().getUserName() : playerWithID(packet.hunterID).name;
+
+				System.out.println(hunterName + " killed you. NOOOOOOOooOOOB");
 				packet = new DamagePacket();
 				packet.targetID = -1;
 				packet.hunterID = p.getOwnerID();

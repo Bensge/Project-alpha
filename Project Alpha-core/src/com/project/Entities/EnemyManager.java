@@ -137,20 +137,35 @@ public class EnemyManager implements MultiplayerListener
 
 	private void hit(Projectile p) {
 		//send hit to server here
-		DamagePacket packet  = new DamagePacket();
-		packet.targetID = -1;
-		packet.hunterID = p.getOwnerID();
-		packet.restLife = (byte) (target.life - p.getDamage());
+
 		
 		target.decreaseLife((int) p.getDamage());
-		if(target.IAmDead()){
-			System.out.println(playerWithID(packet.hunterID).name + " killed you. NOOOOOOOooOOOB");
-			System.out.println("You should respawn now.");
-		}
-		
-		if(MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive()){
-			System.out.println("sent packet");
+
+		DamagePacket packet = null;
+		if (MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive())
+		{
+			packet  = new DamagePacket();
+			packet.targetID = -1;
+			packet.hunterID = p.getOwnerID();
+			packet.restLife = (byte) (target.life - p.getDamage());
 			MultiplayerGameSessionController.sharedInstance().sendPacket(packet);
+		}
+
+		if (target.IAmDead())
+		{
+
+			target.resetLife();
+			target.respawn();
+
+			if (MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive())
+			{
+				System.out.println(playerWithID(packet.hunterID).name + " killed you. NOOOOOOOooOOOB");
+				packet = new DamagePacket();
+				packet.targetID = -1;
+				packet.hunterID = p.getOwnerID();
+				packet.restLife = 100;
+				MultiplayerGameSessionController.sharedInstance().sendPacket(packet);
+			}
 		}
 	}
 	

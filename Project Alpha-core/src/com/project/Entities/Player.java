@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.MathUtils;
 import com.project.CharacterControllers.Character;
 import com.project.CharacterControllers.CharacterController;
 import com.project.CharacterControllers.UserMobileController;
@@ -65,78 +66,80 @@ public class Player extends Entity implements Character {
 		oldX = getX();
 		oldY = getY();
 		
-		if(!heroMode){
-		//Handle gravity
-		velocity.y -= gravity * delta;
-		
-		//Handle left/right keyboard inputs
-		Direction dir = controller.walkDirection();
-		if (dir == Direction.Left)
-			velocity.x -= XSpeed;
-		else if (dir == Direction.Right)
-			velocity.x += XSpeed;
-		else
-			decreaseXVelocity();
-		
-		//Limit player speed
-		if (velocity.x > maxSpeed)
-			velocity.x = maxSpeed;
-		else if (velocity.x < -maxSpeed)
-			velocity.x = -maxSpeed;
-		
-		//Handle jump keyboard input
-		if (controller.shouldJump() && canJump)
+		if (!heroMode)
 		{
-			velocity.y = jump;
-			canJump = false;
-		}
+			//Handle gravity
+			velocity.y -= gravity * delta;
 
-		//Handle jump states
+			//Handle left/right keyboard inputs
+			Direction dir = controller.walkDirection();
+			if (dir == Direction.Left)
+				velocity.x -= XSpeed;
+			else if (dir == Direction.Right)
+				velocity.x += XSpeed;
+			else
+				decreaseXVelocity();
+
+			//Limit player speed
+			if (velocity.x > maxSpeed)
+				velocity.x = maxSpeed;
+			else if (velocity.x < -maxSpeed)
+				velocity.x = -maxSpeed;
+
+			//Handle jump keyboard input
+			if (controller.shouldJump() && canJump)
+			{
+				velocity.y = jump;
+				canJump = false;
+			}
+
+			//Handle jump states
+
+			setX(getX() + velocity.x * delta);
+			setY(getY() + velocity.y * delta);
+
+			/*
+			** check object collision
+			*/
+
+			isJumping = true;
+			canMoveLeft = true;
+			canMoveRight = true;
+
+			//y-axis collision
+			//TODO: collisionYUp is a stupid name, because the method actually checks for collisions below the player, hence it should be called DOWN not UP
+			if (collisionYUp(getX(), getY(), getWidth(), getHeight()))
+			{
+				velocity.y = 0;
+				setY(oldY);
+				isJumping = false;
+			}
+			else if (collisionYDown(getX(), getY(), getHeight()))
+			{
+				canJump = true;
+				velocity.y = -velocity.y * 0.1f;
+				setY(oldY);
+				isJumping = false;
+			}
+
+			//x-axis collision
+			if (collisionXLeft(getX(), getY(), getWidth()))
+			{
+				velocity.x = -velocity.x * 0.3f;
+				setX(oldX);
+				canMoveLeft = false;
+			}
+			else if (collisionXRight(getX(), getY(), getWidth(), getHeight()))
+			{
+				velocity.x = -velocity.x * 0.3f;
+				setX(oldX);
+				canMoveRight = false;
+			}
+		}
 		
-		setX(getX() + velocity.x * delta);
-		setY(getY() + velocity.y * delta);
-		
-		/*
-		** check object collision
-		*/
-		
-		isJumping = true;
-		canMoveLeft = true;
-		canMoveRight = true;
-		
-		//y-axis collision
-		//TODO: collisionYUp is a stupid name, because the method actually checks for collisions below the player, hence it should be called DOWN not UP
-		if (collisionYUp(getX(), getY(), getWidth(), getHeight()))
+		else
 		{
-			velocity.y = 0;
-			setY(oldY);
-			isJumping = false;
-		}
-		else if (collisionYDown(getX(), getY(), getHeight()))
-		{
-			canJump = true;
-			velocity.y = -velocity.y * 0.1f;
-			setY(oldY);
-			isJumping = false;
-		}
-		
-		//x-axis collision
-		if (collisionXLeft(getX(), getY(), getWidth()))
-		{
-			velocity.x = -velocity.x * 0.3f;
-			setX(oldX);
-			canMoveLeft = false;
-		}
-		else if (collisionXRight(getX(), getY(), getWidth(), getHeight()))
-		{
-			velocity.x = -velocity.x * 0.3f;
-			setX(oldX);
-			canMoveRight = false;
-		}
-		}
-		
-		else{
-			if(Gdx.input.isKeyPressed(Keys.S))
+			if (Gdx.input.isKeyPressed(Keys.S))
 				setY(getY() - maxSpeed * delta);
 			else if (Gdx.input.isKeyPressed(Keys.W))
 				setY(getY() + maxSpeed * delta);
@@ -216,6 +219,18 @@ public class Player extends Entity implements Character {
 	private void decreaseXVelocity() {
 		velocity.x /= 1.2f;
 	}
+
+	public void resetLife()
+	{
+		life = 100;
+	}
+
+	public void respawn()
+	{
+		float randomX = (float)(MathUtils.random(collisionLayer.getWidth()));
+		setPosition(randomX * collisionLayer.getTileWidth(),(collisionLayer.getHeight() - 1) * collisionLayer.getTileHeight());
+	}
+
 	public void decreaseLife(int amount){
 		life -= amount;
 		System.out.println("HIT!!! \nRemaining Life: " + life);

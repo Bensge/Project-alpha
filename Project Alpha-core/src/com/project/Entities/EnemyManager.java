@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.BitmapFontData;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.project.Preferences.AppPreferences;
 import com.project.constants.Constants;
 import com.project.networking.Common.DamagePacket;
 import com.project.networking.Common.Packet;
@@ -127,6 +128,7 @@ public class EnemyManager implements MultiplayerListener
 		target.decreaseLife((int) p.getDamage());
 		if(target.IAmDead()){
 			System.out.println(playerWithID(packet.hunterID).name + " killed you. NOOOOOOOooOOOB");
+			System.out.println("You should respawn now.");
 		}
 		
 		if(MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive()){
@@ -246,12 +248,20 @@ public class EnemyManager implements MultiplayerListener
 			System.out.println("I received a hit");
 			//jemand meldet dass jemand jemanden getroffen hat
 			DamagePacket packet = (DamagePacket)p;
-			
+
+			String hasHitName;
+			String wasHitName;
+
 			Entity hasHit = playerWithID(packet.hunterID);
+			hasHitName = hasHit == null ? AppPreferences.sharedInstance().getUserName() : hasHit.name;
+
 			Entity wasHit = playerWithID(packet.targetID);
+			wasHitName = wasHit.name;
 			
-			System.out.println(hasHit.name + "hit " + wasHit.name + " with " + (wasHit.life - (100 - packet.restLife)) + " damage");
-			
+			System.out.println(hasHitName + "hit " + wasHitName + " with " + (wasHit.life - (100 - packet.restLife)) + " damage");
+			System.out.println("Update dat bitch bruh: " + packet.restLife);
+			wasHit.life = packet.restLife;
+
 		}
 	}
 }

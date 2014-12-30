@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.project.UI.Table;
+import com.project.networking.Common.DamagePacket;
 import com.project.networking.Common.MessageReceivePacket;
 import com.project.networking.Common.Packet;
 import com.project.networking.Common.UserActionPacket;
@@ -40,6 +41,7 @@ public class MultiplayerActionFeedOverlay extends Overlay implements Multiplayer
         //Register for user action and chat message packets
         MultiplayerGameSessionController.sharedInstance().registerListener(UserActionPacket.class, this);
         MultiplayerGameSessionController.sharedInstance().registerListener(MessageReceivePacket.class, this);
+        MultiplayerGameSessionController.sharedInstance().registerListener(DamagePacket.class,this);
     }
 
     private void addEntry(String event)
@@ -90,6 +92,11 @@ public class MultiplayerActionFeedOverlay extends Overlay implements Multiplayer
         else if (p instanceof MessageReceivePacket) {
             MessageReceivePacket packet = (MessageReceivePacket)p;
             addEntry(packet.niceTextString());
+        }
+        else if (p instanceof DamagePacket) {
+            DamagePacket packet = (DamagePacket)p;
+            if (packet.restLife <= 0)
+                addEntry(packet.hunterID + " killed " + packet.targetID);
         }
     }
 }

@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont.BitmapFontData;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.project.Preferences.AppPreferences;
 import com.project.constants.Constants;
@@ -68,7 +66,8 @@ public class EnemyManager implements MultiplayerListener
 			//projectile collision with walls
 			if(target.isOutOfBoundsX(p.getX(), p.getWidth()) || target.isOutOfBoundsYDown(p.getY(), p.getHeight()) ||
 				target.collisionXLeft(p.getX(), p.getY(), p.getWidth()) || target.collisionXRight(p.getX(), p.getY(), p.getWidth(), p.getHeight()) || 
-				target.collisionYDown(p.getX(), p.getY(), p.getHeight())|| target.collisionYUp(p.getX(), p.getY(), p.getWidth(), p.getHeight())){
+				target.collisionYDown(p.getX(), p.getY(), p.getHeight())|| target.collisionYUp(p.getX(), p.getY(), p.getWidth(), p.getHeight()))
+				{
 				
 				
 				//if player is in explosionRadius
@@ -83,19 +82,37 @@ public class EnemyManager implements MultiplayerListener
 					}
 				
 				}
+				
+				
 				it.remove();
 				continue;
 			}
 			
-			//if it hits the player
-			if (p.getBoundingRectangle().overlaps(target.getBoundingRectangle()) && !p.getIsMyOwn()){
-				System.out.println("I was hit!");				
+			boolean alreadyHit = false;
+			for(Entity player : players){
+					//if it hits the player
+				if (p.getBoundingRectangle().overlaps(player.getBoundingRectangle())){
+					System.out.println("He was hit!");				
+					
+					if(p instanceof Rocket)
+						newRocketEffect((int) p.getX(), (int) p.getY());
+					it.remove();
+					alreadyHit = true;
+					break;
+				}	
 				
-				hit(p);
-				//target.decreaseLife((int) p.getDamage());
-				
-				it.remove();
-			}	
+			}
+			
+			if(!alreadyHit){
+				if(p.getBoundingRectangle().overlaps(target.getBoundingRectangle()) && !p.getIsMyOwn()){
+					System.out.println("I was hit!");				
+					
+					hit(p);
+					target.decreaseLife((int) p.getDamage());
+					
+					it.remove();
+				}
+			}
 		}
 		
 		//handle particles

@@ -185,13 +185,8 @@ public class EnemyManager implements MultiplayerListener
 				if (p.getID() == id)
 					return p;
 			}
-			else if(e instanceof Player){
-				Player p = (Player) e;
-				return p;
-			}
 		}
-		
-		return target;
+		return null;
 	
 	}
 

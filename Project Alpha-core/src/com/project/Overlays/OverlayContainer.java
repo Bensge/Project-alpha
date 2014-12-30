@@ -22,4 +22,14 @@ public class OverlayContainer extends Stage
         overlays.add(overlay);
         addActor(overlay);
     }
+
+    @Override
+    public void draw()
+    {
+        try {
+            super.draw();
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Yolo" + e);
+        }
+    }
 }

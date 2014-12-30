@@ -3,12 +3,15 @@ package com.project.Entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Vector2;
+import com.project.constants.Constants;
 
 
 public abstract class Entity extends Sprite {
@@ -24,6 +27,12 @@ public abstract class Entity extends Sprite {
 	protected float mapWidth, mapHeight;
 	protected Vector2 velocity;
 	protected int life;
+	private float nameLength;
+
+	private static BitmapFont nameFont = Constants.menlo10Font;
+	private static ShapeRenderer lifeRenderer = new ShapeRenderer();
+
+
 	
 	public Entity(TiledMap map) {
 		this.map = map;
@@ -59,9 +68,34 @@ public abstract class Entity extends Sprite {
 		mapWidth = collisionLayer.getWidth() * collisionLayer.getTileWidth();
 		mapHeight = collisionLayer.getHeight() * collisionLayer.getTileHeight();
 	}
+
+	public void setName(String name)
+	{
+		this.name = name;
+		this.nameLength = nameFont.getBounds(name).width;
+	}
 	
-	public void render(Batch b){
+	public void render(Batch b)
+	{
 		super.draw(b);
+
+		nameFont.draw(b,name,getX() + getWidth()/2 - nameLength/2,getY() + getHeight() + nameFont.getLineHeight() + 7);
+
+		b.end();
+		//Draw life bar
+		float health = Math.max(0,(float)life / 100.f);
+		lifeRenderer.setProjectionMatrix(b.getProjectionMatrix());
+		//Draw outline
+		lifeRenderer.begin(ShapeRenderer.ShapeType.Line);
+		lifeRenderer.setColor(1, 1, 1, 1);
+		lifeRenderer.rect(getX() + getWidth()/2 - nameLength/2, getY() + getHeight() + 5, nameLength, 3);
+		lifeRenderer.end();
+		//Draw flexible inner bar
+		lifeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+		lifeRenderer.setColor(1, 1, 1, 1);
+		lifeRenderer.rect(getX() + getWidth()/2 - nameLength/2, getY() + getHeight() + 5, nameLength * health, 3);
+		lifeRenderer.end();
+		b.begin();
 	}
 	
 	public boolean isOutOfBoundsX(float x, float width) {

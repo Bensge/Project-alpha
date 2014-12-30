@@ -36,6 +36,7 @@ public class EnemyManager implements MultiplayerListener
 		MultiplayerGameSessionController.sharedInstance().registerListener(UserActionPacket.class,this);
 		MultiplayerGameSessionController.sharedInstance().registerListener(ProjectilePacket.class,this);
 		MultiplayerGameSessionController.sharedInstance().registerListener(PlayerUpdatePacket.class,this);
+		MultiplayerGameSessionController.sharedInstance().registerListener(DamagePacket.class, this);
 	}
 	
 	
@@ -119,16 +120,19 @@ public class EnemyManager implements MultiplayerListener
 	private void hit(Projectile p) {
 		//send hit to server here
 		DamagePacket packet  = new DamagePacket();
+		packet.targetID = -1;
 		packet.hunterID = p.getOwnerID();
-		packet.restLife = (byte) (100 - p.getDamage());
+		packet.restLife = (byte) (target.life - p.getDamage());
 		
 		target.decreaseLife((int) p.getDamage());
 		if(target.IAmDead()){
 			System.out.println(playerWithID(packet.hunterID).name + " killed you. NOOOOOOOooOOOB");
 		}
 		
-		if(MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive())
+		if(MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive()){
+			System.out.println("sent packet");
 			MultiplayerGameSessionController.sharedInstance().sendPacket(packet);
+		}
 	}
 	
 	public void sendNewBullet(Projectile p, byte projectileType){
@@ -239,6 +243,7 @@ public class EnemyManager implements MultiplayerListener
 		
 		else if(p instanceof DamagePacket)
 		{
+			System.out.println("I received a hit");
 			//jemand meldet dass jemand jemanden getroffen hat
 			DamagePacket packet = (DamagePacket)p;
 			

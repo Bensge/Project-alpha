@@ -157,6 +157,8 @@ public class Packet {
 			p.targetID = bulkPacket[0];
 			p.hunterID = bulkPacket[1];
 			p.restLife = bulkPacket[2];
+			
+			packet = p;
 		}
 		
 		return packet;

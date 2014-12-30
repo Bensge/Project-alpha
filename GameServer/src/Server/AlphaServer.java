@@ -197,7 +197,7 @@ public class AlphaServer {
 			newPacket = p;
 		}
 		//Forward all these packages
-		else if (packet instanceof PlayerUpdatePacket || packet instanceof ProjectilePacket || packet instanceof DamagePacket)
+		else if (packet instanceof PlayerUpdatePacket || packet instanceof ProjectilePacket)
 		{
 			//Set userID for these packages
 			//Loooooooooooooooool JVM looooooool
@@ -205,9 +205,17 @@ public class AlphaServer {
 				((PlayerUpdatePacket) packet).userID = clients.get(sender);
 			else if(packet instanceof ProjectilePacket)
 				((ProjectilePacket) packet).userID = clients.get(sender);
-			//Forward update packets right away
+			
 			newPacket = packet;
+			//Forward update packets right away
 		}
+		else if(packet instanceof DamagePacket){
+		
+			DamagePacket p = (DamagePacket) packet;
+			p.targetID = clients.get(sender);
+			newPacket = p;
+		}
+		
 
 		if (newPacket != null)
 			sendPacketToClientsBut(sender, newPacket);

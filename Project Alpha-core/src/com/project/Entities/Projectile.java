@@ -16,7 +16,7 @@ public class Projectile extends Sprite{
 	
 	public Projectile(String s, float targetX, float targetY, float originX, float originY, float speed, float explosionRadius, byte ownerID, boolean isMyOwn){
 		super(new Texture(Gdx.files.internal(s)));
-		System.out.println("Mah owner is da hood:" + ownerID);
+		//System.out.println("Mah owner is da hood:" + ownerID);
 		this.isMyOwn = isMyOwn;
 		this.targetX = targetX;
 		this.targetY = targetY;

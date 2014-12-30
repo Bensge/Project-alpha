@@ -35,7 +35,7 @@ public class Player extends Entity implements Character {
 		super("img/Enemy.png", map);
 		
 		this.camera = camera;
-		setName("YOU");
+		setName(AppPreferences.sharedInstance().getUserName());
 		
 		gravity = 1000;
 		XSpeed = 10;

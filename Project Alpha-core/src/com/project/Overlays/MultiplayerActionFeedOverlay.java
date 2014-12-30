@@ -3,6 +3,8 @@ package com.project.Overlays;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.ObjectMap;
+import com.project.Preferences.AppPreferences;
 import com.project.UI.Table;
 import com.project.networking.Common.DamagePacket;
 import com.project.networking.Common.MessageReceivePacket;
@@ -23,12 +25,15 @@ public class MultiplayerActionFeedOverlay extends Overlay implements Multiplayer
     private Table table;
     private Timer dismissTimer;
     private int cellsToBeRemoved = 0;
+    private ObjectMap<Byte,String> playersNames;
 
     private final int MAX_TABLE_ENTRIES = 3;
 
     public MultiplayerActionFeedOverlay()
     {
         super(ScreenCorner.TopRight, Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 6);
+
+        playersNames = new ObjectMap<>();
 
         table = new Table();
         table.setBounds(0, 0, getWidth(), getHeight());
@@ -85,9 +90,17 @@ public class MultiplayerActionFeedOverlay extends Overlay implements Multiplayer
     public void receivedPacket(Packet p)
     {
         if (p instanceof UserActionPacket) {
+            //Notify user
             UserActionPacket packet = (UserActionPacket)p;
             if (packet.isCurrent)
                 addEntry(packet.niceTextString());
+            //Keep track of players
+            if (packet.action == UserActionPacket.Action.Join) {
+                playersNames.put(packet.userID,packet.userName);
+            }
+            else if (packet.action == UserActionPacket.Action.Leave) {
+                playersNames.remove(packet.userID);
+            }
         }
         else if (p instanceof MessageReceivePacket) {
             MessageReceivePacket packet = (MessageReceivePacket)p;
@@ -95,8 +108,16 @@ public class MultiplayerActionFeedOverlay extends Overlay implements Multiplayer
         }
         else if (p instanceof DamagePacket) {
             DamagePacket packet = (DamagePacket)p;
-            if (packet.restLife <= 0)
-                addEntry(packet.hunterID + " killed " + packet.targetID);
+            if (packet.restLife <= 0) {
+                String hunterName = playersNames.get(packet.hunterID);
+                if (hunterName == null) {
+                    hunterName = AppPreferences.sharedInstance().getUserName();
+                }
+                String targetName = playersNames.get(packet.targetID);
+
+                addEntry(hunterName + " killed " + targetName);
+            }
+
         }
     }
 }

@@ -57,7 +57,9 @@ public class EnemyManager implements MultiplayerListener
 	//jeder guckt selbst ob er getroffen ist
 	public void update(float delta) {
 		Iterator<Projectile> it = projectiles.iterator();
-		
+		/*
+		 * HIT DETECTION
+		 */
 		while(it.hasNext()){
 			Projectile p = (Projectile) it.next();
 			
@@ -68,7 +70,6 @@ public class EnemyManager implements MultiplayerListener
 				target.collisionXLeft(p.getX(), p.getY(), p.getWidth()) || target.collisionXRight(p.getX(), p.getY(), p.getWidth(), p.getHeight()) || 
 				target.collisionYDown(p.getX(), p.getY(), p.getHeight())|| target.collisionYUp(p.getX(), p.getY(), p.getWidth(), p.getHeight()))
 				{
-				
 				
 				//if player is in explosionRadius
 				if(p instanceof Rocket){
@@ -91,7 +92,7 @@ public class EnemyManager implements MultiplayerListener
 			boolean alreadyHit = false;
 			for(Entity player : players){
 					//if it hits the player
-				if (p.getBoundingRectangle().overlaps(player.getBoundingRectangle())){
+				if (p.getBoundingRectangle().overlaps(player.getBoundingRectangle()) && p.getOwnerID() != ((EnemyPlayer)player).id){
 					System.out.println("He was hit!");				
 					
 					if(p instanceof Rocket)
@@ -100,13 +101,13 @@ public class EnemyManager implements MultiplayerListener
 					alreadyHit = true;
 					break;
 				}	
-				
 			}
 			
 			if(!alreadyHit){
 				if(p.getBoundingRectangle().overlaps(target.getBoundingRectangle()) && !p.getIsMyOwn()){
 					System.out.println("I was hit!");				
-					
+					if(p instanceof Rocket)
+						newRocketEffect((int) p.getX(), (int) p.getY());
 					hit(p);
 					target.decreaseLife((int) p.getDamage());
 					

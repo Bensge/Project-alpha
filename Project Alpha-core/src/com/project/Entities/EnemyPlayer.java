@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class EnemyPlayer extends Entity
 {
-	private byte id;
+	byte id;
 
 	public EnemyPlayer(Point position, String name, byte id){
 		super(new Texture("img/enemy.png"));

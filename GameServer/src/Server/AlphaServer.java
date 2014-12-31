@@ -219,6 +219,11 @@ public class AlphaServer {
 		
 			DamagePacket p = (DamagePacket) packet;
 			p.targetID = clients.get(sender);
+			//Bounce back respawn (reset life) packet
+			if (p.restLife >= 100) {
+				sender.send(p);
+			}
+
 			newPacket = p;
 		}
 		

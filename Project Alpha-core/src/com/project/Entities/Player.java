@@ -33,7 +33,7 @@ public class Player extends Entity implements Character {
 	private boolean canMoveLeft, canMoveRight, hasGroundLeft, hasGroundRight, isJumping, canShoot;
 	
 	public Player(int x, int y, TiledMap map, OrthographicCamera camera) {
-		super("img/Enemy.png", map);
+		super("img/enemy.png", map);
 		
 		this.camera = camera;
 		setName(AppPreferences.sharedInstance().getUserName());

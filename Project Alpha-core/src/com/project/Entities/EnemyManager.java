@@ -287,6 +287,14 @@ public class EnemyManager implements MultiplayerListener
 			hasHitName = hasHit == null ? AppPreferences.sharedInstance().getUserName() : hasHit.name;
 
 			Entity wasHit = playerWithID(packet.targetID);
+
+			if (wasHit == null && packet.restLife == 100) {
+				//Reset life bouncer packet.
+				target.resetLife();
+				//Don't crash bro
+				return;
+			}
+
 			wasHitName = wasHit.name;
 			
 			System.out.println(hasHitName + "hit " + wasHitName + " with " + (wasHit.life - (100 - packet.restLife)) + " damage");

@@ -85,7 +85,7 @@ public class GameWorld extends GameState implements PacketReceivedCallback
 		
 		//Parallax
 		backgroundBatch = new SpriteBatch();
-		backgroundSprite = new Sprite(new TextureRegion(new Texture(Gdx.files.internal("img/parallax_background.jpg")),1260,800,1200,700));
+		backgroundSprite = new Sprite(new TextureRegion(new Texture(Gdx.files.internal("img/parallax_background.jpg")),600,700,1700, 700));
 		if (!(SCALING_FACTOR > 0.99f && SCALING_FACTOR < 1.01f))
 			backgroundSprite.scale(SCALING_FACTOR);
 

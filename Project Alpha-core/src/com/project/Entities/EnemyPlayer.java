@@ -9,7 +9,7 @@ public class EnemyPlayer extends Entity
 	byte id;
 
 	public EnemyPlayer(Point position, String name, byte id){
-		super(new Texture("img/enemy.png"));
+		super(new Texture("img/Enemy.png"));
 		this.id = id;
 		setName(name);
 		setBounds(position.x, position.y, getWidth(), getHeight());

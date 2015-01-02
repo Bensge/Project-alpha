@@ -1,7 +1,9 @@
 package ClientConnection;
 
+import Server.AlphaServer;
 import com.project.networking.Common.Packet;
 
+import java.net.Socket;
 
 
 public class Client {
@@ -19,8 +21,12 @@ public class Client {
 		this.name = name;
 	}
 
-	public Client(ClientReadingWorker reader){
-		this.reader = reader;
+	public Client(AlphaServer server,Socket socket)
+	{
+		reader = new ClientReadingWorker(socket,server,this);
+		writer = new ClientWritingWorker(socket,server,this);
+
+		reader.execute();
 	}
 	
 	public ClientReadingWorker getReader() {
@@ -41,10 +47,6 @@ public class Client {
 	
 	public void send(Packet packet)
 	{
-		if (writer == null) {
-			writer = new ClientWritingWorker(getReader().out);
-		}
-
 		writer.dispatchPacketSend(packet);
 	}
 	

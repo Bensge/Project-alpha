@@ -12,7 +12,7 @@ import ClientConnection.ClientReadingWorker;
 
 
 
-public class SocketAcceptWorker extends SwingWorker<Void, ClientReadingWorker> {
+public class SocketAcceptWorker extends SwingWorker<Void, Client> {
 
 	private ServerSocket socket;
 	private AlphaServer server;
@@ -37,20 +37,14 @@ public class SocketAcceptWorker extends SwingWorker<Void, ClientReadingWorker> {
 		{
 			try
 			{
-				Socket client = socket.accept();
+				Socket clientSocket = socket.accept();
 				//Dat netcode doe
-				client.setTcpNoDelay(true);
+				clientSocket.setTcpNoDelay(true);
 
-				if (client != null)
+				if (clientSocket != null)
 				{
-					InputStream in = client.getInputStream();
-					OutputStream out = client.getOutputStream();
-					
-					ClientReadingWorker worker = new ClientReadingWorker(in, out, server);
-					
-					worker.execute();
-					
-					publish(worker);
+					Client client = new Client(server,clientSocket);
+					publish(client);
 				}
 			}
 			catch (Exception e)
@@ -64,11 +58,9 @@ public class SocketAcceptWorker extends SwingWorker<Void, ClientReadingWorker> {
 	}
 	
 	@Override
-	protected void process(List<ClientReadingWorker> chunks) {
-		for (ClientReadingWorker reader : chunks)
+	protected void process(List<Client> chunks) {
+		for (Client client : chunks)
 		{
-			Client client = new Client(reader);
-			reader.client = client;
 			server.registerClient(client);
 		}
 	}

@@ -1,7 +1,9 @@
 package ClientConnection;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.Socket;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,14 +18,17 @@ import Server.AlphaServer;
 public class ClientReadingWorker extends SwingWorker<Void, Packet> {
 
 	private InputStream in;
-	public OutputStream out;
 	private AlphaServer server;
-	public Client client;
+	private Client client;
 	
-	public ClientReadingWorker(InputStream in, OutputStream out, AlphaServer server) {
-		this.in = in;
-		this.out = out;
+	public ClientReadingWorker(Socket socket, AlphaServer server, Client client) {
+		try {
+			this.in = socket.getInputStream();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		this.server = server;
+		this.client = client;
 	}
 	
 	@Override

@@ -1,18 +1,30 @@
 package ClientConnection;
 
+import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.net.Socket;
 
-import javax.swing.SwingWorker;
+import javax.swing.*;
 
+import Server.AlphaServer;
 import com.project.networking.Common.Packet;
 
 
 public class ClientWritingWorker
 {
 	private OutputStream out;
+	private AlphaServer server;
+	public Client client;
 
-	public ClientWritingWorker(OutputStream out) {
-		this.out = out;
+	public ClientWritingWorker(Socket socket, AlphaServer server, Client client) {
+		try {
+			this.out = socket.getOutputStream();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		this.server = server;
+		this.client = client;
 	}
 
 	public void dispatchPacketSend(Packet packet)
@@ -38,9 +50,27 @@ public class ClientWritingWorker
 				catch (Exception e)
 				{
 					System.out.println("Error writing to outputStream: " + e.toString());
-					e.printStackTrace();
+					//Disconnect from client
+					try {
+						//Unregister client from server on the main thread
+						SwingUtilities.invokeAndWait(new Runnable()
+                        {
+                            public void run()
+                            {
+								reportBrokenPipe();
+                            }
+                        });
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 		}.run();
+	}
+
+	private void reportBrokenPipe()
+	{
+		server.unregisterClient(client);
+		System.out.println("Client disconnected");
 	}
 }

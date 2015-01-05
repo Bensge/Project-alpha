@@ -1,30 +1,59 @@
 package com.project.networking.Common;
 
 
-public class Packet {
+import java.util.HashMap;
+import java.util.Map;
+
+public abstract class Packet
+{
 	public static int packetID = 0;
+	public static Map<Integer,Class<? extends Packet>> packetClassMap;
 	
 	public int length;
 	public int type;
 	
+	private static void loadClasses()
+	{
+		//Initialize class map if necessary
+		if (packetClassMap == null) {
+			packetClassMap = new HashMap<>();
+		}
+		else return;
+		
+		//Register all classes here.
+		//This implementation kind of /sucks/, but loading all subclasses of Packet at runtime seems to be incredibly complex and wasteful in Java.
+		//Therefore, we need to register them manually :/
+		new LoginPacket().registerClass();
+		new MessageSendPacket().registerClass();
+		new MessageReceivePacket().registerClass();
+		new PlayerUpdatePacket().registerClass();
+		new UserActionPacket().registerClass();
+		new ProjectilePacket().registerClass();
+		new DamagePacket().registerClass();
+	}
 	
+	protected void registerClass()
+	{
+		//Register class
+		if (!packetClassMap.containsKey(type)) {
+			packetClassMap.put(type,this.getClass());
+		}
+	}
+
 	public Packet()
 	{
+		//Get class ID
 		try {
 			type = this.getClass().getField("packetID").getInt(this);
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchFieldException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
+			if (type == 0)
+				throw new Exception("You forgot to set the static packetID variable (shall not be 0) in Class :" + this.getClass().getName());
+		} catch (Exception e) {
+			System.out.println("Error getting packetID:" + e.toString());
 			e.printStackTrace();
 		}
+		//Load all subclasses.
+		if (packetClassMap == null)
+			loadClasses();
 	}
 	/*
 	 * SERIALIZATION
@@ -35,10 +64,7 @@ public class Packet {
 	 *  specifications from the Protocol documentation!
 	 */
 	
-	public byte[] generateDataPacket()
-	{
-		return null;
-	}
+	public abstract byte[] generateDataPacket();
 	
 	/*
 	 * You MUST call generateDataPacket() before calling this method! 
@@ -67,99 +93,38 @@ public class Packet {
 	 * Parsing follows the the Specifications defined in the Protocol documentation
 	 */
 	
+	public abstract void parseData(int packetSize, byte[] bulkPacket);
 	
 	public static Packet parseDataPacket(byte[] prePacket, byte[] bulkPacket)
 	{
+		//Load all subclasses into map if not loaded yet.
+		if (packetClassMap == null)
+			loadClasses();
+		
+		//Parse pre-packet
 		int packetType = NetworkingCommon.intFromBuffer(prePacket, 0);
 		int packetSize = NetworkingCommon.intFromBuffer(prePacket, 4);
+		Class<? extends Packet> packetClass = packetClassMap.get(packetType);
+		if (packetClass == null)
+		{
+			//Unchecked exceptions, wee.
+			throw new RuntimeException("Attempted parsing an unknown packet type. stop.");
+		}
 		
 		Packet packet = null;
-		
-		//System.out.println("Parsing packet of type (" + packetType + ") and length (" + packetSize + ")");
-		
-		if (packetType == MessageSendPacket.packetID)
+		try
 		{
-			//A message packet from a client
-			MessageSendPacket p = new MessageSendPacket();
-			p.text = new String(bulkPacket);
-			packet = p;
+			packet = packetClass.newInstance();
 		}
-		else if (packetType == MessageReceivePacket.packetID)
+		catch (Exception e)
 		{
-			//A message packet from the server
-			MessageReceivePacket p = new MessageReceivePacket();
-			
-			//Timestamp
-			p.timestamp = NetworkingCommon.intFromBuffer(bulkPacket, 0);
-			//Sender
-			int senderLength = NetworkingCommon.intFromBuffer(bulkPacket, 4);
-			// String constructor (byte[], offset, length)
-			p.sender = new String(bulkPacket, 8, senderLength);
-			//Text
-			int textOffset = 8 + senderLength;
-			int textLength = packetSize - textOffset;
-			p.text = new String(bulkPacket, textOffset, textLength);
-			
-			packet = p;
-		}
-		else if (packetType == LoginPacket.packetID)
-		{
-			LoginPacket p = new LoginPacket();
-			p.name = new String(bulkPacket);
-			packet = p;
+			System.out.println("Constructing packet failed:");
+			e.printStackTrace();
+			return null;
 		}
 		
-		else if (packetType == UserActionPacket.packetID)
-		{
-			UserActionPacket p = new UserActionPacket();
-
-			byte userID = bulkPacket[0];
-			p.userID = userID;
-
-			byte action = bulkPacket[1];
-			p.action = UserActionPacket.Action.values()[(int)action];
-			
-			boolean isC = bulkPacket[2] != 0;
-			p.isCurrent = isC;
-			
-			String user = new String(bulkPacket, 3, bulkPacket.length - 3);
-			p.userName = user;
-			
-			packet = p;
-		}
-		else if (packetType == ProjectilePacket.packetID)
-		{
-			ProjectilePacket p = new ProjectilePacket();
-			
-			p.originX = NetworkingCommon.floatFromBuffer(bulkPacket, 0*4);
-			p.originY = NetworkingCommon.floatFromBuffer(bulkPacket, 1*4);
-			p.targetX = NetworkingCommon.floatFromBuffer(bulkPacket, 2*4);
-			p.targetY = NetworkingCommon.floatFromBuffer(bulkPacket, 3*4);
-			p.userID = bulkPacket[4*4];
-			p.projectileType = bulkPacket[4*4 + 1];
-			
-			packet = p;
-		}
-		else if (packetType == PlayerUpdatePacket.packetID)
-		{
-			PlayerUpdatePacket p = new PlayerUpdatePacket();
-
-			p.userID = bulkPacket[0];
-			p.locationX = NetworkingCommon.intFromBuffer(bulkPacket, 1);
-			p.locationY = NetworkingCommon.intFromBuffer(bulkPacket, 5);
-
-			packet = p;
-		}
-		else if (packetType == DamagePacket.packetID)
-		{
-			DamagePacket p = new DamagePacket();
-			
-			p.targetID = bulkPacket[0];
-			p.hunterID = bulkPacket[1];
-			p.restLife = bulkPacket[2];
-			
-			packet = p;
-		}
+		//Call specialized packet parser
+		packet.parseData(packetSize, bulkPacket);
 		
 		return packet;
 	}

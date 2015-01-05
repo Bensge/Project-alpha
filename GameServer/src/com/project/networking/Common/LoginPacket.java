@@ -12,4 +12,9 @@ public class LoginPacket extends Packet
 		this.length = data.length;
 		return data;
 	}
+	
+	public void parseData(int packetSize, byte[] bulkPacket)
+	{
+		name = new String(bulkPacket);
+	}
 }

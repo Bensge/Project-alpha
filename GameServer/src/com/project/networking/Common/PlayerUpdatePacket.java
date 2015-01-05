@@ -24,4 +24,11 @@ public class PlayerUpdatePacket extends Packet
         this.length = data.length;
         return data;
     }
+    
+    public void parseData(int packetSize, byte[] bulkPacket)
+    {
+    	userID = bulkPacket[0];
+		locationX = NetworkingCommon.intFromBuffer(bulkPacket, 1);
+		locationY = NetworkingCommon.intFromBuffer(bulkPacket, 5);
+    }
 }

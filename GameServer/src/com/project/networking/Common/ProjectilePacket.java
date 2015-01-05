@@ -28,4 +28,14 @@ public class ProjectilePacket extends Packet
 		
 		return data;
 	}
+	
+	public void parseData(int packetSize, byte[] bulkPacket)
+	{
+		originX = NetworkingCommon.floatFromBuffer(bulkPacket, 0*4);
+		originY = NetworkingCommon.floatFromBuffer(bulkPacket, 1*4);
+		targetX = NetworkingCommon.floatFromBuffer(bulkPacket, 2*4);
+		targetY = NetworkingCommon.floatFromBuffer(bulkPacket, 3*4);
+		userID = bulkPacket[4*4];
+		projectileType = bulkPacket[4*4 + 1];
+	}
 }

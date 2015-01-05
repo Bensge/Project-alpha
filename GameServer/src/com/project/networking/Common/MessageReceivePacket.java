@@ -39,6 +39,19 @@ public class MessageReceivePacket extends MessageSendPacket {
 		
 		return data;
 	}
+	
+	public void parseData(int packetSize, byte[] bulkPacket)
+	{
+		timestamp = NetworkingCommon.intFromBuffer(bulkPacket, 0);
+		//Sender
+		int senderLength = NetworkingCommon.intFromBuffer(bulkPacket, 4);
+		// String constructor (byte[], offset, length)
+		sender = new String(bulkPacket, 8, senderLength);
+		//Text
+		int textOffset = 8 + senderLength;
+		int textLength = packetSize - textOffset;
+		text = new String(bulkPacket, textOffset, textLength);
+	}
 
 	public String niceTextString()
 	{

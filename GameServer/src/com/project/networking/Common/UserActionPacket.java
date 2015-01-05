@@ -53,6 +53,20 @@ public class UserActionPacket extends Packet {
 		return packet;
 	}
 	
+	public void parseData(int packetSize, byte[] bulkPacket)
+	{
+		userID = bulkPacket[0];
+		
+		byte actionByte = bulkPacket[1];
+		action = UserActionPacket.Action.values()[(int)actionByte];
+		
+		boolean isC = bulkPacket[2] != 0;
+		isCurrent = isC;
+		
+		String user = new String(bulkPacket, 3, bulkPacket.length - 3);
+		userName = user;
+	}
+	
 	public String toString()
 	{
 		return this.getClass().toString() + " (" + this.userName + " [" + userID + "] " + " did action:" + this.action + " isCurrent: " + this.isCurrent + " )";

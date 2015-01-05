@@ -13,4 +13,10 @@ public class MessageSendPacket extends Packet {
 		this.length = data.length;
 		return data;
 	}
+	
+	public void parseData(int packetSize, byte[] bulkPacket)
+	{
+		//A message packet from a client
+		text = new String(bulkPacket);
+	}
 }

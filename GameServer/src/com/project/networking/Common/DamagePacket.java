@@ -1,7 +1,7 @@
 package com.project.networking.Common;
 
-public class DamagePacket extends Packet{
-		
+public class DamagePacket extends Packet
+{
 	public byte targetID, hunterID, restLife;
 	public static int packetID = 9;
 	
@@ -16,5 +16,12 @@ public class DamagePacket extends Packet{
 		this.length = data.length;
 		
 		return data;
+	}
+	
+	public void parseData(int packetSize, byte[] bulkPacket)
+	{
+		targetID = bulkPacket[0];
+		hunterID = bulkPacket[1];
+		restLife = bulkPacket[2];
 	}
 }

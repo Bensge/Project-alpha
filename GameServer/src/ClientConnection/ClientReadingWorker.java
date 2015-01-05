@@ -52,20 +52,13 @@ public class ClientReadingWorker extends SwingWorker<Void, Packet> {
 	        }
 	        
 	        int packetType = NetworkingCommon.intFromBuffer(prePacket, 0);
-	        
 	        if (packetType == 0)
 	        {
 	        	//Got invalid packet
 	        	continue;
 	        }
 
-
-//	        System.out.println("Received Pre-Packet!" + prePacket);
-//
-//	        System.out.println("Packet type: " + packetType);
-
 	        int packetSize = NetworkingCommon.intFromBuffer(prePacket, 4);
-//	        System.out.println("Packet size: " + packetSize);
 	        
 	        byte[] packetBuffer = new byte[packetSize];
 	        

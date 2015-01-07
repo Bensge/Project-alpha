@@ -1,5 +1,7 @@
 package com.project.CharacterControllers;
 
+import com.badlogic.gdx.math.Vector2;
+
 public abstract class CharacterController
 {
 	protected Character character;
@@ -9,7 +11,7 @@ public abstract class CharacterController
 		None,
 		Left,
 		Right
-	};
+	}
 	
 	public CharacterController(Character c)
 	{
@@ -19,5 +21,8 @@ public abstract class CharacterController
 	public abstract boolean shouldJump();
 	public abstract Direction walkDirection();
 	public abstract void update();
-
+	public abstract boolean shouldShootBullet();
+	public abstract boolean shouldShootRocket();
+	public abstract Vector2 projectileTarget();
+	public abstract boolean isProjectileTargetRelativeToPlayer();
 }

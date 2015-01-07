@@ -3,18 +3,38 @@ package com.project.CharacterControllers;
 import java.awt.Point;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
+import com.project.Overlays.JoystickOverlay;
+import com.project.Overlays.Overlay;
+import com.project.Overlays.OverlayContainer;
 
-public class UserMobileController extends CharacterController {
-	
+public class UserMobileController extends CharacterController
+{
 	private Direction walkingDirection = Direction.None;
+	private boolean shouldJump;
+	private boolean shouldShootBullet;
+	private boolean shouldShootRocket;
+	private Vector2 projectileDirection;
 
-	public UserMobileController(Character c) {
+	private JoystickOverlay leftJoystick;
+	private JoystickOverlay rightJoystick;
+
+	public UserMobileController(Character c)
+	{
 		super(c);
+
+		projectileDirection = new Vector2(0,0);
+
+		leftJoystick = new JoystickOverlay(Overlay.ScreenCorner.BottomLeft);
+		OverlayContainer.sharedInstance().addOverlay(leftJoystick);
+
+		rightJoystick = new JoystickOverlay(Overlay.ScreenCorner.BottomRight);
+		OverlayContainer.sharedInstance().addOverlay(rightJoystick);
 	}
 
 	@Override
 	public boolean shouldJump() {
-		return Gdx.input.isTouched();
+		return shouldJump;
 	}
 
 	@Override
@@ -23,19 +43,49 @@ public class UserMobileController extends CharacterController {
 	}
 
 	@Override
-	public void update() {
-		//As it turns out, a value of 0 of the accelerometer's Y axis means the device is in landscape right mode.
-		float accelY = Gdx.input.getAccelerometerY();
-		
-		final float ACCELEROMETER_THRESHOLD = 1.5f;
-		
-		if (accelY > -ACCELEROMETER_THRESHOLD && accelY < ACCELEROMETER_THRESHOLD)
-			walkingDirection = Direction.None;
-		else if (accelY <= -ACCELEROMETER_THRESHOLD)
-			walkingDirection = Direction.Right;
-		else if (accelY >= ACCELEROMETER_THRESHOLD)
+	public void update()
+	{
+		shouldJump = leftJoystick.position.y > 0.6;
+
+		float x = leftJoystick.position.x;
+		if (x < -0.5) {
 			walkingDirection = Direction.Left;
+		}
+		else if (x > 0.5) {
+			walkingDirection = Direction.Right;
+		}
+		else {
+			walkingDirection = Direction.None;
+		}
+
+		//Projectiles
+		shouldShootRocket = false;
+		shouldShootBullet = rightJoystick.isTouched;
+
+		projectileDirection = rightJoystick.position;
 	}
 
+	@Override
+	public boolean shouldShootBullet()
+	{
+		return shouldShootBullet;
+	}
 
+	@Override
+	public boolean shouldShootRocket()
+	{
+		return shouldShootRocket;
+	}
+
+	@Override
+	public Vector2 projectileTarget()
+	{
+		return projectileDirection;
+	}
+
+	@Override
+	public boolean isProjectileTargetRelativeToPlayer()
+	{
+		return true;
+	}
 }

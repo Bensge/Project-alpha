@@ -56,10 +56,11 @@ public class Player extends Entity implements Character {
 	}
 	
 	@Override
-	public void update(float delta) {
-		if(Gdx.input.isKeyJustPressed(Keys.H)){
+	public void update(float delta)
+	{
+		//Godmode is desktop only
+		if (Gdx.input.isKeyJustPressed(Keys.H)){
 			heroMode = !heroMode;
-			System.out.println("change");
 		}
 		
 		//Get old values
@@ -94,7 +95,6 @@ public class Player extends Entity implements Character {
 			}
 
 			//Handle jump states
-
 			setX(getX() + velocity.x * delta);
 			setY(getY() + velocity.y * delta);
 
@@ -107,7 +107,6 @@ public class Player extends Entity implements Character {
 			canMoveRight = true;
 
 			//y-axis collision
-			//TODO: collisionYUp is a stupid name, because the method actually checks for collisions below the player, hence it should be called DOWN not UP
 			if (collisionYUp(getX(), getY(), getWidth(), getHeight()))
 			{
 				velocity.y = 0;
@@ -139,6 +138,7 @@ public class Player extends Entity implements Character {
 		
 		else
 		{
+			//Godmode is desktop only and experimental
 			if (Gdx.input.isKeyPressed(Keys.S))
 				setY(getY() - maxSpeed * delta);
 			else if (Gdx.input.isKeyPressed(Keys.W))
@@ -148,15 +148,11 @@ public class Player extends Entity implements Character {
 			else if (Gdx.input.isKeyPressed(Keys.D))
 				setX(getX() + maxSpeed * delta);
 		}
-			
 		
 		controller.update();
 		
 		if(controller instanceof UserDesktopController){
 			desktopInputHandling(delta);
-		}
-		else if(controller instanceof UserMobileController){
-			mobileInputHandling(delta);
 		}
 
 		//player position is sent here
@@ -183,11 +179,16 @@ public class Player extends Entity implements Character {
 		bulletDelta += delta;
 		rocketDelta += delta;
 
-		float mouseX = controller.mouseX + (camera.position.x - camera.viewportWidth / 2);
-		float mouseY = (Gdx.graphics.getHeight() - controller.mouseY) + (camera.position.y - camera.viewportHeight / 2);
-			
-		//bullet handling	
-		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && bulletDelta > bulletCooldown){
+		float mouseX = controller.projectileTarget().x + (camera.position.x - camera.viewportWidth / 2);
+		float mouseY = (Gdx.graphics.getHeight() - controller.projectileTarget().y) + (camera.position.y - camera.viewportHeight / 2);
+
+		if (controller.isProjectileTargetRelativeToPlayer()) {
+			mouseX += getX();
+			mouseY += getY();
+		}
+
+		//bullet handling
+		if (controller.shouldShootBullet() && bulletDelta > bulletCooldown){
 			float XDirection =  getX() + getWidth() / 2;
 			float YDirection =  getY() + getHeight() / 2;
 			Bullet b = new Bullet("img/rocket.png", mouseX, mouseY, XDirection, YDirection, (byte) -1, true);
@@ -200,7 +201,7 @@ public class Player extends Entity implements Character {
 			
 		}
 		//rocket handling
-		if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && rocketDelta > rocketCooldown){
+		if(controller.shouldShootRocket() && rocketDelta > rocketCooldown){
 			Rocket r = new Rocket("img/rocket.png", mouseX, mouseY, getX(), getY(), (byte) -1, true);
 			
 			if(MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive())
@@ -209,11 +210,6 @@ public class Player extends Entity implements Character {
 				enemyManager.addProjectile(r);
 			rocketDelta = 0;
 		}
-	}
-	
-	private void mobileInputHandling(float delta) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	private void decreaseXVelocity() {
@@ -233,7 +229,6 @@ public class Player extends Entity implements Character {
 
 	public void decreaseLife(int amount){
 		life -= amount;
-		System.out.println("HIT!!! \nRemaining Life: " + life);
 	}
 
 	public boolean IAmDead(){
@@ -243,10 +238,6 @@ public class Player extends Entity implements Character {
 	@Override
 	public void render(Batch b) {
 		controller.update();
-		if(controller instanceof UserDesktopController){
-			//b.draw(crosshair, controller.mouseX, Gdx.graphics.getHeight() - controller.mouseY);
-			//System.out.println("x: " + controller.mouseX + ", Y: " + controller.mouseY);
-		}
 		super.render(b);
 		enemyManager.render(b);
 	}

@@ -1,5 +1,7 @@
 package com.project.CharacterControllers;
 
+import com.badlogic.gdx.math.Vector2;
+
 import java.awt.Point;
 import java.util.Random;
 
@@ -77,5 +79,29 @@ public class ComputerDemoController extends CharacterController {
 		//System.out.println("Update isJumping=" + character.isJumping() + " canMoveRight=" + character.canMoveRight() + " canMoveLeft=" + character.canMoveLeft() + " walkingDirection=" + walkDirection);
 	}
 
-	
+	@Override
+	public boolean shouldShootBullet()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean shouldShootRocket()
+	{
+		return false;
+	}
+
+	@Override
+	public Vector2 projectileTarget()
+	{
+		return null;
+	}
+
+	@Override
+	public boolean isProjectileTargetRelativeToPlayer()
+	{
+		return false;
+	}
+
+
 }

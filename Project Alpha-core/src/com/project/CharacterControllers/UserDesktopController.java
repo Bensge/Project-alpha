@@ -3,12 +3,15 @@ package com.project.CharacterControllers;
 import java.awt.Cursor;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.math.Vector2;
 
 
 public class UserDesktopController extends CharacterController {
 
+	private Vector2 projectileTarget;
 	
 	public UserDesktopController(Character c)
 	{
@@ -21,9 +24,8 @@ public class UserDesktopController extends CharacterController {
         
         Gdx.input.setCursorImage(pm, xHotSpot, yHotSpot);
         pm.dispose();
-		
-		//Gdx.input.setCursorCatched(true);
-		
+
+		projectileTarget = new Vector2(0,0);
 	}
 
 	@Override
@@ -43,24 +45,35 @@ public class UserDesktopController extends CharacterController {
 	}
 
 	@Override
-	public void update() {
-		mouseX = Gdx.input.getX();
-		mouseY = Gdx.input.getY();
-		
-		//keep mouse in bounds
-		/*if(mouseX < 3)
-			mouseX = 3;
-		else if(mouseX >= Gdx.graphics.getWidth() - 3)
-			mouseX = Gdx.graphics.getWidth() - 3;
-		
-		if(mouseY < 0)
-			mouseY = 0;
-		else if(mouseX >= Gdx.graphics.getHeight())
-			mouseY = Gdx.graphics.getHeight();
-		*/
-		//Gdx.input.setCursorPosition(mouseX, mouseY);
+	public void update()
+	{
+		projectileTarget.x = Gdx.input.getX();
+		projectileTarget.y = Gdx.input.getY();
 	}
 
-	
+	@Override
+	public boolean shouldShootBullet()
+	{
+		return Gdx.input.isButtonPressed(Input.Buttons.LEFT);
+	}
+
+	@Override
+	public boolean shouldShootRocket()
+	{
+		return Gdx.input.isButtonPressed(Input.Buttons.RIGHT);
+	}
+
+	@Override
+	public Vector2 projectileTarget()
+	{
+		return projectileTarget;
+	}
+
+	@Override
+	public boolean isProjectileTargetRelativeToPlayer()
+	{
+		return false;
+	}
+
 
 }

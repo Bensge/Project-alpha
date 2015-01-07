@@ -28,6 +28,8 @@ public class Overlay extends Group
         this.overlayWidth = overlayWidth;
         this.overlayHeight = overlayHeight;
 
+        debugAll();
+
         setWidth(overlayWidth);
         setHeight(overlayHeight);
 

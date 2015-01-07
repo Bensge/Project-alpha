@@ -30,7 +30,7 @@ import com.project.constants.Constants;
 import com.project.networking.PacketReceivedCallback;
 import com.project.networking.Common.Packet;
 
-public class GameWorld extends GameState implements PacketReceivedCallback
+public class GameWorld extends GameState
 {
 	
 	private OrthographicCamera camera;
@@ -90,7 +90,7 @@ public class GameWorld extends GameState implements PacketReceivedCallback
 			backgroundSprite.scale(SCALING_FACTOR);
 
 		//Overlays
-		overlayContainer = new OverlayContainer();
+		overlayContainer = OverlayContainer.sharedInstance();
 		MultiplayerActionFeedOverlay feedOverlay = new MultiplayerActionFeedOverlay();
 		overlayContainer.addOverlay(feedOverlay);
 	}
@@ -109,6 +109,11 @@ public class GameWorld extends GameState implements PacketReceivedCallback
 			{
 				System.out.println("Ouch, creating CharacterController failed");
 				e.printStackTrace();
+			}
+
+			if (!background) {
+				//Get back keyboard focus from menus to overlay controls
+				Gdx.input.setInputProcessor(overlayContainer);
 			}
 		}
 		
@@ -144,7 +149,6 @@ public class GameWorld extends GameState implements PacketReceivedCallback
 		cY = Math.min(cY, layer.getHeight() * layer.getTileHeight() - camera.viewportHeight / 2);
 		
 		camera.position.set((int)cX, (int)cY, 0);
-		//System.out.println("camera-x: " + camera.position.x);
 		camera.update();
 		renderer.setView(camera);
 		
@@ -205,7 +209,7 @@ public class GameWorld extends GameState implements PacketReceivedCallback
 		fpsBatch.begin();
 		String str = fpsString != null ? fpsString : (Gdx.graphics.getFramesPerSecond() + "");
 		TextBounds bounds = fpsFont.getBounds(str);
-		fpsFont.draw(fpsBatch,str,Gdx.graphics.getWidth() - bounds.width - fpsPadding, Gdx.graphics.getHeight() - fpsPadding);
+		fpsFont.draw(fpsBatch,str,fpsPadding, Gdx.graphics.getHeight() - fpsPadding);
 		fpsBatch.end();
 
 		//Overlays
@@ -216,11 +220,4 @@ public class GameWorld extends GameState implements PacketReceivedCallback
 	public void dispose() {
 		//The game world is never disposed, idiot!
 	}
-
-	@Override
-	public void receivedPacket(Packet p)
-	{
-		//System.out.println("received Packet of class:" + p.getClass().getClass() + " P=" + p);
-	}
-
 }

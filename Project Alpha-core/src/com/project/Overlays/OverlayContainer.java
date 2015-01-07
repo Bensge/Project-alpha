@@ -8,6 +8,15 @@ import com.badlogic.gdx.utils.Array;
  */
 public class OverlayContainer extends Stage
 {
+    static OverlayContainer instance = null;
+
+    public static OverlayContainer sharedInstance()
+    {
+        if (instance == null)
+            instance = new OverlayContainer();
+        return instance;
+    }
+
     Array<Overlay> overlays;
 
     public OverlayContainer()
@@ -26,10 +35,6 @@ public class OverlayContainer extends Stage
     @Override
     public void draw()
     {
-        try {
-            super.draw();
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Yolo" + e);
-        }
+        super.draw();
     }
 }

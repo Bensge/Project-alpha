@@ -150,10 +150,8 @@ public class Player extends Entity implements Character {
 		}
 		
 		controller.update();
-		
-		if(controller instanceof UserDesktopController){
-			desktopInputHandling(delta);
-		}
+
+		handleInput(delta);
 
 		//player position is sent here
 		long time;
@@ -173,42 +171,53 @@ public class Player extends Entity implements Character {
 	}
 
 	/* Input handling methods */
-	private void desktopInputHandling(float delta) {
-		//shooting handle
-		
+	private void handleInput(float delta)
+	{
+		//shooting handling
 		bulletDelta += delta;
 		rocketDelta += delta;
 
-		float mouseX = controller.projectileTarget().x + (camera.position.x - camera.viewportWidth / 2);
-		float mouseY = (Gdx.graphics.getHeight() - controller.projectileTarget().y) + (camera.position.y - camera.viewportHeight / 2);
+		if (controller.shouldShootRocket() || controller.shouldShootBullet())
+		{
+			float mouseX = controller.projectileTarget().x;
+			float mouseY = controller.projectileTarget().y;
 
-		if (controller.isProjectileTargetRelativeToPlayer()) {
-			mouseX += getX();
-			mouseY += getY();
-		}
+			if (controller.isProjectileTargetRelativeToPlayer()) {
+				mouseX += getX() + getWidth() / 2;
+				mouseY += getY() + getHeight() / 2;
+			}
+			else
+			{
+				mouseX += (camera.position.x - camera.viewportWidth / 2);
+				mouseY = Gdx.graphics.getHeight() - mouseY + (camera.position.y - camera.viewportHeight / 2);
+			}
 
-		//bullet handling
-		if (controller.shouldShootBullet() && bulletDelta > bulletCooldown){
-			float XDirection =  getX() + getWidth() / 2;
-			float YDirection =  getY() + getHeight() / 2;
-			Bullet b = new Bullet("img/rocket.png", mouseX, mouseY, XDirection, YDirection, (byte) -1, true);
-			
-			if(MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive())
-				enemyManager.sendNewBullet(b, Constants.BULLET_TYPE);
-			else
-				enemyManager.addProjectile(b);
-			bulletDelta = 0;
-			
-		}
-		//rocket handling
-		if(controller.shouldShootRocket() && rocketDelta > rocketCooldown){
-			Rocket r = new Rocket("img/rocket.png", mouseX, mouseY, getX(), getY(), (byte) -1, true);
-			
-			if(MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive())
-				enemyManager.sendNewBullet(r, Constants.ROCKET_TYPE);
-			else
-				enemyManager.addProjectile(r);
-			rocketDelta = 0;
+			//bullet handling
+			if (controller.shouldShootBullet() && bulletDelta > bulletCooldown)
+			{
+				float originX = getX() + getWidth() / 2;
+				float originY = getY() + getHeight() / 2;
+				Bullet b = new Bullet("img/rocket.png", mouseX, mouseY, originX, originY, (byte) -1, true);
+
+				if (MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive())
+					enemyManager.sendNewBullet(b, Constants.BULLET_TYPE);
+				else
+					enemyManager.addProjectile(b);
+				bulletDelta = 0;
+
+			}
+
+			//rocket handling
+			if (controller.shouldShootRocket() && rocketDelta > rocketCooldown)
+			{
+				Rocket r = new Rocket("img/rocket.png", mouseX, mouseY, getX(), getY(), (byte) -1, true);
+
+				if (MultiplayerGameSessionController.sharedInstance().isMultiplayerSessionActive())
+					enemyManager.sendNewBullet(r, Constants.ROCKET_TYPE);
+				else
+					enemyManager.addProjectile(r);
+				rocketDelta = 0;
+			}
 		}
 	}
 

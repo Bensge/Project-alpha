@@ -56,8 +56,6 @@ public class GameWorld extends GameState
 	public GameWorld(GameStateManager manager) {
 		super(manager);
 		
-		//new MultiplayerController("10.32.116.6", 80);
-		
 		SCALING_FACTOR = Constants.SCREEN_SCALING_FACTOR;
 		System.out.println("Screen scaling factor: " + SCALING_FACTOR);
 		
@@ -83,7 +81,7 @@ public class GameWorld extends GameState
 		
 		//Parallax
 		backgroundBatch = new SpriteBatch();
-		backgroundSprite = new Sprite(new TextureRegion(new Texture(Gdx.files.internal("img/parallax_background.jpg")),600,700,1700, 700));
+		backgroundSprite = new Sprite(new TextureRegion(new Texture(Gdx.files.internal("img/parallax_background.jpg")),1260,800,1200,650));
 		if (!(SCALING_FACTOR > 0.99f && SCALING_FACTOR < 1.01f))
 			backgroundSprite.scale(SCALING_FACTOR);
 

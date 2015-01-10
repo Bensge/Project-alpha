@@ -1,8 +1,7 @@
 package com.project.UI;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.project.constants.Constants;
+import com.project.common.Constants;
 
 /**
  * Created by bennokrauss on 24.12.14.

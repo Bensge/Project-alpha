@@ -1,6 +1,6 @@
 package com.project.Entities;
 
-import java.awt.Point;
+import com.project.common.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -8,7 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.project.Preferences.AppPreferences;
-import com.project.constants.Constants;
+import com.project.common.Constants;
 import com.project.networking.Common.DamagePacket;
 import com.project.networking.Common.Packet;
 import com.project.networking.Common.PlayerUpdatePacket;

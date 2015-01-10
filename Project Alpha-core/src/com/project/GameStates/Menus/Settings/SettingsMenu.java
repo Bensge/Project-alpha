@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.project.GameStates.GameStateManager;
 import com.project.GameStates.Menus.GameMenu;
 import com.project.Preferences.AppPreferences;
-import com.project.constants.Constants;
+import com.project.common.Constants;
 
 /**
  * Created by bennokrauss (and justus(mimimi)) on 24.12.14.

@@ -2,7 +2,6 @@ package com.project.CharacterControllers;
 
 import com.badlogic.gdx.math.Vector2;
 
-import java.awt.Point;
 import java.util.Random;
 
 public class ComputerDemoController extends CharacterController {

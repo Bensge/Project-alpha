@@ -26,9 +26,7 @@ import com.project.CharacterControllers.UserMobileController;
 import com.project.Entities.Player;
 import com.project.Overlays.MultiplayerActionFeedOverlay;
 import com.project.Overlays.OverlayContainer;
-import com.project.constants.Constants;
-import com.project.networking.PacketReceivedCallback;
-import com.project.networking.Common.Packet;
+import com.project.common.Constants;
 
 public class GameWorld extends GameState
 {

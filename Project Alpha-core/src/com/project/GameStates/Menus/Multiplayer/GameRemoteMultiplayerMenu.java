@@ -7,7 +7,7 @@ import com.project.GameStates.GameStateManager;
 import com.project.GameStates.Menus.GameMenu;
 import com.project.Preferences.AppPreferences;
 import com.project.UI.Alert;
-import com.project.constants.Constants;
+import com.project.common.Constants;
 import com.project.networking.MultiplayerGameSessionController;
 import com.project.networking.MultiplayerServer;
 

@@ -2,7 +2,7 @@ package com.project.Entities;
 
 import com.badlogic.gdx.graphics.Texture;
 
-import java.awt.*;
+import com.project.common.Point;
 
 public class EnemyPlayer extends Entity
 {

@@ -1,7 +1,6 @@
 package com.project.Entities;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -9,11 +8,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.MathUtils;
 import com.project.CharacterControllers.Character;
 import com.project.CharacterControllers.CharacterController;
-import com.project.CharacterControllers.UserMobileController;
 import com.project.CharacterControllers.CharacterController.Direction;
-import com.project.CharacterControllers.UserDesktopController;
 import com.project.Preferences.AppPreferences;
-import com.project.constants.Constants;
+import com.project.common.Constants;
 import com.project.networking.Common.PlayerUpdatePacket;
 import com.project.networking.MultiplayerGameSessionController;
 

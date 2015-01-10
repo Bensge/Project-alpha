@@ -1,8 +1,5 @@
 package com.project.CharacterControllers;
 
-import java.awt.Point;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.project.Overlays.JoystickOverlay;
 import com.project.Overlays.Overlay;

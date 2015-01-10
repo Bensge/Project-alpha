@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.project.constants.Constants;
+import com.project.common.Constants;
 /**
  * Created by bennokrauss on 25.12.14.
  */

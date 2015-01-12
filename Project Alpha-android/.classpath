@@ -2,11 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="src" path="/Project Alpha-core"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/Justus/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-backend-android/1.2.0/2ed57a7d155e5060ea773eed21804a23342fb47/gdx-backend-android-1.2.0.jar" sourcepath="C:/Users/Justus/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-backend-android/1.2.0/47559d3e104a68ddd5dc20debe33a5545eaf5398/gdx-backend-android-1.2.0-sources.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/Justus/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.2.0/eb55d6eb1165daf6be23189767c19d811ca5eb36/gdx-1.2.0.jar" sourcepath="C:/Users/Justus/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.2.0/b7439d76fa8ef2b56999682df928f5cf6b489d2d/gdx-1.2.0-sources.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Justus/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-backend-android/1.5.2/51f73ee35e73a6d76fd245f83ec3f6a3316744d5/gdx-backend-android-1.5.2.jar" sourcepath="C:/Users/Justus/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-backend-android/1.5.2/6e7cf51f1d14c9fab4fe800cb10663104b57ebce/gdx-backend-android-1.5.2-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Justus/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.5.2/4e8961d210e6451fda0f3c4f5b6a0685d61533b9/gdx-1.5.2.jar" sourcepath="C:/Users/Justus/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.5.2/26a156f1bebc8d08a2f6101a039390cbba85f07c/gdx-1.5.2-sources.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

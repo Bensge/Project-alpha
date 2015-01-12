@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 public class Constants
 {
 	//Constants
-	public static final int TICKRATE = 60;
+	public static final int TICKRATE = 20;
 	
 	public final static BitmapFont menlo10Font;
 	public final static BitmapFont menlo32Font;

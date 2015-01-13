@@ -1,61 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.7" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true">  
-  <class id="1" language="java" name="com.project.Entities.Player" project="Project Alpha-core" 
-    file="/Project Alpha-core/src/com/project/Entities/Player.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="684" y="-50"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="2" language="java" name="com.project.CharacterControllers.UserMobileController" 
-    project="Project Alpha-core" 
-    file="/Project Alpha-core/src/com/project/CharacterControllers/UserMobileController.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="871" y="454"/>    
+  <class id="1" language="java" name="com.project.GameStates.Menus.GameMenu" project="Project Alpha-core" 
+    file="/Project Alpha-core/src/com/project/GameStates/Menus/GameMenu.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="551" y="289"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="3" language="java" name="com.project.CharacterControllers.Character" project="Project Alpha-core" 
-    file="/Project Alpha-core/src/com/project/CharacterControllers/Character.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="468" y="169"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </interface>  
-  <class id="4" language="java" name="com.project.CharacterControllers.UserDesktopController" 
-    project="Project Alpha-core" 
-    file="/Project Alpha-core/src/com/project/CharacterControllers/UserDesktopController.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="635" y="446"/>    
+  <class id="2" language="java" name="com.project.GameStates.Menus.GameMainMenu" project="Project Alpha-core" 
+    file="/Project Alpha-core/src/com/project/GameStates/Menus/GameMainMenu.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="815" y="652"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="com.project.CharacterControllers.CharacterController" project="Project Alpha-core" 
-    file="/Project Alpha-core/src/com/project/CharacterControllers/CharacterController.java" binary="false" 
+  <class id="3" language="java" name="com.project.GameStates.Menus.Multiplayer.GameMultiplayerMenu" 
+    project="Project Alpha-core" 
+    file="/Project Alpha-core/src/com/project/GameStates/Menus/Multiplayer/GameMultiplayerMenu.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="876" y="169"/>    
+    <position height="-1" width="-1" x="552" y="652"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="com.project.CharacterControllers.ComputerDemoController" 
+  <class id="4" language="java" name="com.project.GameStates.Menus.Multiplayer.GameLocalMultiplayerMenu" 
     project="Project Alpha-core" 
-    file="/Project Alpha-core/src/com/project/CharacterControllers/ComputerDemoController.java" binary="false" 
+    file="/Project Alpha-core/src/com/project/GameStates/Menus/Multiplayer/GameLocalMultiplayerMenu.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1116" y="481"/>    
+    <position height="206" width="258" x="147" y="523"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="com.project.GameStates.Menus.Multiplayer.GameRemoteMultiplayerMenu" 
+    project="Project Alpha-core" 
+    file="/Project Alpha-core/src/com/project/GameStates/Menus/Multiplayer/GameRemoteMultiplayerMenu.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="116" width="229" x="148" y="340"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="com.project.GameStates.Menus.Settings.SettingsMenu" project="Project Alpha-core" 
+    file="/Project Alpha-core/src/com/project/GameStates/Menus/Settings/SettingsMenu.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="830" y="405"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -64,36 +64,24 @@
   </class>  
   <generalization id="7">    
     <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="5"/>  
+    <end type="TARGET" refId="1"/>  
   </generalization>  
-  <realization id="8">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="3"/>  
-  </realization>  
-  <generalization id="9">    
+  <generalization id="8">    
     <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="5"/>  
+    <end type="TARGET" refId="1"/>  
   </generalization>  
-  <association id="10">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="11" name="controller"/>      
-      <multiplicity id="12" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="13">    
+  <generalization id="9">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="10">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="11">    
     <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="5"/>  
+    <end type="TARGET" refId="1"/>  
   </generalization>  
-  <association id="14">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="15" name="character"/>      
-      <multiplicity id="16" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

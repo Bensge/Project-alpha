@@ -39,6 +39,6 @@ public class WritingWorker
 					e.printStackTrace();
 				}
 			};
-		}.run();
+		}.start();
 	}
 }

@@ -65,7 +65,7 @@ public class ClientWritingWorker
 					}
 				}
 			}
-		}.run();
+		}.start();
 	}
 
 	private void reportBrokenPipe()

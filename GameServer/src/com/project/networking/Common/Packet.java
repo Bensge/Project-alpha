@@ -44,6 +44,7 @@ public abstract class Packet
 	{
 		//Get class ID
 		try {
+			type = this.packetID;
 			type = this.getClass().getField("packetID").getInt(this);
 			if (type == 0)
 				throw new Exception("You forgot to set the static packetID variable (shall not be 0) in Class :" + this.getClass().getName());
